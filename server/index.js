@@ -1,5 +1,7 @@
 import express from "express";
-// import path if needed later
+
+// imports the db.js file to establish the MongoDB connection
+import './config/db.js';
 
 // initializes the app
 const app = express();
