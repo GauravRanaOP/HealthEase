@@ -110,32 +110,6 @@ import Patient from "../models/Patient.js";
   const createdUsers = await User.create(users);
   console.log("Users for doctors inserted successfully");
 
-  // inserts initial data for doctors
-  const doctors = [
-    {
-      userid: createdUsers[0]._id,
-      clinicId: null,
-      speciality: "General Practitioner",
-      availabilityId: null,
-    },
-    {
-      userid: createdUsers[1]._id,
-      clinicId: null,
-      speciality: "Pediatrician",
-      availabilityId: null,
-    },
-    {
-      userid: createdUsers[2]._id,
-      clinicId: null,
-      speciality: "General Practitioner",
-      availabilityId: null,
-    },
-  ];
-
-  // create doctors
-  const createdDoctors = await Doctor.create(doctors);
-  console.log("Doctors inserted successfully");
-
   // initial data for clinic
   const clinics = [
     {
@@ -149,7 +123,7 @@ import Patient from "../models/Patient.js";
       },
       contactNo: "1231231111",
       email: "abc@gmail.com",
-      doctorIds: [createdDoctors[0]._id],
+      doctorIds: null,
     },
     {
       name: "Clinic 2",
@@ -162,7 +136,7 @@ import Patient from "../models/Patient.js";
       },
       contactNo: "1231232222",
       email: "def@gmail.com",
-      doctorIds: [createdDoctors[1]._id],
+      doctorIds: null,
     },
     {
       name: "Clinic 3",
@@ -175,13 +149,39 @@ import Patient from "../models/Patient.js";
       },
       contactNo: "1231233333",
       email: "ghi@gmail.com",
-      doctorIds: [createdDoctors[2]._id],
+      doctorIds: null,
     },
   ];
 
   // create clinic
-  await Clinic.create(clinics);
+  const createdClinics = await Clinic.create(clinics);
   console.log("Clinics inserted successfully");
+
+  // inserts initial data for doctors
+  const doctors = [
+    {
+      userid: createdUsers[0]._id,
+      clinicId: createdClinics[0]._id,
+      speciality: "General Practitioner",
+      availabilityId: null,
+    },
+    {
+      userid: createdUsers[1]._id,
+      clinicId: createdClinics[1]._id,
+      speciality: "Pediatrician",
+      availabilityId: null,
+    },
+    {
+      userid: createdUsers[2]._id,
+      clinicId: createdClinics[2]._id,
+      speciality: "General Practitioner",
+      availabilityId: null,
+    },
+  ];
+
+  // create doctors
+  const createdDoctors = await Doctor.create(doctors);
+  console.log("Doctors inserted successfully");
 
   // initial data for patients
   const patients = [
@@ -197,4 +197,5 @@ import Patient from "../models/Patient.js";
   console.log("Patients inserted successfully");
 
   process.exit();
+  
 })();
