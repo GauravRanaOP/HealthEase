@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import AddressSchema from "./Address.js";
+import Address from "./Address.js";
 
 const Schema = mongoose.Schema;
 
@@ -12,7 +12,7 @@ const ClinicSchema = new Schema({
         type: String,
         required: true
     },
-    address: AddressSchema,          // address schema
+    address: Address.schema,             // address schema
     contactNo: {
         type: Number,
         required: true
@@ -34,4 +34,4 @@ const ClinicSchema = new Schema({
 
 // exports clinic module
 const Clinic = mongoose.model('Clinic', ClinicSchema);
-module.exports = Clinic;
+export default Clinic; 

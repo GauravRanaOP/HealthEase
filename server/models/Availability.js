@@ -24,4 +24,4 @@ const AvailabilitySchema = new Schema({
 
 // exports Availability module
 const Availability = mongoose.model('Availability', AvailabilitySchema);
-module.exports = Availability;
+export default Availability;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import AddressSchema from "./Address.js";
+import Address from "./Address.js";
 
 const Schema = mongoose.Schema;
 
@@ -28,11 +28,11 @@ const UserSchema = new Schema({
         required: true,
         enum: ['Patient', 'Doctor', 'Admin', 'DiagnosticCenterAdmin', 'ClinicAdmin']
     },
-    address: AddressSchema,
+    address: Address.schema,
     lastLoginDateTime: Date
 });
 
 
 // exports User model
 const User = mongoose.model('User', UserSchema);
-module.exports = User;
+export default User;

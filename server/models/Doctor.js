@@ -23,4 +23,4 @@ const DoctorSchema = new Schema({
 
 // exports Doctor modal
 const Doctor = mongoose.model('Doctor', DoctorSchema);
-module.exports = Doctor;
+export default Doctor; 

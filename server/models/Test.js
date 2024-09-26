@@ -23,4 +23,4 @@ const TestSchema = new Schema({
 
 // export Test model
 const Test = mongoose.model('Test', TestSchema);
-module.exports = Test;
+export default Test; 
