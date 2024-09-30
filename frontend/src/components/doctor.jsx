@@ -14,34 +14,6 @@ const Doctor = () => {
     fetchData();
   }, []);
 
-  const doc = [
-    {
-      firstname: "John",
-      lastname: "Doe",
-      speciality: "Cardiology",
-    },
-    {
-      firstname: "Jane",
-      lastname: "Smith",
-      speciality: "Pediatrics",
-    },
-    {
-      firstname: "Michael",
-      lastname: "Johnson",
-      speciality: "Dermatology",
-    },
-    {
-      firstname: "Emily",
-      lastname: "Davis",
-      speciality: "Neurology",
-    },
-    {
-      firstname: "Chris",
-      lastname: "Brown",
-      speciality: "Orthopedics",
-    },
-  ];
-
   return (
     <div className="doctor-table-container">
       <div className="search-container">
