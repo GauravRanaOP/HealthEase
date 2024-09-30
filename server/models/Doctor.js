@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import User from "./User.js";
+import Clinic from "./Clinic.js";
 
 const Schema = mongoose.Schema;
 
@@ -15,10 +17,7 @@ const DoctorSchema = new Schema({
         type: String,
         required: true
     },
-    availabilityId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Availability'
-    }
+   
 });
 
 // exports Doctor modal
