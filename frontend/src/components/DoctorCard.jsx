@@ -17,14 +17,18 @@ export default function DoctorCard({ doctor }) {
       <h3>
         {doctor.firstName} {doctor.lastName}
       </h3>
-      <div className="doctor-card-p-container">
+      <div className="doctor-card-address-container">
         <p>
           <FontAwesomeIcon icon={faLocationDot} className="location-icon" />
-          {streetAddress}, {city} ,{province}, {postCode}
+          {streetAddress}, {city} ,{province}
+           {/* ,{postCode} */}
         </p>
+      </div>
 
+      <div>
         <p>Speciality: {doctor.speciality}</p>
       </div>
+
       <div className="doctor-card-open-container">
         <div>Open</div>
         <div>
