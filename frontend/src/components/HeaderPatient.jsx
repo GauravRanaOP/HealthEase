@@ -14,13 +14,13 @@ const HeaderPatient = () => {
       <div className="nav-links">
         {!isLoggedIn ? (
           <>
-            <form>
+            {/* <form>
               <input
                 type="text"
                 placeholder="Search Doctors or Clinics"
                 aria-label="Search Doctors or Clinics"
               />
-            </form>
+            </form> */}
             <div className="login-btns">
               <button className="login-btn">Login</button>
               <button className="register-btn">Register</button>
