@@ -1,8 +1,13 @@
-// loads .env file
+
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import path from "path";
 
+// load .env file
 dotenv.config();
+// dotenv.config({ path: "../.env" });          // to execute addDoctorAvailabilityData.js
+
+// dotenv.config({ path: path.join(__dirname, ".." ".env") });
 
 const { MONGO_CONNECTION_STRING } = process.env;
 
