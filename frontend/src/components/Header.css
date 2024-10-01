@@ -1,0 +1,97 @@
+:root {
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Ubuntu", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  display: flex;
+  height: 80px;
+  padding: 0 100px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-main);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+input {
+  width: 300px;
+  height: 30px;
+  padding: 0 20px;
+  border-radius: 30px;
+  border: 3px solid var(--border-color);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  box-shadow: var(--box-shadow);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 150px;
+}
+
+.login-btns {
+  display: flex;
+  gap: 25px;
+}
+
+.login-btn,
+.register-btn {
+  width: 120px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 32px;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s ease;
+}
+
+.login-btn {
+  border: 2px solid var(--border-color);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.login-btn:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.register-btn {
+  border: 2px solid var(--secondary-color);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.register-btn:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
