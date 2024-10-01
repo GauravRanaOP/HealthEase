@@ -2,6 +2,7 @@ import Doctor from "./components/doctor";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import HeaderPatient from "./components/HeaderPatient";
 import FooterPatient from "./components/FooterPatient";
+import SearchDoctor from "./components/SearchDoctor";
 
 const route = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const route = createBrowserRouter([
   {
     path: "/getDoctor",
     element: <Doctor/>
+  },
+  {
+    path: "/searchDoctor",
+    element: <SearchDoctor />
   }
 ])
 
