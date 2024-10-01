@@ -1,0 +1,144 @@
+body{
+  background-color: #EEEEEE;
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.search-input {
+  width: 60%; /* Adjust width as needed */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.add-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+/* Doctor table container */
+.doctor-table-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Table styling */
+.doctor-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #f8f9fa;
+}
+
+.doctor-table th {
+  background-color: white; /* Set header background color to white */
+  color: black;            /* Set text color to black for contrast */
+  padding: 10px;          /* Adjust padding for better spacing */
+  text-align: left;       /* Align text to the left */
+  border: 1px solid #ddd; /* Optional: add a border for a cleaner look */
+}
+
+.doctor-table td {
+  padding: 10px;          /* Maintain padding for table data cells */
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #ccc;
+  font-weight: bold;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+}
+
+tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+tr:nth-child(odd) {
+  background-color: #e0e0e0;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+/* Action buttons */
+td button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 18px;
+}
+
+td button.view {
+  color: #007bff; /* View icon color */
+}
+
+td button.edit {
+  color: #28a745; /* Edit icon color */
+}
+
+td button.delete {
+  color: #dc3545; /* Delete icon color */
+}
+
+td button:hover {
+  opacity: 0.7;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.pagination button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button.active {
+  background-color: #0056b3;
+}
+
+.pagination button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(.active):not(.disabled) {
+  background-color: #0056b3;
+}

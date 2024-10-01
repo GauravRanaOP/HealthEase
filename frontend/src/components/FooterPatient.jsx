@@ -1,6 +1,6 @@
-import "./Footer.css";
+import "../assets/css/FooterPatient.css";
 
-const Footer = () => {
+const FooterPatient = () => {
   return (
     <footer className="footer">
       <div className="footer-top">
@@ -104,4 +104,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default FooterPatient;

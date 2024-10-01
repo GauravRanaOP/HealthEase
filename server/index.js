@@ -1,7 +1,11 @@
 import express from "express";
+import cors from "cors"; // Importing CORS
+
 
 // imports the db.js file to establish the MongoDB connection
-import './config/db.js';
+import "./config/db.js";
+
+import DoctorRoute from "./routes/DoctorsRoute.js";
 
 // initializes the app
 const app = express();
@@ -9,13 +13,32 @@ const app = express();
 // middleware to parse JSON data
 app.use(express.json());
 
-// basic route
-app.get('/', (req, res) => {
-    res.send('Backend is running');
+app.use(cors({
+  origin: "http://localhost:5173", // Allow only your frontend's origin
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+}));
+
+// Basic route to check if the server is running
+app.get("/", (req, res) => {
+  res.send("Backend is running");
 });
 
-// listens on port
+// Routes for doctors
+app.use("/api", DoctorRoute);
+
+// Error handling for unhandled routes
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Generic error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal server error" });
+});
+
+// Listen on port
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
-    console.log(`HealthEase app is listening on port ${port}`);
+  console.log(`HealthEase app is listening on port ${port}`);
 });

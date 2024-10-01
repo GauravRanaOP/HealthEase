@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "../assets/css/HeaderPatient.css";
 
-const Header = () => {
+const HeaderPatient = () => {
   const [isLoggedIn] = useState(false);
 
   const user = useMemo(() => ({ name: "John Doe", role: "Admin" }), []);
@@ -45,4 +45,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderPatient;

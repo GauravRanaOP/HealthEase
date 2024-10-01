@@ -1,20 +1,27 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import "./App.css";
-import heroImage from "./assets/hero-img.png";
+import Doctor from "./components/doctor";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import HeaderPatient from "./components/HeaderPatient";
+import FooterPatient from "./components/FooterPatient";
+
+const route = createBrowserRouter([
+  {
+    path: "/",
+    element: "Dashboard"
+  },
+  {
+    path: "/getDoctor",
+    element: <Doctor/>
+  }
+])
 
 function App() {
-  return (
-    <div className="app-container">
-      <Header />
-      <main className="main-content">
-        <div className="hero-section">
-          <img src={heroImage} alt="Healthcare Hero" className="hero-image" />
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
+  return <div className="App">
+    <HeaderPatient />
+    <RouterProvider router= {route}></RouterProvider>
+    <FooterPatient />
+
+    {/* <Doctor/> */}
+  </div>;
 }
 
 export default App;
