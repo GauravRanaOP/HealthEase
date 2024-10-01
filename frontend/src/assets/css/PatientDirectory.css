@@ -57,6 +57,8 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  max-width: 300px;
+  width: 100%;
 }
 
 .doctor-card h3 {
@@ -69,8 +71,13 @@
   box-sizing: border-box;
 }
 
-.doctor-card-p-container {
+.doctor-card-address-container {
   padding: 16px;
+  /* height: 50px; */
+}
+
+.doctor-card-address-container p {
+  margin: 0;
 }
 
 .location-icon {
