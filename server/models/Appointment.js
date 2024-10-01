@@ -25,7 +25,7 @@ const AppointmentSchema = new Schema({
         enum: ['DoctorVisit', 'DiagnosticTest']
     },
     visitMode: { // mode is at DC or at home
-        type: Boolean,
+        type: String,
         required: true,
         enum: ['InPerson','AtHome']
     },
