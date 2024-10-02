@@ -1,26 +1,36 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import "../assets/css/HeaderPatient.css";
+import logo from "../assets/images/logo.png";
 
 const HeaderPatient = () => {
   const [isLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const user = useMemo(() => ({ name: "John Doe", role: "Admin" }), []);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <header className="header">
-      <div className="logo">HealthEase</div>
+      <div className="logo">
+        <img src={logo} alt="HealthEase Logo" />
+      </div>
 
-      <div className="nav-links">
+      <div
+        className={`hamburger ${menuOpen ? "active" : ""}`}
+        onClick={toggleMenu}
+      >
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </div>
+
+      <div className={`nav-links ${menuOpen ? "open" : ""}`}>
         {!isLoggedIn ? (
           <>
-            {/* <form>
-              <input
-                type="text"
-                placeholder="Search Doctors or Clinics"
-                aria-label="Search Doctors or Clinics"
-              />
-            </form> */}
             <div className="login-btns">
               <button className="login-btn">Login</button>
               <button className="register-btn">Register</button>
