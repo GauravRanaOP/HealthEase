@@ -14,7 +14,7 @@ export default function PatientDirectory() {
   const fetchDoctors = async (postcodePrefix) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/doctors/postcode/${postcodePrefix}`
+        `http://localhost:3002/api/doctors/postcode/${postcodePrefix}`
       );
 
       const data = response.data;
