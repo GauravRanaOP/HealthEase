@@ -6,6 +6,7 @@ import SearchDoctor from "./components/SearchDoctor";
 import PatientDirectory from "./components/PatientDirectory";
 import SideBar from "./components/SideBar";
 import "./App.css";
+import AdminTest from "./components/AdminTest";
 
 const route = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const route = createBrowserRouter([
     path: "/patientDirectory",
     element: <PatientDirectory />,
   },
+  {
+    path: "/adminTest",
+    element: <AdminTest/>
+  }
 ]);
 
 function App() {
