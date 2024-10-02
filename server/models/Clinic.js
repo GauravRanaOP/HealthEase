@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import Address from "./Address.js";
+// import Address from "./Address.js";
+import { AddressSchema } from "./Address.js";
 
 const Schema = mongoose.Schema;
 
@@ -12,7 +13,8 @@ const ClinicSchema = new Schema({
         type: String,
         required: true
     },
-    address: Address.schema,             // address schema
+    // address: Address.schema,             // address schema
+    address: AddressSchema,
     contactNo: {
         type: Number,
         required: true

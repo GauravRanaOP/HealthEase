@@ -5,7 +5,9 @@ import cors from "cors"; // Importing CORS
 // imports the db.js file to establish the MongoDB connection
 import "./config/db.js";
 
+// imports controllers
 import DoctorRoute from "./routes/DoctorsRoute.js";
+import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 
 // initializes the app
 const app = express();
@@ -25,6 +27,10 @@ app.get("/", (req, res) => {
 
 // Routes for doctors
 app.use("/api", DoctorRoute);
+
+// route to get doctors by postcode prefix
+app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
+
 
 // Error handling for unhandled routes
 app.use((req, res, next) => {
