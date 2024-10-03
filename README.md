@@ -31,7 +31,7 @@ Follow these steps to launch the application:
 
 1. **Install Dependencies:**
    - Navigate to the `frontend` directory and run:
-   -    cd frontend
+        cd frontend
         npm install
      
    - Then, navigate to the `server` directory and run:
