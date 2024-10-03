@@ -35,19 +35,19 @@ Follow these steps to launch the application:
         npm install
      
    - Then, navigate to the `server` directory and run:
-   -    cd server
+        cd server
         npm install
 
 2. **Start the Backend Server:**
    - From the `server` directory, execute:
-   -    npm start
+        npm start
      
    - You should see messages indicating that the backend server is running:
-   -    "HealthEase app is listening on port 3002
+        "HealthEase app is listening on port 3002
         MongoDB Connected.."
 
 3. **Start the Frontend Server:**
    - From the `frontend` directory, execute:
-   -    npm run dev
+        npm run dev
      
    - The application should now be running at `http://localhost:5173/` (port may vary depending on availability).
