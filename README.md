@@ -50,4 +50,4 @@ Follow these steps to launch the application:
    - From the `frontend` directory, execute:
         npm run dev
      
-   - The application should now be running at `http://localhost:5174/` (port may vary depending on availability).
+   - The application should now be running at `http://localhost:5173/` (port may vary depending on availability).
