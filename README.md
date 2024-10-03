@@ -2,7 +2,7 @@
 
 ![HealthEase Logo](frontend/src/assets/images/logo.png)
 
-**HealthEase** Application aims to improve existing healthcare services in the Canadian market. The application includes various features, such as:
+**HealthEase** Application aims to improve existing healthcare services in the Canadian market. The application includes features such as:
 
 - **Search for Skilled Healthcare Physicians:** Find doctors by geolocation.
 - **In-Home Lab Tests Scheduling:** Schedule lab tests from the comfort of your home.
