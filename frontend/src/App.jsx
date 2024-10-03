@@ -18,10 +18,6 @@ const route = createBrowserRouter([
     element: <Doctor />,
   },
   {
-    path: "/searchDoctor",
-    element: <SearchDoctor />,
-  },
-  {
     path: "/patientDirectory",
     element: <PatientDirectory />,
   },
