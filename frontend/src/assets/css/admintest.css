@@ -1,0 +1,143 @@
+body {
+    background-color: #EEEEEE;
+  }
+  
+  .admin-test-search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .admin-test-search-input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .admin-test-add-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-test-add-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .admin-test-table-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-test-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .admin-test-thead {
+    background-color: #f8f9fa;
+  }
+  
+  .admin-test-table th,
+  .admin-test-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .admin-test-table th {
+    background-color: white;
+    font-weight: bold;
+  }
+  
+  .admin-test-table td {
+    background-color: #f5f5f5;
+  }
+  
+  .admin-test-tr:nth-child(even) .admin-test-td {
+    background-color: #f1f1f1;
+  }
+  
+  .admin-test-tr:nth-child(odd) .admin-test-td {
+    background-color: #e0e0e0;
+  }
+  
+  .admin-test-tr:hover .admin-test-td {
+    background-color: #ddd;
+  }
+  
+  .admin-test-td {
+    padding: 12px;
+  }
+  
+  .admin-test-td button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 18px;
+  }
+  
+  .admin-test-td button.admin-test-view {
+    color: #007bff;
+  }
+  
+  .admin-test-td button.admin-test-edit {
+    color: #28a745;
+  }
+  
+  .admin-test-td button.admin-test-delete {
+    color: #dc3545;
+  }
+  
+  .admin-test-td button:hover {
+    opacity: 0.7;
+  }
+  
+  /* Pagination */
+  .admin-test-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  
+  .admin-test-pagination button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .admin-test-pagination button.active {
+    background-color: #0056b3;
+  }
+  
+  .admin-test-pagination button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .admin-test-pagination button:hover:not(.active):not(.disabled) {
+    background-color: #0056b3;
+  }
+  
+  .admin-test-td.description {
+    max-width: 300px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+  }
+  
