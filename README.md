@@ -2,7 +2,7 @@
 
 ![HealthEase Logo](frontend/src/assets/images/logo.png)
 
-**HealthEase** aims to enhance healthcare services in the Canadian market by offering a user-friendly application with the following features:
+**HealthEase** Application aims to improve existing healthcare services in the Canadian market. The application includes various features, such as:
 
 - **Search for Skilled Healthcare Physicians:** Find doctors by geolocation.
 - **In-Home Lab Tests Scheduling:** Schedule lab tests from the comfort of your home.
@@ -13,10 +13,10 @@
 
 | Module               | Description                              |
 |---------------------|------------------------------------------|
-| **Clinics**         | Manage clinic information and schedules.|
+| **Clinics/Doctors**    | Manage clinic and its doctors information and schedules.|
 | **Diagnostic Centers** | Access and manage lab test data.      |
-| **Patients**        | Patient profiles and history management.|
-| **Administration**  | Admin tools for user and data management.|
+| **Patients**           | Patient profiles and history management.|
+| **Administration**     | Admin tools for user and data management.|
 
 ## Getting Started
 
