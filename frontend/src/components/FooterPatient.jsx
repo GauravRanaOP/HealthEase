@@ -1,4 +1,5 @@
 import "../assets/css/FooterPatient.css";
+import logo from "../assets/images/logo.png";
 
 const FooterPatient = () => {
   return (
@@ -6,7 +7,7 @@ const FooterPatient = () => {
       <div className="footer-top">
         <div className="footer-left">
           <div className="footer-logo">
-            <h2>HealthEase</h2>
+            <img src={logo} alt="HealthEase Logo" />
             <p>
               HealthEase is an online healthcare platform that provides
               convenient and efficient healthcare services. Our mission is to

@@ -11,9 +11,7 @@ body,
 html {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background-color: var(--primary-bg-color);
-  color: var(--primary-color);
+  font-family: "Montserrat", sans-serif;
   min-height: 100%;
 }
 
@@ -23,30 +21,13 @@ html {
   min-height: 100vh;
 }
 
-.app-container {
+.app-layout {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  /* height: 100vh; */
 }
 
-.main-content {
+.content {
   flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 20px;
+  background-color: #fff;
 }
-
-.hero-section {
-  max-width: 1200px;
-  width: 100%;
-}
-
-.hero-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-

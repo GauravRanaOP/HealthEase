@@ -8,7 +8,9 @@ import "./config/db.js";
 // imports controllers
 import DoctorRoute from "./routes/DoctorsRoute.js";
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
+import AdminTestRoute from "./routes/AdminTestRoute.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
+
 
 // initializes the app
 const app = express();
@@ -24,6 +26,7 @@ app.use(cors({
 
 // Routes for doctors
 app.use("/api", DoctorRoute);
+app.use("/api", AdminTestRoute);
 
 // route to get doctors by postcode prefix
 app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
