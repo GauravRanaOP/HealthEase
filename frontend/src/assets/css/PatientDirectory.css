@@ -101,4 +101,20 @@
     margin-left: 7px;
 }
 
+.timeslots-container {
+  margin-top: 10px;
+}
+
+.timeslots-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.timeslots-container li {
+  background-color: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 /* end Patients Page */

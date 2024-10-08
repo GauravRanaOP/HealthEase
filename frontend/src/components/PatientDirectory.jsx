@@ -18,8 +18,9 @@ export default function PatientDirectory() {
       );
 
       const data = response.data;
-      console.log("Parsed doctor data:", data);
+      // console.log("Parsed doctor data:", data);
       setDoctors(data);
+
     } catch (error) {
       console.error("Error fetching doctors:", error);
       alert("catch error: An error occured while fetching doctors");
@@ -45,7 +46,7 @@ export default function PatientDirectory() {
       <SearchDoctor onSearch={handleSearchDoctor} />
       <div className="doctor-list">
         {doctors.map((doctor) => (
-          <DoctorCard key={doctor._id} doctor={doctor} />
+          <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
         ))}
       </div>
     </div>

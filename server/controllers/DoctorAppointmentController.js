@@ -12,7 +12,8 @@ function incrementTime(time, duration = 60) {
 }
 
 // creates appointments from availability
-async function createDoctorAppointments() {
+// async function createDoctorAppointments() {
+export const createDoctorAppointments = async (req,res) => {
   try {
     // fetches all availability records
     const availabilityRecords = await Availability.find();
@@ -66,7 +67,30 @@ async function createDoctorAppointments() {
   } catch (error) {
     console.error("Error creating appointments: ", error);
   }
-}
+};
 
-// exports the function createAppointmentTimeslots
-export default createDoctorAppointments;
+
+// gets a specific doctor's appointment timeslots
+export const getDoctorAppointmentTimeslots = async(req,res) => {
+  try {
+      const { doctorId } = req.params;
+      // debugging: doctorId received from frontend
+      console.log("Doctor ID recevied from frontend : ", doctorId);
+  
+      // fetches available timeslots for the doctor
+      const availableTimeslots = await Appointment.find({
+          doctorId: doctorId,
+          isTimeSlotAvailable: true,
+          status: "Pending",
+          visitType: "DoctorVisit",
+      }).sort({ date: 1, time: 1});
+      if (availableTimeslots.length > 0) {
+          res.status(200).json(availableTimeslots);
+      } else {
+          res.status(404).json({message: "Server error: No available timeslots found for this doctor" });
+      }
+
+  } catch (error) {
+      res.status(500).json({message: "Server error: Error fetching timeslots: ",error: error.message});
+  }
+};
