@@ -8,6 +8,7 @@ import "./config/db.js";
 // imports controllers
 import DoctorRoute from "./routes/DoctorsRoute.js";
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
+import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
 
 // initializes the app
 const app = express();
@@ -20,16 +21,20 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
 }));
 
-// Basic route to check if the server is running
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
 
 // Routes for doctors
 app.use("/api", DoctorRoute);
 
 // route to get doctors by postcode prefix
 app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
+
+// route to get a doctors appointment timeslot
+app.get('/api/doctors/availableTimeslots/:doctorId', getDoctorAppointmentTimeslots);
+
+// basic route to check if the server is running
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 
 // Error handling for unhandled routes
