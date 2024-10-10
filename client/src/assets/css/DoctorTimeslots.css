@@ -1,0 +1,45 @@
+.timeslots-container {
+    margin: 20px;
+}
+
+.timeslots-container p {
+    color: black;
+}
+
+.timeslots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.timeslot-button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    color: black;
+}
+
+.timeslot-button.selected {
+    background-color: #1A73E8;
+    color: white;
+}
+
+.timeslots-actions {
+    margin-top: 20px;
+}
+
+.cancel-button, .confirm-button {
+    padding: 10px 20px;
+    margin-right: 15px;
+    border: none;
+    color: white;
+}
+
+.confirm-button {
+    background-color: #1A73E8;
+}
+
+.cancel-button {
+    background-color: rgb(159, 26, 26);
+}

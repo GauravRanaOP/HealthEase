@@ -12,7 +12,8 @@ function incrementTime(time, duration = 60) {
 }
 
 // creates appointments from availability
-async function createDoctorAppointments() {
+// async function createDoctorAppointments() {
+export const createDoctorAppointments = async (req,res) => {
   try {
     // fetches all availability records
     const availabilityRecords = await Availability.find();
@@ -66,7 +67,52 @@ async function createDoctorAppointments() {
   } catch (error) {
     console.error("Error creating appointments: ", error);
   }
-}
+};
 
-// exports the function createAppointmentTimeslots
-export default createDoctorAppointments;
+
+// gets a specific doctor's appointment timeslots
+export const getDoctorAppointmentTimeslots = async(req,res) => {
+
+  let doctorId;
+
+  // checks if doctorId is in the route parameter or query parameter
+  if (req.params.doctorId) {
+    // from path parameter
+    doctorId = req.params.doctorId;
+  } else if (req.query.doctorId) {
+    // from query parameter
+    doctorId = req.query.doctorId;
+  } else {
+    return res.status(400).json({ message: 'doctorId is required'});
+  }
+
+  // gets the date from the query or defaults to today's date (yyyy-mm-dd) if not provided
+  const date = req.query.date ? req.query.date : new Date().toISOString().split('T')[0];
+
+  try {
+      // debugging: doctorId received from frontend
+      // console.log("Doctor ID recevied from frontend : ", doctorId);
+      // console.log("Date ID recevied from frontend : ", date);
+  
+      // fetches available timeslots using doctorId
+      const availableTimeslots = await Appointment.find({
+          doctorId: doctorId,
+          date: date,
+          isTimeSlotAvailable: true,
+          status: "Pending",
+          visitType: "DoctorVisit",
+      // }).sort({ date: 1, time: 1});
+      }).sort({ time: 1});
+
+      if (availableTimeslots.length > 0) {
+          res.status(200).json(availableTimeslots);
+      } else {
+          // res.status(404).json({message: "Server error: No available timeslots found for this doctor on the selected date." });
+          // no timeslots found, returns empty array
+          res.status(200).json([]);
+        }
+
+  } catch (error) {
+      res.status(500).json({message: "Server error: Error fetching timeslots: ", error: error.message});
+  }
+};
