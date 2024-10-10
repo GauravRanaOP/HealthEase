@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import DoctorTimeslots from "./DoctorTimeslots";
+import { useNavigate } from "react-router-dom";
+
 
 export default function DoctorCard({ doctor }) {
   
-  const [showTimeslots, setshowTimeslots] = useState(false);
-
-  // debugging: logs the entire doctor object
-  // useEffect( () => {
-  //   console.log("Doctor object passed to DoctorCard: ", doctor);
-  // }, [doctor]);
+  // const [showTimeslots, setshowTimeslots] = useState(false);   // ** removed as we are navigating to seperate page now
+  
+  const navigate = useNavigate();
 
   // checks if doctor is available
   if (!doctor) {
@@ -20,11 +19,12 @@ export default function DoctorCard({ doctor }) {
   // destructures clinic address
   const { streetAddress, city, province, postCode } = doctor.clinicAddress || {};
 
-  // toggles timeslots visibility
+// navigates to DoctorTimeslots page
   const handleBookNowClick = () => {
     if (doctor.doctorId) {
-      console.log("DoctorCard, BookNow: DoctorId when toggling timeslots ", doctor);
-      setshowTimeslots(!showTimeslots);
+      // console.log("DoctorCard, BookNow: DoctorId when toggling timeslots ", doctor);
+      navigate (`/doctorTimeslots/${doctor.doctorId}`);     //** */
+      // setshowTimeslots(!showTimeslots);
     } else {
       console.log("DoctorId is undefined");
     }
@@ -48,13 +48,14 @@ export default function DoctorCard({ doctor }) {
         <div>Open</div>
         <div>
           <button onClick={handleBookNowClick}>
-            {showTimeslots? "Hide Timeslots" : "Book Now"}
+            {/* {showTimeslots? "Hide Timeslots" : "Book Now"} */}
+            Book Now
             <FontAwesomeIcon icon={faArrowRight} className="arrow-right-icon" />
           </button>
         </div>
       </div>
   
-      {showTimeslots && <DoctorTimeslots doctorId={doctor.doctorId} />}
+      {/* {showTimeslots && <DoctorTimeslots doctorId={doctor.doctorId} />} */}
 
     </div>
   );
