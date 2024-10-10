@@ -2,7 +2,8 @@ import Doctor from "./components/doctor";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeaderPatient from "./components/HeaderPatient";
 import FooterPatient from "./components/FooterPatient";
-import SearchDoctor from "./components/SearchDoctor";
+// import SearchDoctor from "./components/SearchDoctor";
+import ViewBookings from "./components/ViewBookings";
 import PatientDirectory from "./components/PatientDirectory";
 import SideBar from "./components/SideBar";
 import "./App.css";
@@ -24,6 +25,10 @@ const route = createBrowserRouter([
   {
     path: "/adminTest",
     element: <AdminTest/>
+  },
+  {
+    path: "/getBookings",
+    element: <ViewBookings />,
   }
 ]);
 
