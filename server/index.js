@@ -34,6 +34,9 @@ app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
 // route to get a doctors appointment timeslot
 app.get('/api/doctors/availableTimeslots/:doctorId', getDoctorAppointmentTimeslots);
 
+// route to get appointment timeslot using query parameter
+app.get('/api/doctors/availableTimeslots', getDoctorAppointmentTimeslots);
+
 // basic route to check if the server is running
 app.get("/", (req, res) => {
   res.send("Backend is running");

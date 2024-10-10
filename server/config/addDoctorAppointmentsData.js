@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import createDoctorAppointments from "../controllers/CreateDoctorAppointmentController.js";
+import { createDoctorAppointments } from "../controllers/DoctorAppointmentController.js";
 import connectToDatabase from "./db.js";
 
 const run = async () => {
