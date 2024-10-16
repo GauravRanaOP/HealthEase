@@ -116,3 +116,38 @@ export const getDoctorAppointmentTimeslots = async(req,res) => {
       res.status(500).json({message: "Server error: Error fetching timeslots: ", error: error.message});
   }
 };
+
+
+// update operation: books an appointment
+export const updateDoctorAppointmentTimeslot = async (req, res) => {
+  const { appointmentId } = req.body;
+  // const { userId } = req.body;    // commented for now, will be modified once the login module is implemented.
+
+  try {
+    // finds the appointment by Id
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      return res.status(404).json({
+        message: "The selected timeslot is no longer available. Please choose another timeslot.",
+      });
+    }
+
+    // updates the appointment to mark it as booked
+    appointment.isTimeSlotAvailable = false;
+    appointment.status = "Confirmed";
+    appointment.patientId = userId || "Test UserId";   // will be modified once the login module is implemented.
+    appointment.comments = "Confirmed booking";
+
+    await appointment.save();
+
+    res.status(200).json({
+      message: `Appointment successfully booked with doctor ${doctorId} on ${date} at ${time}.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error: Error booking appointment.",
+      error: error.message,
+    });
+  }
+};

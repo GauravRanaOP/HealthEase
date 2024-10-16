@@ -133,6 +133,105 @@ td button:hover {
   color: var(--secondary-color);
 }
 
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: var(--box-shadow);
+  width: 400px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.view-booking-details table {
+  width: 100%;
+}
+
+.view-booking-details td {
+  text-align: left;
+  padding: 10px;
+}
+
+.edit-booking-form table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.edit-booking-form td {
+  padding: 10px;
+}
+
+.edit-booking-form input[type="text"],
+.edit-booking-form input[type="time"],
+.edit-booking-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.edit-booking-form textarea {
+  resize: none;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-icon {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.close-icon i {
+  color: var(--text-color);
+}
+
+.close-icon:hover i {
+  color: #ff0000;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-actions button:hover {
+  background-color: #284170;
+}
+
+.modal-actions .confirm-delete {
+  background-color: #dc3545;
+  margin-right: 10px;
+}
+
+.modal-actions .confirm-delete:hover {
+  background-color: #b71c1c;
+}
+
 @media (max-width: 768px) {
   .search-container {
     flex-direction: column;

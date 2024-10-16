@@ -11,6 +11,8 @@ import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefix
 import AdminTestRoute from "./routes/AdminTestRoute.js";
 import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
+import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
+
 
 // initializes the app
 const app = express();
@@ -39,6 +41,10 @@ app.get('/api/doctors/availableTimeslots/:doctorId', getDoctorAppointmentTimeslo
 
 // route to get appointment timeslot using query parameter
 app.get('/api/doctors/availableTimeslots', getDoctorAppointmentTimeslots);
+
+// route to update an appointment timeslot
+app.put('/api/doctors/updateTimeslot/:appointmentId', updateDoctorAppointmentTimeslot);
+
 
 // basic route to check if the server is running
 app.get("/", (req, res) => {
