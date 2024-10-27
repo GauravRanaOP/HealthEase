@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 // library for date selection
 import DatePicker from "react-datepicker";
@@ -16,9 +16,9 @@ import "../assets/css/DoctorTimeslots.css";
 //   return `${month}/${day}/${year}`;
 // };
 
-
 export default function DoctorTimeslots() {
   const { doctorId } = useParams();
+  const navigate = useNavigate();
   const [selectedDate, setselectedDate] = useState(new Date());
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
@@ -31,7 +31,10 @@ export default function DoctorTimeslots() {
       // formats the date to yyyy-mm-dd
       const formattedDate = selectedDate.toISOString().split("T")[0];
       // debugging
-      console.log("DoctorTimeslotsPage:Fetching timeslots for date: ", formattedDate);
+      console.log(
+        "DoctorTimeslotsPage:Fetching timeslots for date: ",
+        formattedDate
+      );
       try {
         const response = await axios.get(
           `http://localhost:3002/api/doctors/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
@@ -53,9 +56,9 @@ export default function DoctorTimeslots() {
   };
 
   const handleTimeslotSelect = (timeslot) => {
-    setselectedTimeslot({ 
+    setselectedTimeslot({
       time: timeslot.time,
-      appointmentId: timeslot._id
+      appointmentId: timeslot._id,
     });
   };
 
@@ -73,13 +76,19 @@ export default function DoctorTimeslots() {
       return;
     }
 
-    const userId = 'Test UserId';   // placeholder until the login module is implemented - fetch from session 
+    // const userId = "Test UserId"; // placeholder until the login module is implemented - fetch from session
+    const appointmentId = selectedTimeslot.appointmentId;
+
+    // debug: logs the appointment id
+    console.log("DoctorTimeslot: appointmentId: ", appointmentId);
+
     try {
       // backend request to book the appointment
-      const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${selectedTimeslot.appointmentId}`, {
-        userId: userId
-      });
-      
+      // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
+      const response = await axios.put(
+        `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+      );
+
       setBookingMessage(response.data.message);
       setshowConfirmation(false);
     } catch (error) {
@@ -90,51 +99,78 @@ export default function DoctorTimeslots() {
 
   return (
     <div className="timeslots-container">
-      <h2>Appointment Date:</h2>
-      <DatePicker
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="MM/dd/yyyy"
-        placeholderText="Select a date"
-      />
-    
-      <h2>Appointment Time:</h2>
-      <div className="timeslots">
-        {timeslot.length > 0 ? (
-          timeslot.map((timeslot, index) => (
-            <button 
-              key={index} 
-              className={`timeslot-button ${selectedTimeslot === timeslot.time ? "selected" : ""}`}
-              onClick={() => handleTimeslotSelect(timeslot)}
-            >
-            {timeslot.time}
-            </button>
-          ))
-        ) : (
-          <p>No available timeslots for this date.</p>
-        )}
-      </div>
+      {!bookingMessage && (
+      <>
+        <h2>Appointment Date:</h2>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="MM/dd/yyyy"
+          placeholderText="Select a date"
+        />
 
-      <div className="timeslots-actions">
-        <button 
-          className="btn-cancel"
-          onClick={() => setselectedTimeslot(null)}
-        >Cancel</button>
-        <button 
-          className="btn-confirm"
-          onClick={() => {handleConfirmClick()}}
-        >Confirm</button>
-      </div>
-    
+        <h2>Appointment Time:</h2>
+        <div className="timeslots">
+          {timeslot.length > 0 ? (
+            timeslot.map((timeslot, index) => (
+              <button
+                key={index}
+                className={`timeslot-button ${selectedTimeslot === timeslot.time ? "selected" : ""}`}
+                onClick={() => handleTimeslotSelect(timeslot)}
+              >
+                {timeslot.time}
+              </button>
+            ))
+          ) : (
+            <p>No available timeslots for this date.</p>
+          )}
+        </div>
+
+        <div className="timeslots-actions">
+          <button
+            className="btn-cancel"
+            onClick={() => setselectedTimeslot(null)}
+          >Cancel
+          </button>
+          <button
+            className="btn-confirm"
+            onClick={() => {
+              handleConfirmClick();
+            }}
+          >Confirm
+          </button>
+        </div>
+
+      </>
+      )}
+
       {showConfirmation && (
         <div className="confirmation-popup">
-          <p>Are you sure you want to book the appointment for {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}? </p>
-          <button onClick={handleBooking} className="btn-custom">Yes</button>
-          <button onClick={() => setshowConfirmation(false)} className="btn-custom">No</button>
+          <p>
+            Are you sure you want to book the appointment for{" "}
+            {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}?{" "}
+          </p>
+          <button onClick={handleBooking} className="btn-custom">
+            Yes
+          </button>
+          <button
+            onClick={() => setshowConfirmation(false)}
+            className="btn-custom"
+          >
+            No
+          </button>
         </div>
       )}
 
-      {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
+      {bookingMessage && (
+        <div>
+          <p className="booking-message">{bookingMessage}</p>
+          <button 
+            onClick={() => navigate("/patientDirectory")}
+            className="btn-custom"
+            >Continue</button>
+        </div>
+      )}
 
     </div>
   );

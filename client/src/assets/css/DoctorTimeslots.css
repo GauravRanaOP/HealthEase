@@ -75,4 +75,12 @@
     background-color: var(--primary-color);
     color: var(--secondary-color);
   }
+
+  @media screen and (max-width: 548px) {
+    .timeslots-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
   
