@@ -42,7 +42,7 @@ const SearchDoctor = React.memo(({ onSearch }) => {
   }, [postcodePrefix, onSearch]);
 
   return (
-    <div className="search-doctor">
+    <div className="search-bar">
       <input
         type="text"
         className="search-input"
