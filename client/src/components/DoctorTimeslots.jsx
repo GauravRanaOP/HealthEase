@@ -115,7 +115,7 @@ export default function DoctorTimeslots() {
             timeslot.map((timeslot, index) => (
               <button
                 key={index}
-                className={`timeslot-button ${selectedTimeslot === timeslot.time ? "selected" : ""}`}
+                className={`timeslot-button ${selectedTimeslot?.time === timeslot.time ? "selected" : ""}`}
                 onClick={() => handleTimeslotSelect(timeslot)}
               >
                 {timeslot.time}

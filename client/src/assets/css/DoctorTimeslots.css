@@ -28,11 +28,18 @@
     background-color: white;
     cursor: pointer;
     color: black;
+    border-radius: 7px;
+  }
+
+  .timeslot-button:hover {
+    background-color: #1a73e8;
+    color: white;
   }
   
   .timeslot-button.selected {
     background-color: #1a73e8;
     color: white;
+    border: 2px solid black;
   }
   
   .timeslots-actions {
@@ -69,6 +76,7 @@
   
   .btn-cancel {
     background-color: rgb(159, 26, 26);
+    color: var(--secondary-color);
   }
   
   .btn-confirm {
