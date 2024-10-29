@@ -1,5 +1,9 @@
 import Doctor from "./components/doctor";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  BrowserRouter as Router, Route, Routes
+} from "react-router-dom";
 import HeaderPatient from "./components/HeaderPatient";
 import FooterPatient from "./components/FooterPatient";
 // import SearchDoctor from "./components/SearchDoctor";
@@ -25,7 +29,7 @@ const route = createBrowserRouter([
   },
   {
     path: "/adminTest",
-    element: <AdminTest/>
+    element: <AdminTest />,
   },
   {
     path: "/getBookings",
@@ -33,22 +37,29 @@ const route = createBrowserRouter([
   },
   {
     path: "/doctorTimeslots/:doctorId",
-    element: <DoctorTimeslots />
-  }
+    element: <DoctorTimeslots />,
+  },
 ]);
 
 function App() {
   return (
-    <>
+    <Router>
       <HeaderPatient />
       <div className="app-layout">
         <SideBar />
         <div className="content">
-          <RouterProvider router={route} />
+          <Routes>
+            <Route path="/" element={<div>Dashboard</div>} />
+            <Route path="/getDoctor" element={<Doctor />} />
+            <Route path="/patientDirectory" element={<PatientDirectory />} />
+            <Route path="/adminTest" element={<AdminTest />} />
+            <Route path="/getBookings" element={<ViewBookings />} />
+            <Route path="/doctorTimeslots/:doctorId" element={<DoctorTimeslots />} />
+          </Routes>
         </div>
       </div>
       <FooterPatient />
-    </>
+    </Router>
   );
 }
 

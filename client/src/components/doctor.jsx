@@ -8,30 +8,33 @@ const Doctor = () => {
   const [addShowCard, setAddShowCard] = useState(false);
   const [showEditCard, setShowEditCard] = useState(false);
   const [viewDoctorData, setViewDoctorData] = useState(null);
+  const [saveId, setSaveId] = useState();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     contactNo: "",
     email: "",
     speciality: "",
-    streetAddress: "",
-    city: "",
-    province: "",
-    country: "",
-    postCode: "",
+    // streetAddress: "",
+    // city: "",
+    // province: "",
+    // country: "",
+    // postCode: "",
   });
 
   const [editFormData, setEditFormData] = useState({
-    firstName: "",
-    lastName: "",
-    contactNo: "",
-    email: "",
+    userid: {
+      firstName: "",
+      lastName: "",
+      contactNo: "",
+      email: "",
+    },
     speciality: "",
-    streetAddress: "",
-    city: "",
-    province: "",
-    country: "",
-    postCode: "",
+    // streetAddress: "",
+    // city: "",
+    // province: "",
+    // country: "",
+    // postCode: "",
   });
 
   useEffect(() => {
@@ -53,11 +56,19 @@ const Doctor = () => {
 
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
+  
     setEditFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      // If the field belongs to `userid`, update it accordingly
+      userid: {
+        ...prevData.userid,
+        [name]: name in prevData.userid ? value : prevData.userid[name],
+      },
+      // If it’s a root-level field (e.g., `speciality`), update it directly
+      ...(name in prevData ? { [name]: value } : {}),
     }));
   };
+  
 
   const handleAddDoctor = () => {
     setAddShowCard(true);
@@ -106,19 +117,22 @@ const Doctor = () => {
   // Edit Doctor
   const handleEditDoctor = async (id) => {
     try {
+      setSaveId(id);
       const response = await axios.get(`http://localhost:3002/api/getDoctor/${id}`);
       console.log(response);
       setEditFormData({
-        firstName: response.data.userid.firstName,
-        lastName: response.data.userid.lastName,
-        contactNo: response.data.userid.contactNo,
-        email: response.data.userid.email,
+        userid: {
+          firstName: response.data.userid.firstName,
+          lastName: response.data.userid.lastName,
+          contactNo: response.data.userid.contactNo,
+          email: response.data.userid.email,
+        },
         speciality: response.data.speciality,
-        streetAddress: response.data.clinicId.address.streetAddress,
-        city: response.data.clinicId.address.city,
-        province: response.data.clinicId.address.province,
-        country: response.data.clinicId.address.country,
-        postCode: response.data.clinicId.address.postCode,
+        // streetAddress: response.data.clinicId.address.streetAddress,
+        // city: response.data.clinicId.address.city,
+        // province: response.data.clinicId.address.province,
+        // country: response.data.clinicId.address.country,
+        // postCode: response.data.clinicId.address.postCode,
       }); // Prefill form with existing data
       setShowEditCard(true); // Show edit form card
     } catch (error) {
@@ -130,7 +144,7 @@ const Doctor = () => {
   const handleUpdateDoctor = async (e) => {
     e.preventDefault();
     try {
-      const id = formData._id; // Assuming formData includes the doctor's ID
+      const id = saveId; // Assuming formData includes the doctor's ID
       const response = await axios.put(`http://localhost:3002/api/updateDoctor/${id}`, editFormData);
       console.log(response.data);
       setShowEditCard(false); // Close the edit form card
@@ -195,7 +209,7 @@ const Doctor = () => {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={formData.firstName}
+                value={formData.userid.firstName}
                 onChange={handleInputChange}
                 required
               />
@@ -203,7 +217,7 @@ const Doctor = () => {
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
-                value={formData.lastName}
+                value={formData.userid.lastName}
                 onChange={handleInputChange}
                 required
               />
@@ -211,7 +225,7 @@ const Doctor = () => {
                 type="text"
                 name="contactNo"
                 placeholder="Contact Number"
-                value={formData.contactNo}
+                value={formData.userid.contactNo}
                 onChange={handleInputChange}
                 required
               />
@@ -219,7 +233,7 @@ const Doctor = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
-                value={formData.email}
+                value={formData.userid.email}
                 onChange={handleInputChange}
                 required
               />
@@ -231,7 +245,7 @@ const Doctor = () => {
                 onChange={handleInputChange}
                 required
               />
-              <input
+         {/*     <input
                 type="text"
                 name="streetAddress"
                 placeholder="Street Address"
@@ -270,7 +284,7 @@ const Doctor = () => {
                 value={formData.postCode}
                 onChange={handleInputChange}
                 required
-              />
+              /> */}
               <button type="submit">Submit</button>
             </form>
           </div>
@@ -286,9 +300,9 @@ const Doctor = () => {
             <p><strong>First Name:</strong> {viewDoctorData.userid.firstName}</p>
             <p><strong>Last Name:</strong> {viewDoctorData.userid.lastName}</p>
             <p><strong>Specialty:</strong> {viewDoctorData.speciality}</p>
-            <p><strong>Email:</strong> {viewDoctorData.clinicId.email}</p>
-            <p><strong>Contact No:</strong> {viewDoctorData.clinicId.contactNo}</p>
-            <p><strong>Address:</strong> {viewDoctorData.clinicId.address.streetAddress}, {viewDoctorData.clinicId.address.city}, {viewDoctorData.clinicId.address.province}, {viewDoctorData.clinicId.address.country}, {viewDoctorData.clinicId.address.postCode}</p>
+            <p><strong>Email:</strong> {viewDoctorData.userid.email}</p>
+            <p><strong>Contact No:</strong> {viewDoctorData.userid.contactNo}</p>
+            {/* <p><strong>Address:</strong> {viewDoctorData.clinicId.address.streetAddress}, {viewDoctorData.clinicId.address.city}, {viewDoctorData.clinicId.address.province}, {viewDoctorData.clinicId.address.country}, {viewDoctorData.clinicId.address.postCode}</p> */}
           </div>
         </div>
       )}
@@ -304,7 +318,7 @@ const Doctor = () => {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={editFormData.firstName}
+                value={editFormData.userid.firstName}
                 onChange={handleEditInputChange}
                 required
               />
@@ -312,7 +326,7 @@ const Doctor = () => {
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
-                value={editFormData.lastName}
+                value={editFormData.userid.lastName}
                 onChange={handleEditInputChange}
                 required
               />
@@ -320,7 +334,7 @@ const Doctor = () => {
                 type="text"
                 name="contactNo"
                 placeholder="Contact Number"
-                value={editFormData.contactNo}
+                value={editFormData.userid.contactNo}
                 onChange={handleEditInputChange}
                 required
               />
@@ -328,7 +342,7 @@ const Doctor = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
-                value={editFormData.email}
+                value={editFormData.userid.email}
                 onChange={handleEditInputChange}
                 required
               />
@@ -340,7 +354,7 @@ const Doctor = () => {
                 onChange={handleEditInputChange}
                 required
               />
-              <input
+           {/*   <input
                 type="text"
                 name="streetAddress"
                 placeholder="Street Address"
@@ -379,7 +393,7 @@ const Doctor = () => {
                 value={editFormData.postCode}
                 onChange={handleEditInputChange}
                 required
-              />
+              /> */}
               <button type="submit">Update</button>
             </form>
           </div>
