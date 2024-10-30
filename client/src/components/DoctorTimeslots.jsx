@@ -144,7 +144,7 @@ export default function DoctorTimeslots() {
       </>
       )}
 
-      {showConfirmation && (
+      {showConfirmation && selectedTimeslot && (
         <div className="confirmation-popup">
           <p>
             Are you sure you want to book the appointment for{" "}

@@ -174,10 +174,10 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
 
     res.status(200).json({
       // message: `Appointment successfully booked with Dr. ${appointment.doctorId} on ${appointment.date} at ${appointment.time}.`,
-      message: `Appointment successfully booked with Dr. ${doctorName} on ${appointment.date} at ${appointment.time}.`,
+      message: `Appointment successfully booked with Dr. ${doctorName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment times`,
     });
 
-  } catch (error) {
+  } catch (error) {s
     res.status(500).json({
       message: "Server error: Error booking appointment.",
       error: error.message,
