@@ -27,4 +27,4 @@ const AddressSchema = new Schema({
 // exports Address modal
 const Address = mongoose.model('Address', AddressSchema);
 export default Address;     // ES module
-export { AddressSchema };
+// export { AddressSchema };
