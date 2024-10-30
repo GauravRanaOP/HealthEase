@@ -9,6 +9,7 @@ import SideBar from "./components/SideBar";
 import "./App.css";
 import AdminTest from "./components/AdminTest";
 import DoctorTimeslots from "./components/DoctorTimeslots";
+import AdminClinic from "./components/AdminClinic";
 
 const route = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const route = createBrowserRouter([
   {
     path: "/getDoctor",
     element: <Doctor />,
+  },
+  {
+    path: "/adminClinic",
+    element: <AdminClinic />,
   },
   {
     path: "/patientDirectory",
