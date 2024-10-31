@@ -9,6 +9,7 @@ import "./config/db.js";
 import DoctorRoute from "./routes/DoctorsRoute.js";
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 import AdminTestRoute from "./routes/AdminTestRoute.js";
+import AuthRoute from "./routes/AuthRoute.js";
 import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
 import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
@@ -29,6 +30,9 @@ app.use(cors({
 // Routes for doctors
 app.use("/api", DoctorRoute);
 app.use("/api", AdminTestRoute);
+
+// Routes for Authentication
+app.use("/api/auth", AuthRoute);
 
 // View Bookings routes for Diagnostic Center
 app.use("/api/bookings", ViewBookingsRoute);

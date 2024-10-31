@@ -1,7 +1,7 @@
 import Doctor from "./components/doctor";
 import {
   createBrowserRouter,
-  RouterProvider,
+  // RouterProvider,
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
 import HeaderPatient from "./components/HeaderPatient";
@@ -13,6 +13,9 @@ import SideBar from "./components/SideBar";
 import "./App.css";
 import AdminTest from "./components/AdminTest";
 import DoctorTimeslots from "./components/DoctorTimeslots";
+import Dashboard from "./components/authentication/Dashboard";
+import LoginForm from "./components/authentication/LoginForm";
+import { AuthProvider } from "./components/authentication/AuthContext";  // Ensure AuthProvider is imported correctly
 
 const route = createBrowserRouter([
   {
@@ -43,13 +46,14 @@ const route = createBrowserRouter([
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
       <HeaderPatient />
       <div className="app-layout">
         <SideBar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<div>Dashboard</div>} />
+            <Route path="/" element={<LoginForm />} />
             <Route path="/getDoctor" element={<Doctor />} />
             <Route path="/patientDirectory" element={<PatientDirectory />} />
             <Route path="/adminTest" element={<AdminTest />} />
@@ -60,6 +64,7 @@ function App() {
       </div>
       <FooterPatient />
     </Router>
+    </AuthProvider>
   );
 }
 

@@ -37,7 +37,7 @@ export const create = async (req, res) => {
     const userid = saveUser._id;
 
     doc.userid = userid;
-    doc.clinicId = "66f4c5a76edc92597325f893";
+    doc.clinicId = "671e7a21ec143e564acc28f2";
 
     doc.speciality = data.speciality;
 
