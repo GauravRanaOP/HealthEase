@@ -36,10 +36,26 @@ const UserSchema = new Schema({
   },
   addressId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Address'
+    ref: "Address",
+    // required: true,
   },
   lastLoginDateTime: Date,
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
+
+UserSchema.methods.verifyPassword = async function (password) {
+  const user = this;
+  const isMatch = await bcrypt.compare(password, user.password);
+  return isMatch;
+};
+
 
 // exports User model
 const User = mongoose.model("User", UserSchema);

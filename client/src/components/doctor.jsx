@@ -8,6 +8,7 @@ const Doctor = () => {
   const [addShowCard, setAddShowCard] = useState(false);
   const [showEditCard, setShowEditCard] = useState(false);
   const [viewDoctorData, setViewDoctorData] = useState(null);
+  const [saveId, setSaveId] = useState();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,16 +23,13 @@ const Doctor = () => {
   });
 
   const [editFormData, setEditFormData] = useState({
-    firstName: "",
-    lastName: "",
-    contactNo: "",
-    email: "",
+    userid: {
+      firstName: "",
+      lastName: "",
+      contactNo: "",
+      email: "",
+    },
     speciality: "",
-    streetAddress: "",
-    city: "",
-    province: "",
-    country: "",
-    postCode: "",
   });
 
   useEffect(() => {
@@ -73,7 +71,10 @@ const Doctor = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3002/api/addDoctor", formData);
+      const response = await axios.post(
+        "http://localhost:3002/api/addDoctor",
+        formData
+      );
       console.log(response.data);
       setAddShowCard(false);
       // Optionally refresh the doctor list after submitting
@@ -85,7 +86,9 @@ const Doctor = () => {
   // View Doctor Details
   const handleViewDoctor = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:3002/api/getDoctor/${id}`);
+      const response = await axios.get(
+        `http://localhost:3002/api/getDoctor/${id}`
+      );
       setViewDoctorData(response.data);
       setShowCard(true); // Show doctor details in a card view
     } catch (error) {
@@ -106,19 +109,19 @@ const Doctor = () => {
   // Edit Doctor
   const handleEditDoctor = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:3002/api/getDoctor/${id}`);
+      const response = await axios.get(
+        `http://localhost:3002/api/getDoctor/${id}`
+      );
       console.log(response);
+      setSaveId(id);
       setEditFormData({
-        firstName: response.data.userid.firstName,
-        lastName: response.data.userid.lastName,
-        contactNo: response.data.userid.contactNo,
-        email: response.data.userid.email,
+        userid: {
+          firstName: response.data.userid.firstName,
+          lastName: response.data.userid.lastName,
+          contactNo: response.data.userid.contactNo,
+          email: response.data.userid.email,
+        },
         speciality: response.data.speciality,
-        streetAddress: response.data.clinicId.address.streetAddress,
-        city: response.data.clinicId.address.city,
-        province: response.data.clinicId.address.province,
-        country: response.data.clinicId.address.country,
-        postCode: response.data.clinicId.address.postCode,
       }); // Prefill form with existing data
       setShowEditCard(true); // Show edit form card
     } catch (error) {
@@ -126,12 +129,14 @@ const Doctor = () => {
     }
   };
 
-
   const handleUpdateDoctor = async (e) => {
     e.preventDefault();
     try {
       const id = formData._id; // Assuming formData includes the doctor's ID
-      const response = await axios.put(`http://localhost:3002/api/updateDoctor/${id}`, editFormData);
+      const response = await axios.put(
+        `http://localhost:3002/api/updateDoctor/${saveId}`,
+        editFormData
+      );
       console.log(response.data);
       setShowEditCard(false); // Close the edit form card
       // Optionally refresh the doctor list after updating
@@ -148,7 +153,9 @@ const Doctor = () => {
           placeholder="Search Patients"
           className="search-input"
         />
-        <button className="add-button" onClick={handleAddDoctor}>Add Doctor</button>
+        <button className="add-button" onClick={handleAddDoctor}>
+          Add Doctor
+        </button>
       </div>
 
       <table className="doctor-table" cellPadding="10">
@@ -169,13 +176,22 @@ const Doctor = () => {
               <td>{Doctor.speciality}</td>
               <td>{Doctor.email || "johndoe123@gmail.com"}</td>
               <td>
-                <button className="view" onClick={() => handleViewDoctor(Doctor._id)}>
+                <button
+                  className="view"
+                  onClick={() => handleViewDoctor(Doctor._id)}
+                >
                   <i className="fas fa-eye"></i>
                 </button>
-                <button className="edit" onClick={() => handleEditDoctor(Doctor._id)}>
+                <button
+                  className="edit"
+                  onClick={() => handleEditDoctor(Doctor._id)}
+                >
                   <i className="fas fa-edit"></i>
                 </button>
-                <button className="delete" onClick={() => handleDeleteDoctor(Doctor._id)}>
+                <button
+                  className="delete"
+                  onClick={() => handleDeleteDoctor(Doctor._id)}
+                >
                   <i className="fas fa-trash-alt"></i>
                 </button>
               </td>
@@ -188,7 +204,9 @@ const Doctor = () => {
       {addShowCard && (
         <div className="card-container">
           <div className="card">
-            <span className="close-card" onClick={handleCloseCard}>&times;</span>
+            <span className="close-card" onClick={handleCloseCard}>
+              &times;
+            </span>
             <h2>Add Doctor</h2>
             <form onSubmit={handleSubmit}>
               <input
@@ -263,10 +281,10 @@ const Doctor = () => {
                 onChange={handleInputChange}
                 required
               />
-              <input
+               <input
                 type="text"
                 name="postCode"
-                placeholder="Post Code"
+                placeholder="Postal Code"
                 value={formData.postCode}
                 onChange={handleInputChange}
                 required
@@ -281,14 +299,25 @@ const Doctor = () => {
       {showCard && (
         <div className="card-container">
           <div className="card">
-            <span className="close-card" onClick={handleCloseCard}>&times;</span>
+            <span className="close-card" onClick={handleCloseCard}>
+              &times;
+            </span>
             <h2>Doctor Details</h2>
-            <p><strong>First Name:</strong> {viewDoctorData.userid.firstName}</p>
-            <p><strong>Last Name:</strong> {viewDoctorData.userid.lastName}</p>
-            <p><strong>Specialty:</strong> {viewDoctorData.speciality}</p>
-            <p><strong>Email:</strong> {viewDoctorData.clinicId.email}</p>
-            <p><strong>Contact No:</strong> {viewDoctorData.clinicId.contactNo}</p>
-            <p><strong>Address:</strong> {viewDoctorData.clinicId.address.streetAddress}, {viewDoctorData.clinicId.address.city}, {viewDoctorData.clinicId.address.province}, {viewDoctorData.clinicId.address.country}, {viewDoctorData.clinicId.address.postCode}</p>
+            <p>
+              <strong>First Name:</strong> {viewDoctorData.userid.firstName}
+            </p>
+            <p>
+              <strong>Last Name:</strong> {viewDoctorData.userid.lastName}
+            </p>
+            <p>
+              <strong>Specialty:</strong> {viewDoctorData.speciality}
+            </p>
+            <p>
+              <strong>Email:</strong> {viewDoctorData.userid.email}
+            </p>
+            <p>
+              <strong>Contact No:</strong> {viewDoctorData.userid.contactNo}
+            </p>
           </div>
         </div>
       )}
@@ -297,14 +326,16 @@ const Doctor = () => {
       {showEditCard && (
         <div className="card-container">
           <div className="card">
-            <span className="close-card" onClick={handleCloseCard}>&times;</span>
+            <span className="close-card" onClick={handleCloseCard}>
+              &times;
+            </span>
             <h2>Edit Doctor</h2>
             <form onSubmit={handleUpdateDoctor}>
               <input
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={editFormData.firstName}
+                value={editFormData.userid.firstName}
                 onChange={handleEditInputChange}
                 required
               />
@@ -312,7 +343,7 @@ const Doctor = () => {
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
-                value={editFormData.lastName}
+                value={editFormData.userid.lastName}
                 onChange={handleEditInputChange}
                 required
               />
@@ -320,7 +351,7 @@ const Doctor = () => {
                 type="text"
                 name="contactNo"
                 placeholder="Contact Number"
-                value={editFormData.contactNo}
+                value={editFormData.userid.contactNo}
                 onChange={handleEditInputChange}
                 required
               />
@@ -328,7 +359,7 @@ const Doctor = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
-                value={editFormData.email}
+                value={editFormData.userid.email}
                 onChange={handleEditInputChange}
                 required
               />
@@ -337,46 +368,6 @@ const Doctor = () => {
                 name="speciality"
                 placeholder="Speciality"
                 value={editFormData.speciality}
-                onChange={handleEditInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="streetAddress"
-                placeholder="Street Address"
-                value={editFormData.streetAddress}
-                onChange={handleEditInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={editFormData.city}
-                onChange={handleEditInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="province"
-                placeholder="Province"
-                value={editFormData.province}
-                onChange={handleEditInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="country"
-                placeholder="Country"
-                value={editFormData.country}
-                onChange={handleEditInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="postCode"
-                placeholder="Post Code"
-                value={editFormData.postCode}
                 onChange={handleEditInputChange}
                 required
               />
