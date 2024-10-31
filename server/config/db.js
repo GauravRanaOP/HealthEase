@@ -17,12 +17,13 @@ if (!MONGO_CONNECTION_STRING) {
 }
 
 mongoose.connect(MONGO_CONNECTION_STRING);
-//console.log(MONGO_CONNECTION_STRING);
+// console.log(MONGO_CONNECTION_STRING);
 
-// const connectToDatabase = async () => {
-//   await mongoose.connect(MONGO_CONNECTION_STRING);
-//   console.log("MongoDB Connected...");
-// };
+// to execute addDoctorAppointmentsData.js
+const connectToDatabase = async () => {
+  await mongoose.connect(MONGO_CONNECTION_STRING);
+  console.log("MongoDB Connected...");
+};
 
 // listen connection event
 mongoose.connection.on("connected", () => {
@@ -38,4 +39,6 @@ mongoose.connection.on("disconnected", () => {
 });
 
 export default mongoose;
+
+// to execute addDoctorAppointmentsData.js
 // export default connectToDatabase;

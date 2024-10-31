@@ -12,24 +12,24 @@ import Doctor from "../models/Doctor.js";
         // inserts availablity data for doctor Mary: (9am-2pm on Mon, Tue, Thu)
         const availabilityMary = [
             {
-                startDate: "2024-10-07",
-                endDate: "2024-10-07",
+                startDate: "2024-10-28",
+                endDate: "2024-10-28",
                 startTime: "09:00",
                 endTime: "14:00",
                 type: "Doctor",
                 doctorId: doctorMary._id,
             },
             {
-                startDate: "2024-10-08",
-                endDate: "2024-10-08",
+                startDate: "2024-10-29",
+                endDate: "2024-10-29",
                 startTime: "09:00",
                 endTime: "14:00",
                 type: "Doctor",
                 doctorId: doctorMary._id,
             },
             {
-                startDate: "2024-10-10",
-                endDate: "2024-10-10",
+                startDate: "2024-10-31",
+                endDate: "2024-10-31",
                 startTime: "09:00",
                 endTime: "14:00",
                 type: "Doctor",
@@ -40,24 +40,24 @@ import Doctor from "../models/Doctor.js";
         // inserts availablity data for doctor Jack: (1pm-6pm on Mon, Wed, Fri)
         const availabilityJack = [
             {
-                startDate: "2024-10-07",
-                endDate: "2024-10-07",
+                startDate: "2024-10-28",
+                endDate: "2024-10-28",
                 startTime: "13:00",
                 endTime: "18:00",
                 type: "Doctor",
                 doctorId: doctorJack._id,
             },
             {
-                startDate: "2024-10-09",
-                endDate: "2024-10-09",
+                startDate: "2024-10-30",
+                endDate: "2024-10-30",
                 startTime: "13:00",
                 endTime: "18:00",
                 type: "Doctor",
                 doctorId: doctorJack._id,
             },
             {
-                startDate: "2024-10-11",
-                endDate: "2024-10-11",
+                startDate: "2024-11-01",
+                endDate: "2024-11-01",
                 startTime: "13:00",
                 endTime: "18:00",
                 type: "Doctor",
@@ -68,24 +68,24 @@ import Doctor from "../models/Doctor.js";
         // inserts availablity data for doctor Mathew: (3pm-8pm on Tue, Wed, Fri)
         const availabilityMathew = [
             {
-                startDate: "2024-10-08",
-                endDate: "2024-10-08",
+                startDate: "2024-10-29",
+                endDate: "2024-10-29",
                 startTime: "15:00",
                 endTime: "20:00",
                 type: "Doctor",
                 doctorId: doctorMathew._id,
             },
             {
-                startDate: "2024-10-09",
-                endDate: "2024-10-09",
+                startDate: "2024-10-30",
+                endDate: "2024-10-30",
                 startTime: "15:00",
                 endTime: "20:00",
                 type: "Doctor",
                 doctorId: doctorMathew._id,
             },
             {
-                startDate: "2024-10-11",
-                endDate: "2024-10-11",
+                startDate: "2024-11-01",
+                endDate: "2024-11-01",
                 startTime: "15:00",
                 endTime: "20:00",
                 type: "Doctor",

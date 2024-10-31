@@ -1,9 +1,9 @@
 import express from "express";
-import { createTest } from "../controllers/AdminTestController";
-import { getAllTest } from "../controllers/AdminTestController";
-import { getOneTest } from "../controllers/AdminTestController";
-import { updateTest } from "../controllers/AdminTestController";
-import { deleteTest } from "../controllers/AdminTestController";
+import { createTest } from "../controllers/AdminTestController.js";
+import { getAllTest } from "../controllers/AdminTestController.js";
+import { getOneTest } from "../controllers/AdminTestController.js";
+import { updateTest } from "../controllers/AdminTestController.js";
+import { deleteTest } from "../controllers/AdminTestController.js";
 
 const AdminTestRoute = express.Router();
 

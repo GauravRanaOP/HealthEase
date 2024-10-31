@@ -9,26 +9,46 @@ export const getDoctorsByPostcodePrefix = async (req, res ) => {
     const { postcodePrefix } = req.params;
 
     try {
-        // finds clinics by postcode prefix
-        const clinics = await Clinic.find({
-            'address.postCode': { $regex: `^${postcodePrefix}` }
+        // finds clinics where address matches the postcode prefix
+        // const clinics = await Clinic.find({
+        //     'address.postCode': { $regex: `^${postcodePrefix}` }
+        // });
+
+        const clinics = await Clinic.find().populate({
+            path: 'addressId',
+            match: { postCode: {$regex: `^${postcodePrefix}` } }
         });
 
-        if (!clinics.length) {
+        // if (!clinics.length) {
+        //     return res.status(404).json({
+        //         message: "No clinics found in the provided postal code"
+        //     });
+        // }
+
+        // filters out any clinic where the address did not match the postcode
+        const filteredClinics = clinics.filter(clinic => clinic.addressId);
+        if (!filteredClinics.length) {
             return res.status(404).json({
                 message: "No clinics found in the provided postal code"
             });
         }
 
         // extracts the clinics ids and address 
-        const clinicData = clinics.map(clinic => ({
+        // const clinicData = clinics.map(clinic => ({
+        //     clinicId: clinic._id,
+        //     clinicAddress: clinic.address
+        //     })
+        // );
+        const clinicData = filteredClinics.map(clinic => ({
             clinicId: clinic._id,
-            clinicAddress: clinic.address
+            clinicAddress: clinic.addressId
             })
         );
-
-        // finds doctors by clinic ids
+        
+        // gets clinic ids
         const clinicIds = clinicData.map(clinic => clinic.clinicId);
+
+        // finds doctors by clinicid and populates user details
         const doctors = await Doctor.find({
             clinicId: { $in: clinicIds }
         }).populate('userid', 'firstName lastName email contactNo');
@@ -39,9 +59,6 @@ export const getDoctorsByPostcodePrefix = async (req, res ) => {
                 message: "No doctors found in the postcode"
             });
         }
-
-        // // sends the doctors data in the response
-        // res.status(200).json(doctors);
 
         // combines doctor and clinic address 
         const doctorWithClinics = doctors.map(doctor => {
@@ -63,7 +80,7 @@ export const getDoctorsByPostcodePrefix = async (req, res ) => {
     } catch (error) {
         console.error("Error fetching doctors:", error);
         res.status(500).json({
-            error: error
+            error: error.message
         });
     }
 

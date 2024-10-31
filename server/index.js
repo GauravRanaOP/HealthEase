@@ -9,6 +9,12 @@ import "./config/db.js";
 import DoctorRoute from "./routes/DoctorsRoute.js";
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 import AdminTestRoute from "./routes/AdminTestRoute.js";
+import AuthRoute from "./routes/AuthRoute.js";
+import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
+import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
+import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
+import AdminClinicRoute from "./routes/AdminClinicRoute.js";
+
 
 // initializes the app
 const app = express();
@@ -21,17 +27,35 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
 }));
 
-// Basic route to check if the server is running
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
 
 // Routes for doctors
 app.use("/api", DoctorRoute);
 app.use("/api", AdminTestRoute);
+app.use("/api", AdminClinicRoute)
+
+// Routes for Authentication
+app.use("/api/auth", AuthRoute);
+
+// View Bookings routes for Diagnostic Center
+app.use("/api/bookings", ViewBookingsRoute);
 
 // route to get doctors by postcode prefix
 app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
+
+// route to get a doctors appointment timeslot
+app.get('/api/doctors/availableTimeslots/:doctorId', getDoctorAppointmentTimeslots);
+
+// route to get appointment timeslot using query parameter
+app.get('/api/doctors/availableTimeslots', getDoctorAppointmentTimeslots);
+
+// route to update an appointment timeslot
+app.put('/api/doctors/updateTimeslot/:appointmentId', updateDoctorAppointmentTimeslot);
+
+
+// basic route to check if the server is running
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 
 // Error handling for unhandled routes

@@ -34,13 +34,28 @@ const UserSchema = new Schema({
       "ClinicAdmin",
     ],
   },
-  address: {
+  addressId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Address",
-    required: true,
+    // required: true,
   },
   lastLoginDateTime: Date,
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
+
+UserSchema.methods.verifyPassword = async function (password) {
+  const user = this;
+  const isMatch = await bcrypt.compare(password, user.password);
+  return isMatch;
+};
+
 
 // exports User model
 const User = mongoose.model("User", UserSchema);
