@@ -1,8 +1,3 @@
-:root {
-  --primary-bg-color: #f5f5f5;
-  --primary-color: #385399;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -23,11 +18,62 @@ html {
 
 .app-layout {
   display: flex;
-  /* height: 100vh; */
 }
 
 .content {
   flex-grow: 1;
   padding: 20px;
   background-color: #f1f1f1;
+  transition: padding 0.3s ease;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .content {
+    padding: 10px;
+  }
+
+  .content > * {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    width: 100%;
+  }
+}
+
+/* tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content {
+    padding: 15px;
+  }
+
+  .content > * {
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+  }
+}
+
+/* desktop */
+@media (min-width: 1025px) {
+  .content {
+    padding: 20px;
+  }
+
+  .content > * {
+    margin-bottom: 25px;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+  }
 }

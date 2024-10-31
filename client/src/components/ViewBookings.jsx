@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../assets/css/ViewBookings.css";
+import Pagination from "./Pagination";
+import BookingModal from "./BookingModal";
+import DeleteModal from "./DeleteModal";
 
 const ViewBookings = () => {
   const [bookings, setBookings] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bookingsPerPage] = useState(8);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [bookingToDelete, setBookingToDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // function to fetch bookings
+  // hook to fetch bookings data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        const { data } = await axios.get(
           "http://localhost:3002/api/bookings/getBookings"
         );
-        setBookings(response.data);
+        setBookings(data); // set bookings
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -27,41 +33,39 @@ const ViewBookings = () => {
 
   // function to format time slot
   const formatTimeSlot = (timeSlot) => {
-    const date = new Date(timeSlot);
-    return date.toLocaleTimeString("en-US", {
+    return new Date(timeSlot).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
     });
   };
 
-  // function to handle view/edit booking
+  // function to handle booking view/edit
   const handleViewEdit = (booking, editMode = false) => {
     setSelectedBooking(booking);
     setIsEditMode(editMode);
     setIsModalOpen(true);
   };
 
-  // function to handle save booking
-  const handleSaveBooking = async () => {
+  // function to save booking
+  const handleSaveBooking = async (updatedBooking) => {
     try {
       await axios.put(
-        `http://localhost:3002/api/bookings/updateBooking/${selectedBooking._id}`,
-        selectedBooking
-      ); // update the booking by Id
-      setIsModalOpen(false);
-      setBookings(
-        (prevBookings) =>
-          prevBookings.map((booking) =>
-            booking._id === selectedBooking._id ? selectedBooking : booking
-          ) // update the bookings with the selected booking
+        `http://localhost:3002/api/bookings/updateBooking/${updatedBooking._id}`,
+        updatedBooking
       );
+      setIsModalOpen(false);
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking._id === updatedBooking._id ? updatedBooking : booking
+        )
+      ); // update local state
     } catch (error) {
       console.error("Error updating booking:", error);
     }
   };
 
-  // function to handle delete booking
+  // function to handle delete action
   const handleDelete = (booking) => {
     setBookingToDelete(booking);
     setIsDeleteModalOpen(true);
@@ -72,11 +76,11 @@ const ViewBookings = () => {
     try {
       await axios.delete(
         `http://localhost:3002/api/bookings/deleteBooking/${bookingToDelete._id}`
-      ); // delete the booking by Id
+      );
       setIsDeleteModalOpen(false);
       setBookings((prevBookings) =>
         prevBookings.filter((b) => b._id !== bookingToDelete._id)
-      ); // remove the deleted booking from the bookings state
+      ); // update local state
     } catch (error) {
       console.error("Error deleting booking:", error);
     }
@@ -88,6 +92,23 @@ const ViewBookings = () => {
     setBookingToDelete(null);
   };
 
+  // function to filter bookings based on search query
+  const filteredBookings = bookings.filter((booking) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return Object.values(booking).some((value) =>
+      String(value).toLowerCase().includes(lowerCaseQuery)
+    ); // check if any field contains the search query
+  });
+
+  // paginate as per search query
+  const currentBookings = filteredBookings.slice(
+    (currentPage - 1) * bookingsPerPage,
+    currentPage * bookingsPerPage
+  );
+
+  // handle page change
+  const handlePageChange = (page) => setCurrentPage(page);
+
   return (
     <div className="bookings-table-container">
       <div className="search-container">
@@ -95,15 +116,17 @@ const ViewBookings = () => {
           type="text"
           placeholder="Search Patients"
           className="search-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      <table className="bookings-table" cellPadding="10">
+      <table className="bookings-table">
         <thead>
           <tr>
             <th>Time Slot</th>
             <th>Test</th>
             <th>Patient ID</th>
-            <th>Doctor&#39;s Note</th>
+            <th>Doctor&apos;s Note</th>
             <th>Test Status</th>
             <th>Result</th>
             <th>Location</th>
@@ -111,7 +134,7 @@ const ViewBookings = () => {
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking) => (
+          {currentBookings.map((booking) => (
             <tr key={booking._id}>
               <td>{formatTimeSlot(booking.timeSlot)}</td>
               <td>{booking.test}</td>
@@ -120,10 +143,10 @@ const ViewBookings = () => {
               <td>{booking.testStatus}</td>
               <td>{booking.result}</td>
               <td>{booking.location}</td>
-              <td>
+              <td className="action-buttons">
                 <button
                   className="view"
-                  onClick={() => handleViewEdit(booking, false)}
+                  onClick={() => handleViewEdit(booking)}
                 >
                   <i className="fa-solid fa-eye"></i>
                 </button>
@@ -144,249 +167,33 @@ const ViewBookings = () => {
           ))}
         </tbody>
       </table>
-      <div className="pagination">
-        <button className="disabled">Previous</button>
-        <button className="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>Next</button>
-      </div>
 
-      {isModalOpen && selectedBooking && !isEditMode && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>View Booking</h2>
-              <button
-                className="close-icon"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <i className="fa-solid fa-times"></i>
-              </button>
-            </div>
-            <div className="view-booking-details">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Time Slot</td>
-                    <td>{formatTimeSlot(selectedBooking.timeSlot)}</td>
-                  </tr>
-                  <tr>
-                    <td>Test</td>
-                    <td>{selectedBooking.test}</td>
-                  </tr>
-                  <tr>
-                    <td>Patient ID</td>
-                    <td>{selectedBooking.patientId}</td>
-                  </tr>
-                  <tr>
-                    <td>Doctor&#39;s Note</td>
-                    <td>{selectedBooking.doctorNote || "N/A"}</td>
-                  </tr>
-                  <tr>
-                    <td>Test Status</td>
-                    <td>{selectedBooking.testStatus}</td>
-                  </tr>
-                  <tr>
-                    <td>Result</td>
-                    <td>{selectedBooking.result || "N/A"}</td>
-                  </tr>
-                  <tr>
-                    <td>Location</td>
-                    <td>{selectedBooking.location}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(filteredBookings.length / bookingsPerPage)}
+        onPageChange={handlePageChange}
+      />
 
-      {isModalOpen && selectedBooking && isEditMode && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>Edit Booking</h2>
-              <button
-                className="close-icon"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <i className="fa-solid fa-times"></i>
-              </button>
-            </div>
-            <div className="edit-booking-form">
-              <form>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <label>Time Slot:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={formatTimeSlot(selectedBooking.timeSlot)}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              timeSlot: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Test:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={selectedBooking.test}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              test: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Patient ID:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={selectedBooking.patientId}
-                          disabled
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Doctor&#39;s Note:</label>
-                      </td>
-                      <td>
-                        <textarea
-                          rows="3"
-                          value={selectedBooking.doctorNote}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              doctorNote: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Test Status:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={selectedBooking.testStatus}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              testStatus: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Result:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={selectedBooking.result}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              result: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label>Location:</label>
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={selectedBooking.location}
-                          onChange={(e) =>
-                            setSelectedBooking({
-                              ...selectedBooking,
-                              location: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="modal-actions">
-                  <button type="button" onClick={handleSaveBooking}>
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      <BookingModal
+        booking={selectedBooking}
+        isOpen={isModalOpen}
+        isEditMode={isEditMode}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveBooking}
+      />
 
-      {isDeleteModalOpen && bookingToDelete && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>Confirm Deletion</h2>
-              <button className="close-icon" onClick={cancelDelete}>
-                <i className="fa-solid fa-times"></i>
-              </button>
-            </div>
-            <div className="delete-confirmation">
-              <p>
-                Are you sure you want to delete the booking for{" "}
-                <strong>{bookingToDelete.patientId}</strong> on{" "}
-                <strong>{formatTimeSlot(bookingToDelete.timeSlot)}</strong>?
-              </p>
-            </div>
-            <div className="modal-actions">
-              <button
-                type="button"
-                onClick={confirmDelete}
-                className="confirm-delete"
-              >
-                Yes, Delete
-              </button>
-              <button
-                type="button"
-                onClick={cancelDelete}
-                className="cancel-delete"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        booking={bookingToDelete}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+      />
 
       {(isModalOpen || isDeleteModalOpen) && (
         <div
           className="modal-overlay"
           onClick={() => {
-            if (isModalOpen) setIsModalOpen(false);
-            if (isDeleteModalOpen) cancelDelete();
+            isModalOpen ? setIsModalOpen(false) : cancelDelete();
           }}
         ></div>
       )}
