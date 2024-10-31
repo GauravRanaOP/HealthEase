@@ -16,6 +16,7 @@ import DoctorTimeslots from "./components/DoctorTimeslots";
 import Dashboard from "./components/authentication/Dashboard";
 import LoginForm from "./components/authentication/LoginForm";
 import { AuthProvider } from "./components/authentication/AuthContext";  // Ensure AuthProvider is imported correctly
+import AdminClinic from "./components/AdminClinic";
 
 const route = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const route = createBrowserRouter([
   {
     path: "/getDoctor",
     element: <Doctor />,
+  },
+  {
+    path: "/adminClinic",
+    element: <AdminClinic />,
   },
   {
     path: "/patientDirectory",

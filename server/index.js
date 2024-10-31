@@ -13,6 +13,7 @@ import AuthRoute from "./routes/AuthRoute.js";
 import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
 import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
+import AdminClinicRoute from "./routes/AdminClinicRoute.js";
 
 
 // initializes the app
@@ -30,6 +31,7 @@ app.use(cors({
 // Routes for doctors
 app.use("/api", DoctorRoute);
 app.use("/api", AdminTestRoute);
+app.use("/api", AdminClinicRoute)
 
 // Routes for Authentication
 app.use("/api/auth", AuthRoute);

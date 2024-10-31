@@ -34,7 +34,7 @@ const UserSchema = new Schema({
       "ClinicAdmin",
     ],
   },
-  address: {
+  addressId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Address",
     // required: true,
