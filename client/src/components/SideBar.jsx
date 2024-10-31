@@ -16,6 +16,8 @@ const SideBar = () => {
       { icon: "fa-solid fa-stethoscope", label: "Clinic", path: "/getDoctor" },
       { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
       { icon: "fa-solid fa-flask-vial", label: "Health Test", path: "/adminTest" },
+      { icon: "fa-solid fa-flask-vial", label: "Health Clinic", path: "/adminClinic" },
+
     ],
     clinicAdmin: [
       { icon: "fas fa-house", label: "Dashboard", path: "/" },
