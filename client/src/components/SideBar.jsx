@@ -13,9 +13,11 @@ const SideBar = () => {
   const navLinks = {
     admin: [
       { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
-      { icon: "fa-solid fa-stethoscope", label: "Clinics", path: "/getDoctor" },
-      { icon: "fas fa-hospital", label: "Diagnostics Centers", path: "/diagnostics" },
-      { icon: "fa-solid fa-flask-vial", label: "Health Tests", path: "/adminTest" },
+      { icon: "fa-solid fa-stethoscope", label: "Clinic", path: "/getDoctor" },
+      { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
+      { icon: "fa-solid fa-flask-vial", label: "Health Test", path: "/adminTest" },
+      { icon: "fa-solid fa-flask-vial", label: "Health Clinic", path: "/adminClinic" },
+
     ],
     clinicAdmin: [
       { icon: "fas fa-house", label: "Dashboard", path: "/" },

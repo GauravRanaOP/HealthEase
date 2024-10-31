@@ -83,3 +83,11 @@
 .sidebar.collapsed .sidebar-item span {
   display: none;
 }
+
+.sidebar-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+ 
