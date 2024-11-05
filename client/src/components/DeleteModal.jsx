@@ -51,7 +51,7 @@ const DeleteModal = ({ isOpen, booking, onClose, onConfirm }) => {
 // prop types for delete modal
 DeleteModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  booking: PropTypes.object.isRequired,
+  booking: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
 };
