@@ -6,49 +6,51 @@
   --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   --font-main: "Ubuntu", sans-serif;
   --font-secondary: "Montserrat", sans-serif;
-  --gradient-bg: linear-gradient(135deg, #385399 0%, #2c2c2c 100%);
   --spacing-small: 10px;
   --spacing-medium: 20px;
   --spacing-large: 40px;
   --transition: 0.3s ease;
 }
 
-body {
+* {
   margin: 0;
-  font-family: var(--font-main);
-  background: var(--gradient-bg);
-  color: var(--text-color);
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-secondary);
 }
 
-/* search */
+.bookings-table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--spacing-medium) 0;
+  background: var(--secondary-color);
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-small) 0;
+}
+
 .search-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: var(--spacing-medium) 0;
+  padding: 0 var(--spacing-medium);
+  width: 100%;
 }
 
 .search-input {
-  width: 100%;
-  max-width: 500px;
-  padding: var(--spacing-small);
+  flex-grow: 1;
+  max-width: 350px;
   border: 1px solid var(--border-color);
   border-radius: 25px;
   font-size: 1rem;
   transition: border var(--transition);
 }
 
-.search-input:focus {
-  border-color: var(--primary-color);
-}
-
-/* table */
 .bookings-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
-  margin-top: var(--spacing-medium);
-  overflow-x: auto;
 }
 
 .bookings-table th,
@@ -69,46 +71,30 @@ body {
   text-overflow: ellipsis;
 }
 
-.bookings-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-small);
+  justify-content: flex-start;
 }
 
-.bookings-table tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-/* buttons */
-.button {
-  background: none;
+.action-buttons button {
+  background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
-  transition: transform var(--transition), color var(--transition);
+  padding: 8px;
+  transition: background-color var(--transition);
 }
 
-.button:hover {
-  transform: scale(1.1);
+.action-buttons button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
-.button-view {
-  color: var(--text-color);
-}
-
-.button-edit {
-  color: var(--primary-color);
-}
-
-.button-delete {
-  color: #dc3545;
-}
-
-/* pagination */
 .pagination {
   display: flex;
   justify-content: center;
   gap: var(--spacing-small);
   padding-top: var(--spacing-medium);
-  border-top: 1px solid var(--text-color);
 }
 
 .pagination button {
@@ -131,7 +117,7 @@ body {
   cursor: not-allowed;
 }
 
-/* modal */
+/* Modal */
 .modal-container {
   position: fixed;
   top: 0;
@@ -208,46 +194,56 @@ body {
   background-color: #d0d0d0;
 }
 
-/* Media queries for mobile */
-@media (max-width: 767px) {
-  .search-input {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-
-  .bookings-table th,
-  .bookings-table td {
-    font-size: 0.85rem;
-    padding: 8px;
-  }
-
-  .pagination button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 10px;
-  }
+/* Modal view booking details */
+.modal-view-booking-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--spacing-medium);
+  margin-top: var(--spacing-medium);
 }
 
-/* Media queries for tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .search-input {
-    font-size: 1rem;
-    padding: 12px;
-  }
+.booking-details-card {
+  background: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: var(--spacing-medium);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-  .bookings-table th,
-  .bookings-table td {
-    font-size: 0.95rem;
-    padding: 10px;
-  }
+.detail-label {
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-small);
+}
 
-  .pagination button {
-    padding: 10px 15px;
-    font-size: 1rem;
-  }
+.detail-value {
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.form-group {
+  margin-bottom: var(--spacing-medium);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-small);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: var(--spacing-small);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
 }
