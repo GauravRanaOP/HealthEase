@@ -40,12 +40,12 @@
   margin: 10px;
 }
 
-.doctor-list {
+.doctor-list, .appointment-list {
   display: flex;
   flex-wrap: wrap;
 }
 
-.doctor-card {
+.doctor-card, .appointment-card {
   border: 0 solid #9f9f9f;
   border-radius: 7px;
   margin: 10px;
@@ -61,7 +61,7 @@
   width: 100%;
 }
 
-.doctor-card h3 {
+.doctor-card h3, .appointment-card h3 {
   border-radius: 7px 7px 0 0;
   background-color: #385399;
   color: white;

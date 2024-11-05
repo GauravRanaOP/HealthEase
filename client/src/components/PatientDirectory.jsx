@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
-import SearchDoctor from "./SearchDoctor";
-import DoctorCard from "./DoctorCard";
-import "../assets/css/PatientDirectory.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import SearchDoctor from "./SearchDoctor";
+import DoctorCard from "./DoctorCard";
+import AppointmentCard from "./AppointmentCard";
+
+import "../assets/css/PatientDirectory.css";
+
+
 export default function PatientDirectory() {
-  // state to store doctors
+  
+  // defines states
   const [doctors, setDoctors] = useState([]);
-  // state to store postcode
   const [postcodePrefix, setpostcodePrefix] = useState("");
+  const [appointments, setAppointments] = useState([]);
+  
+  const navigate = useNavigate();
+
+  const userId = "671e7a21ec143e564acc28eb";
 
   // fetch doctors based on postcode
   const fetchDoctors = async (postcodePrefix) => {
@@ -39,16 +49,70 @@ export default function PatientDirectory() {
     setpostcodePrefix(postcode);
   };
 
+  // checks if patient is logged in
+  useEffect( () => {
+    // function to check if user is logged in
+    // const userId = localStorage.getItem("userId");
+    // for testing
+    const userId = "671e7a21ec143e564acc28eb";
+    if (!userId) {
+      navigate("/login");
+    } else {
+      // fetches appointments when patientId is set
+      fetchAppointments(userId);
+    }
+  }, [navigate, userId]);
+
+  const fetchAppointments = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/api/patient/appointments?patientId=${userId}`
+      );
+
+      console.log("Response data: ", response.data.appointments);
+      // console.log("Response patientId: ", response.data.appointments.patientId);
+
+      if (response.data.appointments && response.status === 200) {
+        setAppointments(response.data.appointments);
+      } else {
+        console.error("No upcoming appointments found for this user:", userId);
+          // setError("No upcoming appointments found.");
+      }
+    } catch (error) {
+      console.error("Error fetching appointment data: ", error);
+      // setError("Error fetching appointment data.");
+    // } finally {
+    //   setLoading(false);
+    }
+  };
+
+
+
   return (
     <div className="patient-directory">
       <h1 className="directory-title">Find a Doctor</h1>
 
       <SearchDoctor onSearch={handleSearchDoctor} />
+      
+      {/* renders DoctorCard */}
       <div className="doctor-list">
         {doctors.map((doctor) => (
           <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
         ))}
       </div>
+
+      {/* renders Appointment Card */}
+      <div className="appointment-list"> 
+        {appointments.length > 0 ? (
+          appointments.map((appointment) => (
+            <AppointmentCard key={appointment.id} appointment={appointment} />
+          ))
+        ) : (
+          <p>No upcoming appointments found for the user.</p>
+        )}
+      </div>
+
     </div>
   );
+  
 } // end PatientDirectory
