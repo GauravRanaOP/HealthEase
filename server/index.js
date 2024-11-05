@@ -15,7 +15,7 @@ import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentCo
 import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import AdminClinicRoute from "./routes/AdminClinicRoute.js";
 import { getOneDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
-import { getPatientAppointments } from "./controllers/DoctorAppointmentController.js";
+import { getPatientAppointments } from "./controllers/PatientAppointmentController.js";
 
 
 // initializes the app

@@ -223,34 +223,3 @@ export const getOneDoctorAppointmentTimeslot = async (req, res) => {
       });
   }
 };
-
-// fetches appointments for a specific patient (userId) that are not marked as done
-export const getPatientAppointments = async (req, res) => {
-  const patientId = req.query.patientId;
-
-  // gets the userId
-  if (!patientId) {
-    return res.status(400).json({ message: "User ID is required. "});
-  }
-
-  try {
-    // finds appointments for the logged-in user where status is not done
-    const appointments = await Appointment.find({
-      patientId: patientId,
-      status: { $ne: "Done"},
-    }).sort({ date: 1, time: 1 });
-
-    if (appointments.length > 0) {
-      res.status(200).json({ appointments });
-    } else {
-      res.status(200).json({ message: "Server error: No upcoming appointments found." });
-    }
-  } catch (error) {
-    console.error("Server error: Error fetching patient appointments:", error);
-    res.status(500).json({
-      message: "Server error: Error fetching appointments",
-      error: error.message,
-    });
-  }
-
-};
