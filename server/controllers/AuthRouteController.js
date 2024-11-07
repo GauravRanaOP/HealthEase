@@ -3,20 +3,24 @@ import bcrypt from "bcrypt"; // Ensure bcrypt is imported
 import jwt from "jsonwebtoken"; // Ensure jwt is imported
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { loginEmail, loginPassword } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: loginEmail });
 
   if (!user) return res.status(400).send("Invalid email or password.");
 
-  const validPassword = await bcrypt.compare(password, user.password);
+  const validPassword = await bcrypt.compare(loginPassword, user.password);
 
   if (!validPassword)
     return res.status(400).send("Invalid username or password.");
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 
-  res.send({ token });
+  res.status(200).json({
+    token,
+    status: "success",
+    user
+  })
 };
 
 export const register = async (req, res) => {
@@ -42,9 +46,14 @@ export const register = async (req, res) => {
     });
 
     const savedUser = await user.save();
-    res.json({
+
+    const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
+
+
+    res.status(201).json({
       message: "User registered successfully",
       userId: savedUser._id,
+      token
     });
   } catch (error) {
     console.error(error);
