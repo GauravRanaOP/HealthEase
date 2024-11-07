@@ -10,6 +10,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 export default function AppointmentCard({ appointment }) {
 
   // defines state
