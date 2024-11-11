@@ -16,6 +16,7 @@ import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointment
 import AdminClinicRoute from "./routes/AdminClinicRoute.js";
 import { getOneDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import { getPatientAppointments } from "./controllers/PatientAppointmentController.js";
+import { getPatientTests } from "./controllers/PatientTestController.js";
 
 
 // initializes the app
@@ -58,6 +59,9 @@ app.get("/api/doctors/availableTimeslot/:appointmentId", getOneDoctorAppointment
 
 // route to get appointments booked by patients
 app.get('/api/patient/appointments', getPatientAppointments);
+
+// route to get tests booked by patients
+app.get('/api/patient/tests', getPatientTests);
 
 
 // basic route to check if the server is running
