@@ -40,12 +40,12 @@
   margin: 10px;
 }
 
-.doctor-list, .appointment-list {
+.doctor-list, .appointment-list, .test-list  {
   display: flex;
   flex-wrap: wrap;
 }
 
-.doctor-card, .appointment-card {
+.doctor-card, .appointment-card,.test-card {
   border: 0 solid #9f9f9f;
   border-radius: 7px;
   margin: 10px;
@@ -121,7 +121,7 @@
   border-radius: 4px;
 } */
 
-.appointment-card h3 {
+.appointment-card h3, .test-card h3 {
   border-radius: 7px 7px 0 0;
   /* background-color: #385399; */
   color: #0056b3;
@@ -146,24 +146,24 @@
   font-size: 0.9rem;
 }
 
-.appointment-card-items {
+.appointment-card-items, .test-card-items {
   display: flex;
   flex-direction: column;
   padding: 0 16px 16px 16px;
 }
 
-.appointment-card-date-time {
+.appointment-card-date-time, .test-card-date-time {
   display: flex;
   gap: 10px;
   justify-content: space-evenly;
   color: #0056b3;
 }
 
-.appointment-card-address p, .appointment-card-date-time p {
+.appointment-card-address p, .appointment-card-date-time p,.test-card-address p, .test-card-date-time p  {
   margin: 10px auto;
 }
 
-.appointment-card-details-btn {
+.appointment-card-details-btn, .test-card-details-btn {
   padding-top: 10px;
 }
 
