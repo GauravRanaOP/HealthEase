@@ -5,6 +5,7 @@ import axios from "axios";
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
 import AppointmentCard from "./AppointmentCard";
+import TestCard from "./TestCard";
 
 import "../assets/css/PatientDirectory.css";
 
@@ -15,6 +16,7 @@ export default function PatientDirectory() {
   const [doctors, setDoctors] = useState([]);
   const [postcodePrefix, setpostcodePrefix] = useState("");
   const [appointments, setAppointments] = useState([]);
+  const [tests, setTests] = useState([]);
   
   const navigate = useNavigate();
 
@@ -63,6 +65,7 @@ export default function PatientDirectory() {
     }
   }, [navigate, userId]);
 
+  // fetches appointments
   const fetchAppointments = async (userId) => {
     try {
       const response = await axios.get(
@@ -83,6 +86,29 @@ export default function PatientDirectory() {
       // setError("Error fetching appointment data.");
     // } finally {
     //   setLoading(false);
+    }
+  };
+
+  // fetches tests
+  const fetchTests = async (userId) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/api/patient/tests?patientId=${userId}`
+      );
+      // console.log("Response data: ", response.data.appointments);
+      if (response.data.tests && response.status === 200) {
+        setTests(response.data.tests || []);
+      } else {
+        console.error("No upcoming tests found for this user:", userId);
+        setError("No upcoming tests found.");
+      }
+    } catch (error) {
+      console.error("Error fetching test data: ", error);
+      setError("Error fetching test data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,6 +135,17 @@ export default function PatientDirectory() {
           ))
         ) : (
           <p>No upcoming appointments found for the user.</p>
+        )}
+      </div>
+
+      {/* renders Test Card */}
+      <div className="test-list"> 
+        {tests.length > 0 ? (
+          tests.map((test) => (
+            <TestCard key={test.id} test={test} />
+          ))
+        ) : (
+          <p>No upcoming tests found for the user.</p>
         )}
       </div>
 
