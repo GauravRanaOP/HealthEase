@@ -1,5 +1,6 @@
 :root {
   --primary-color: #385399;
+  --primary-hover-color: #4666b9;
   --secondary-color: #fafafa;
   --text-color: #2c2c2c;
   --border-color: #9f9f9f;
@@ -10,6 +11,7 @@
   --spacing-medium: 20px;
   --spacing-large: 40px;
   --transition: 0.3s ease;
+  --button-padding: var(--spacing-small) var(--spacing-medium);
 }
 
 * {
@@ -26,7 +28,7 @@ body {
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
   padding: var(--spacing-large);
 }
 
@@ -50,12 +52,8 @@ body {
   border-color: var(--primary-color);
 }
 
-.container-header button.create-btn i {
-  margin-right: var(--spacing-small);
-}
-
-.container-header button.create-btn {
-  padding: var(--spacing-small) var(--spacing-medium);
+.create-btn {
+  padding: var(--button-padding);
   background-color: var(--primary-color);
   color: var(--secondary-color);
   font-size: 1rem;
@@ -65,8 +63,12 @@ body {
   transition: var(--transition);
 }
 
-.container-header button.create-btn:hover {
-  background-color: #4666b9;
+.create-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.create-btn i {
+  margin-right: var(--spacing-small);
 }
 
 table {
@@ -75,8 +77,7 @@ table {
   margin-top: var(--spacing-medium);
 }
 
-th,
-td {
+th, td {
   padding: var(--spacing-medium);
   text-align: left;
   border-bottom: 1px solid var(--border-color);
@@ -106,21 +107,9 @@ td {
   transition: var(--transition);
 }
 
-.action-buttons button:hover {
-  opacity: 0.8;
-}
-
-.view {
-  color: #2ecc71;
-}
-
-.edit {
-  color: #f39c12;
-}
-
-.delete {
-  color: #e74c3c;
-}
+.action-buttons .view { color: #2ecc71; }
+.action-buttons .edit { color: #f39c12; }
+.action-buttons .delete { color: #e74c3c; }
 
 .modals {
   position: fixed;
@@ -142,55 +131,34 @@ td {
   box-shadow: var(--box-shadow);
   max-width: 500px;
   width: 100%;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 
-.view-center {
+.view-center, .delete-center {
   border: 3px solid var(--primary-color);
   border-radius: 3px;
+  padding: var(--spacing-small);
 }
 
-.view-center h2 {
-  margin: 1rem 0 1rem 1rem;
-  font-size: 1.2rem;
-  color: var(--text-color);
-}
-
-.view-center p {
-  margin: 0 0 1rem 1rem;
+.view-center h2, .delete-center h2,
+.view-center p, .delete-center p {
+  margin: 1rem 1rem;
   font-size: 1rem;
   line-height: 1.6;
 }
 
-.delete-center {
-  border: 3px solid var(--primary-color);
-  border-radius: 3px;
-}
-
-.delete-center h2 {
-  margin: 1rem 0 1rem 1rem;
-  font-size: 1.2rem;
-  color: var(--text-color);
-}
-
-.delete-center p {
-  margin-left: 1rem;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.delete-center button {
-  margin: 1rem 0 1rem 1rem;
+.delete-center button, .modals form button {
+  margin: 1rem;
   background-color: var(--primary-color);
   color: var(--secondary-color);
   border-radius: 4px;
-  padding: var(--spacing-small) var(--spacing-medium);
+  padding: var(--button-padding);
   font-size: 16px;
   cursor: pointer;
 }
 
-.delete-center button:hover {
-  background-color: #4666b9;
+.delete-center button:hover, .modals form button:hover {
+  background-color: var(--primary-hover-color);
 }
 
 .close {
@@ -200,7 +168,7 @@ td {
   font-size: 2rem;
   cursor: pointer;
   color: var(--secondary-color);
-  transition: color 0.3s ease;
+  transition: color var(--transition);
 }
 
 .close:hover {
@@ -225,18 +193,4 @@ td {
 textarea {
   height: 100px;
   resize: none;
-}
-
-.modals form button {
-  margin-top: 1rem;
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-  border-radius: 4px;
-  padding: var(--spacing-small) var(--spacing-medium);
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.modals form button:hover {
-  background-color: #4666b9;
 }
