@@ -40,12 +40,20 @@
   margin: 10px;
 }
 
+<<<<<<< HEAD
 .doctor-list {
+=======
+.doctor-list, .appointment-list, .test-list  {
+>>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
   display: flex;
   flex-wrap: wrap;
 }
 
+<<<<<<< HEAD
 .doctor-card {
+=======
+.doctor-card, .appointment-card,.test-card {
+>>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
   border: 0 solid #9f9f9f;
   border-radius: 7px;
   margin: 10px;
@@ -72,22 +80,11 @@
   font-size: 1.1rem;
 }
 
-/*
-.doctor-card-address-container {
-  padding: 16px;
-  height: 50px; s
-}
-
-.doctor-card-address-container p {
-  margin: 0;
-} 
-*/
-
 .doctor-card-p-container {
   padding: 16px;
 }
 
-.location-icon {
+.location-icon, .icon {
   margin-right: 7px;
   color: #385399;
 }
@@ -131,5 +128,56 @@
   padding: 10px;
   border-radius: 4px;
 } */
+
+.appointment-card h3, .test-card h3 {
+  border-radius: 7px 7px 0 0;
+  /* background-color: #385399; */
+  color: #0056b3;
+  margin: 0;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.1rem;
+  font-weight: bold;
+  position: relative;
+}
+
+.visit-type {
+  background-color: rgb(201, 225, 233);
+  border-radius: 4px;
+  padding: 6px 12px;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0056b3;
+  font-size: 0.9rem;
+}
+
+.appointment-card-items, .test-card-items {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px 16px;
+}
+
+.appointment-card-date-time, .test-card-date-time {
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
+  color: #0056b3;
+}
+
+.appointment-card-address p, .appointment-card-date-time p,.test-card-address p, .test-card-date-time p  {
+  margin: 10px auto;
+}
+
+.appointment-card-details-btn, .test-card-details-btn {
+  padding-top: 10px;
+}
+
+.error-message {
+  color: red;
+}
+
 
 /* end Patients Page */
