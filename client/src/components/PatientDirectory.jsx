@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
 import AppointmentCard from "./AppointmentCard";
 import TestCard from "./TestCard";
 
 import "../assets/css/PatientDirectory.css";
-
+import axios from "axios";
 
 export default function PatientDirectory() {
-  
-  // defines states
+  // state to store doctors
   const [doctors, setDoctors] = useState([]);
+  // state to store postcode
   const [postcodePrefix, setpostcodePrefix] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [tests, setTests] = useState([]);
@@ -119,8 +116,6 @@ export default function PatientDirectory() {
       <h1 className="directory-title">Find a Doctor</h1>
 
       <SearchDoctor onSearch={handleSearchDoctor} />
-      
-      {/* renders DoctorCard */}
       <div className="doctor-list">
         {doctors.map((doctor) => (
           <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
@@ -151,5 +146,4 @@ export default function PatientDirectory() {
 
     </div>
   );
-  
 } // end PatientDirectory

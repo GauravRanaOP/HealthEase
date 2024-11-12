@@ -40,12 +40,20 @@
   margin: 10px;
 }
 
+<<<<<<< HEAD
+.doctor-list {
+=======
 .doctor-list, .appointment-list, .test-list  {
+>>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
   display: flex;
   flex-wrap: wrap;
 }
 
+<<<<<<< HEAD
+.doctor-card {
+=======
 .doctor-card, .appointment-card,.test-card {
+>>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
   border: 0 solid #9f9f9f;
   border-radius: 7px;
   margin: 10px;
