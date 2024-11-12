@@ -1,0 +1,242 @@
+:root {
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Ubuntu", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+  --spacing-small: 10px;
+  --spacing-medium: 20px;
+  --spacing-large: 40px;
+  --transition: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-color);
+  background-color: var(--secondary-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-large);
+}
+
+.container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-medium);
+}
+
+.container-header input {
+  padding: var(--spacing-small);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  width: 70%;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.container-header input:focus {
+  border-color: var(--primary-color);
+}
+
+.container-header button.create-btn i {
+  margin-right: var(--spacing-small);
+}
+
+.container-header button.create-btn {
+  padding: var(--spacing-small) var(--spacing-medium);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.container-header button.create-btn:hover {
+  background-color: #4666b9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-medium);
+}
+
+th,
+td {
+  padding: var(--spacing-medium);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+td {
+  background-color: #fff;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-small);
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-small);
+  font-size: 18px;
+  transition: var(--transition);
+}
+
+.action-buttons button:hover {
+  opacity: 0.8;
+}
+
+.view {
+  color: #2ecc71;
+}
+
+.edit {
+  color: #f39c12;
+}
+
+.delete {
+  color: #e74c3c;
+}
+
+.modals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modals-content {
+  background-color: var(--secondary-color);
+  padding: var(--spacing-medium);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  max-width: 500px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.view-center {
+  border: 3px solid var(--primary-color);
+  border-radius: 3px;
+}
+
+.view-center h2 {
+  margin: 1rem 0 1rem 1rem;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.view-center p {
+  margin: 0 0 1rem 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.delete-center {
+  border: 3px solid var(--primary-color);
+  border-radius: 3px;
+}
+
+.delete-center h2 {
+  margin: 1rem 0 1rem 1rem;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.delete-center p {
+  margin-left: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.delete-center button {
+  margin: 1rem 0 1rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 4px;
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.delete-center button:hover {
+  background-color: #4666b9;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--secondary-color);
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: var(--text-color);
+}
+
+.modals form input,
+.modals form textarea {
+  width: 100%;
+  padding: var(--spacing-small);
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.modals form input:focus,
+.modals form textarea:focus {
+  border-color: var(--primary-color);
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+.modals form button {
+  margin-top: 1rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 4px;
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modals form button:hover {
+  background-color: #4666b9;
+}

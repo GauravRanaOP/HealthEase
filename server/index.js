@@ -14,6 +14,7 @@ import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
 import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import AdminClinicRoute from "./routes/AdminClinicRoute.js";
+import DiagnosticCenterRoutes from "./routes/DiagnosticCenterRoutes.js";
 
 
 // initializes the app
@@ -38,6 +39,9 @@ app.use("/api/auth", AuthRoute);
 
 // View Bookings routes for Diagnostic Center
 app.use("/api/bookings", ViewBookingsRoute);
+
+// Routes for Diagnostic Center
+app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
 
 // route to get doctors by postcode prefix
 app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
