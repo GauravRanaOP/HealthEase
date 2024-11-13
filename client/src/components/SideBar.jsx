@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link , useNavigate } from "react-router-dom"; // Import Link for navigation
 import "../assets/css/SideBar.css";
+import { useAuth } from "../components/authentication/AuthContext.jsx";
+
 
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
+  const { logout } = useAuth();
+  const navigate = useNavigate(); 
+
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -32,12 +37,18 @@ const SideBar = () => {
   const logoutLink = {
     icon: "fa-solid fa-arrow-right-from-bracket",
     label: "Logout",
+    path: "/logout",
   };
 
   const links = navLinks["admin"] || [];
 
   const handleLinkClick = (index) => {
     setActiveLink(index);
+  };
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthContext
+    navigate("/login"); // Redirect to /login after logout
   };
 
   return (
@@ -59,7 +70,7 @@ const SideBar = () => {
             </Link>
           </li>
         ))}
-        <li className="sidebar-item">
+        <li className="sidebar-item" onClick={handleLogout}>
           <Link to="/logout" className="sidebar-link">
             <i className={logoutLink.icon}></i>
             {!isCollapsed && <span>{logoutLink.label}</span>}

@@ -15,7 +15,7 @@ import SideBar from "./components/SideBar";
 import "./App.css";
 import AdminTest from "./components/AdminTest";
 import DoctorTimeslots from "./components/DoctorTimeslots";
-import Dashboard from "./components/authentication/Dashboard";
+import Dashboard from "./components/Dashboard.jsx";
 //import LoginForm from "./components/authentication/LoginForm";
 //import { AuthProvider } from "./components/authentication/AuthContext"; // Ensure AuthProvider is imported correctly
 import AdminClinic from "./components/AdminClinic";
@@ -59,32 +59,62 @@ const route = createBrowserRouter([
   },
 ]);
 
-const App = ()=> {
-
+const App = () => {
   const { isAuthenticated } = useAuth();
   return (
     <Router>
       <HeaderPatient />
-      <div className="app-layout">
-        <SideBar />
-        <div className="content">
-          <Routes>
-          <Route path="/Login" element={<AuthenticationPage />} />
-            <Route path="/" element={!isAuthenticated ? <AuthenticationPage/> :  <Dashboard />} />
-            <Route path="/register" element={<RegistrationForm />} />
-            <Route path="/getDoctor" element={!isAuthenticated ? <AuthenticationPage/> :<Doctor />} />
-            <Route path="/patientDirectory" element={!isAuthenticated ? <AuthenticationPage/> :<PatientDirectory />} />
-            <Route path="/adminTest" element={!isAuthenticated ? <AuthenticationPage/> :<AdminTest />} />
-            <Route path="/adminClinic" element={!isAuthenticated ? <AuthenticationPage/> :<AdminClinic />} />
-            <Route path="/getBookings" element={!isAuthenticated ? <AuthenticationPage/> :<ViewBookings />} />
-            <Route path="/doctorTimeslots/:doctorId" element={!isAuthenticated ? <AuthenticationPage/> :<DoctorTimeslots />} />
-            <Route path="/diagnostic-center" element={!isAuthenticated ? <AuthenticationPage/> :<DiagnosticCenterPage />} />
-          </Routes>
-        </div>
-      </div>
+      {/* <div className="app-layout"> */}
+      {/* <SideBar /> */}
+      {/* <div className="content"> */}
+      <Routes>
+        <Route path="/Login" element={<AuthenticationPage />} />
+        <Route
+          path="/"
+          element={!isAuthenticated ? <AuthenticationPage /> : <Dashboard />}
+        />
+        {/* <Route path="/register" element={<RegistrationForm />} /> */}
+        <Route
+          path="/getDoctor"
+          element={!isAuthenticated ? <AuthenticationPage /> : <Doctor />}
+        />
+        <Route
+          path="/patientDirectory"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <PatientDirectory />
+          }
+        />
+        <Route
+          path="/adminTest"
+          element={!isAuthenticated ? <AuthenticationPage /> : <AdminTest />}
+        />
+        <Route
+          path="/adminClinic"
+          element={!isAuthenticated ? <AuthenticationPage /> : <AdminClinic />}
+        />
+        <Route
+          path="/getBookings"
+          element={!isAuthenticated ? <AuthenticationPage /> : <ViewBookings />}
+        />
+        <Route
+          path="/doctorTimeslots/:doctorId"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <DoctorTimeslots />
+          }
+        />
+        <Route
+          path="/diagnostic-center"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
+          }
+        />
+        {/* <Route path */}
+      </Routes>
+      {/* </div> */}
+      {/* </div> */}
       <FooterPatient />
     </Router>
   );
-}
+};
 
 export default App;
