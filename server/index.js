@@ -7,14 +7,15 @@ import "./config/db.js";
 
 // imports controllers
 import DoctorRoute from "./routes/DoctorsRoute.js";
-import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 import AdminTestRoute from "./routes/AdminTestRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
-import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
-import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import AdminClinicRoute from "./routes/AdminClinicRoute.js";
 import DiagnosticCenterRoutes from "./routes/DiagnosticCenterRoutes.js";
+
+import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
+import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
+import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import { getOneDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
 import { getPatientAppointments } from "./controllers/PatientAppointmentController.js";
 import { getPatientTests } from "./controllers/PatientTestController.js";
