@@ -40,20 +40,14 @@
   margin: 10px;
 }
 
-<<<<<<< HEAD
-.doctor-list {
-=======
-.doctor-list, .appointment-list, .test-list  {
->>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
+.doctor-list, .appointment-list, .test-list {
   display: flex;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-<<<<<<< HEAD
-.doctor-card {
-=======
-.doctor-card, .appointment-card,.test-card {
->>>>>>> f1df52c204de71cbd1842ad5e04259a8a7636c6b
+.doctor-card, .appointment-card, .test-card {
   border: 0 solid #9f9f9f;
   border-radius: 7px;
   margin: 10px;
@@ -67,6 +61,7 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   max-width: 300px;
   width: 100%;
+  font-size: 0.9rem;
 }
 
 .doctor-card h3 {
