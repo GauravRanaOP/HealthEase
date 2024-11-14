@@ -59,8 +59,7 @@ const route = createBrowserRouter([
   },
 ]);
 
-const App = ()=> {
-
+const App = () => {
   const { isAuthenticated } = useAuth();
   return (
     <Router>
@@ -69,22 +68,58 @@ const App = ()=> {
         <SideBar />
         <div className="content">
           <Routes>
-          <Route path="/Login" element={<AuthenticationPage />} />
-            <Route path="/" element={!isAuthenticated ? <AuthenticationPage/> :  <Dashboard />} />
+            <Route path="/Login" element={<AuthenticationPage />} />
+            <Route
+              path="/"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <Dashboard />
+              }
+            />
             <Route path="/register" element={<RegistrationForm />} />
-            <Route path="/getDoctor" element={!isAuthenticated ? <AuthenticationPage/> :<Doctor />} />
-            <Route path="/patientDirectory" element={!isAuthenticated ? <AuthenticationPage/> :<PatientDirectory />} />
-            <Route path="/adminTest" element={!isAuthenticated ? <AuthenticationPage/> :<AdminTest />} />
-            <Route path="/adminClinic" element={!isAuthenticated ? <AuthenticationPage/> :<AdminClinic />} />
-            <Route path="/getBookings" element={!isAuthenticated ? <AuthenticationPage/> :<ViewBookings />} />
-            <Route path="/doctorTimeslots/:doctorId" element={!isAuthenticated ? <AuthenticationPage/> :<DoctorTimeslots />} />
-            <Route path="/diagnostic-center" element={!isAuthenticated ? <AuthenticationPage/> :<DiagnosticCenterPage />} />
+            <Route
+              path="/getDoctor"
+              element={!isAuthenticated ? <AuthenticationPage /> : <Doctor />}
+            />
+            <Route
+              path="/patientDirectory"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <PatientDirectory />
+              }
+            />
+            <Route
+              path="/adminTest"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <AdminTest />
+              }
+            />
+            <Route
+              path="/adminClinic"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <AdminClinic />
+              }
+            />
+            <Route
+              path="/getBookings"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <ViewBookings />
+              }
+            />
+            <Route
+              path="/doctorTimeslots/:doctorId"
+              element={
+                !isAuthenticated ? <AuthenticationPage /> : <DoctorTimeslots />
+              }
+            />
+            <Route
+              path="/diagnostic-center"
+              element={<DiagnosticCenterPage />}
+            />
           </Routes>
         </div>
       </div>
       <FooterPatient />
     </Router>
   );
-}
+};
 
 export default App;

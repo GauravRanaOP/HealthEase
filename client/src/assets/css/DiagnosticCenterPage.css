@@ -26,30 +26,26 @@ body {
   background-color: var(--secondary-color);
 }
 
-.container {
+.dc-container {
   max-width: 1200px;
   margin: auto;
   padding: var(--spacing-large);
 }
 
-.container-header {
+.dc-container-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-medium);
 }
 
-.container-header input {
+.dc-container-header input {
   padding: var(--spacing-small);
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  width: 70%;
+  width: 35%;
   font-size: 16px;
   transition: var(--transition);
-}
-
-.container-header input:focus {
-  border-color: var(--primary-color);
 }
 
 .create-btn {
@@ -71,13 +67,27 @@ body {
   margin-right: var(--spacing-small);
 }
 
+.submit-btn {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 4px;
+  padding: var(--button-padding);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--spacing-medium);
 }
 
-th, td {
+th,
+td {
   padding: var(--spacing-medium);
   text-align: left;
   border-bottom: 1px solid var(--border-color);
@@ -107,9 +117,15 @@ td {
   transition: var(--transition);
 }
 
-.action-buttons .view { color: #2ecc71; }
-.action-buttons .edit { color: #f39c12; }
-.action-buttons .delete { color: #e74c3c; }
+.action-buttons .view {
+  color: #2ecc71;
+}
+.action-buttons .edit {
+  color: #f39c12;
+}
+.action-buttons .delete {
+  color: #e74c3c;
+}
 
 .modals {
   position: fixed;
@@ -125,30 +141,55 @@ td {
 }
 
 .modals-content {
+  position: relative;
   background-color: var(--secondary-color);
   padding: var(--spacing-medium);
   border-radius: 8px;
   box-shadow: var(--box-shadow);
   max-width: 500px;
   width: 100%;
+  max-height: 80vh; /* Set max height to allow scrolling within the viewport */
+  overflow-y: auto; /* Enables vertical scrolling if content exceeds max-height */
   transition: var(--transition);
 }
 
-.view-center, .delete-center {
-  border: 3px solid var(--primary-color);
-  border-radius: 3px;
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color var(--transition);
+}
+
+.close:hover {
+  color: #e74c3c;
+}
+
+.view-center,
+.delete-center {
   padding: var(--spacing-small);
 }
 
-.view-center h2, .delete-center h2,
-.view-center p, .delete-center p {
+.view-center h2,
+.delete-center h2,
+.view-center p,
+.delete-center p {
   margin: 1rem 1rem;
   font-size: 1rem;
   line-height: 1.6;
 }
 
-.delete-center button, .modals form button {
-  margin: 1rem;
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.update-btn,
+.delete-center button {
   background-color: var(--primary-color);
   color: var(--secondary-color);
   border-radius: 4px;
@@ -157,22 +198,9 @@ td {
   cursor: pointer;
 }
 
-.delete-center button:hover, .modals form button:hover {
+.update-btn:hover,
+.delete-center button:hover {
   background-color: var(--primary-hover-color);
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 2rem;
-  cursor: pointer;
-  color: var(--secondary-color);
-  transition: color var(--transition);
-}
-
-.close:hover {
-  color: var(--text-color);
 }
 
 .modals form input,
@@ -191,6 +219,6 @@ td {
 }
 
 textarea {
-  height: 100px;
-  resize: none;
+  min-height: 100px;
+  resize: vertical;
 }
