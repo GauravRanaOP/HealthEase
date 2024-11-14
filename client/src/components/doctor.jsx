@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../assets/css/doctor.css";
+import SideBar from "../components/SideBar";
+
 
 const Doctor = () => {
   const [Doctors, setDoctors] = useState([]);
@@ -146,7 +148,10 @@ const Doctor = () => {
   };
 
   return (
-    <div className="doctor-table-container">
+
+    <div className="doctor-table-container app-layout">
+      <SideBar />
+      <div className="content">
       <div className="search-container">
         <input
           type="text"
@@ -376,6 +381,7 @@ const Doctor = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
