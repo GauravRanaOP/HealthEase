@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
 import AppointmentCard from "./AppointmentCard";
 import TestCard from "./TestCard";
 
 import "../assets/css/PatientDirectory.css";
+import axios from "axios";
 
 export default function PatientDirectory() {
   // defines states
@@ -207,4 +205,6 @@ export default function PatientDirectory() {
       )}
     </div>
   );
+  
+  
 } // end PatientDirectory

@@ -1,0 +1,224 @@
+:root {
+  --primary-color: #385399;
+  --primary-hover-color: #4666b9;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Ubuntu", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+  --spacing-small: 10px;
+  --spacing-medium: 20px;
+  --spacing-large: 40px;
+  --transition: 0.3s ease;
+  --button-padding: var(--spacing-small) var(--spacing-medium);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-color);
+  background-color: var(--secondary-color);
+}
+
+.dc-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: var(--spacing-large);
+}
+
+.dc-container-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-medium);
+}
+
+.dc-container-header input {
+  padding: var(--spacing-small);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  width: 35%;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.create-btn {
+  padding: var(--button-padding);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.create-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.create-btn i {
+  margin-right: var(--spacing-small);
+}
+
+.submit-btn {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 4px;
+  padding: var(--button-padding);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-medium);
+}
+
+th,
+td {
+  padding: var(--spacing-medium);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+td {
+  background-color: #fff;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-small);
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-small);
+  font-size: 18px;
+  transition: var(--transition);
+}
+
+.action-buttons .view {
+  color: #2ecc71;
+}
+.action-buttons .edit {
+  color: #f39c12;
+}
+.action-buttons .delete {
+  color: #e74c3c;
+}
+
+.modals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modals-content {
+  position: relative;
+  background-color: var(--secondary-color);
+  padding: var(--spacing-medium);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh; /* Set max height to allow scrolling within the viewport */
+  overflow-y: auto; /* Enables vertical scrolling if content exceeds max-height */
+  transition: var(--transition);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color var(--transition);
+}
+
+.close:hover {
+  color: #e74c3c;
+}
+
+.view-center,
+.delete-center {
+  padding: var(--spacing-small);
+}
+
+.view-center h2,
+.delete-center h2,
+.view-center p,
+.delete-center p {
+  margin: 1rem 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.update-btn,
+.delete-center button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 4px;
+  padding: var(--button-padding);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.update-btn:hover,
+.delete-center button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.modals form input,
+.modals form textarea {
+  width: 100%;
+  padding: var(--spacing-small);
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.modals form input:focus,
+.modals form textarea:focus {
+  border-color: var(--primary-color);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
