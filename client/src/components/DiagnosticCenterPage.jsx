@@ -12,8 +12,20 @@ const DiagnosticCenterPage = () => {
     contactNo: "",
     email: "",
     testsOffered: [],
-    addressId: "",
-    availabilityId: "",
+    address: {
+      streetAddress: "",
+      city: "",
+      province: "",
+      country: "",
+      postCode: "",
+    },
+    availability: {
+      startDate: "",
+      endDate: "",
+      startTime: "",
+      endTime: "",
+      type: "DiagnosticCenter",
+    },
   });
 
   //state to control modals
@@ -51,8 +63,20 @@ const DiagnosticCenterPage = () => {
           contactNo: "",
           email: "",
           testsOffered: [],
-          addressId: "",
-          availabilityId: "",
+          address: {
+            streetAddress: "",
+            city: "",
+            province: "",
+            country: "",
+            postCode: "",
+          },
+          availability: {
+            startDate: "",
+            endDate: "",
+            startTime: "",
+            endTime: "",
+            type: "DiagnosticCenter",
+          },
         });
       })
       .catch(console.log);
@@ -122,7 +146,48 @@ const DiagnosticCenterPage = () => {
           value={newCenter.testsOffered}
           onChange={(e) => handleInputChange(e)}
         />
-        <button type="submit">Submit</button>
+
+        <h3>Address</h3>
+        {["streetAddress", "city", "province", "country", "postCode"].map(
+          (field) => (
+            <input
+              key={field}
+              type="text"
+              name={field}
+              placeholder={field.replace(/([A-Z])/g, " $1")}
+              value={newCenter.address[field]}
+              onChange={(e) =>
+                setNewCenter((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, [field]: e.target.value },
+                }))
+              }
+              required
+            />
+          )
+        )}
+
+        <h3>Availability</h3>
+        {["startDate", "endDate", "startTime", "endTime"].map((field) => (
+          <input
+            key={field}
+            type={field.includes("Date") ? "date" : "time"}
+            name={field}
+            value={newCenter.availability[field]}
+            onChange={(e) =>
+              setNewCenter((prev) => ({
+                ...prev,
+                availability: { ...prev.availability, [field]: e.target.value },
+              }))
+            }
+            required
+          />
+        ))}
+        <div className="button-container">
+          <button className="submit-btn" type="submit">
+            Submit
+          </button>
+        </div>
       </form>
     ),
     view: (
@@ -163,9 +228,11 @@ const DiagnosticCenterPage = () => {
           value={newCenter.testsOffered}
           onChange={(e) => handleInputChange(e)}
         />
-        <button className="update-btn" type="submit">
-          Submit
-        </button>
+        <div className="button-container">
+          <button className="update-btn" type="submit">
+            Submit
+          </button>
+        </div>
       </form>
     ),
     delete: (
@@ -174,19 +241,21 @@ const DiagnosticCenterPage = () => {
         <p>
           <strong>Name:</strong> {currentCenter?.name}
         </p>
-        <button onClick={() => handleDelete(currentCenter._id)}>
-          Yes, Delete
-        </button>
-        <button onClick={() => handleModalToggle("showDelete", false)}>
-          Cancel
-        </button>
+        <div className="button-container">
+          <button onClick={() => handleDelete(currentCenter._id)}>
+            Yes, Delete
+          </button>
+          <button onClick={() => handleModalToggle("showDelete", false)}>
+            Cancel
+          </button>
+        </div>
       </div>
     ),
   };
 
   return (
-    <div className="container">
-      <div className="container-header">
+    <div className="dc-container">
+      <div className="dc-container-header">
         <input
           type="text"
           placeholder="Search Diagnostic Centers"

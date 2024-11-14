@@ -1,16 +1,72 @@
 import DiagnosticCenter from "../models/DiagnosticCenter.js";
+import Address from "../models/Address.js";
+import Availability from "../models/Availability.js";
+import Appointment from "../models/Appointment.js";
 
 //create new diagnostic center
 export const createDiagnosticCenter = async (req, res) => {
-    const { name, address, contactNo, email, testsOffered, availabilityId } = req.body;
+    const { name, address, contactNo, email, testsOffered, availability } = req.body;
 
     try {
-        const newCenter = new DiagnosticCenter({ name, contactNo, email, testsOffered });
+        const newAddress = new Address(address);
+        const savedAddress = await newAddress.save();
+
+        const newAvailability = new Availability(availability);
+        const savedAvailability = await newAvailability.save();
+
+        const newCenter = new DiagnosticCenter({
+            name,
+            contactNo,
+            email,
+            testsOffered,
+            addressId: savedAddress._id,
+            availabilityId: savedAvailability._id
+        });
         await newCenter.save();
+
+        const timeSlots = generateTimeSlots(availability.startDate, availability.endDate, availability.startTime, availability.endTime, newCenter._id);
+        await Appointment.insertMany(timeSlots);
+
         res.status(201).json(newCenter);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
+};
+
+//function to generate one-hour time slots
+const generateTimeSlots = (startDate, endDate, startTime, endTime, diagnosticCenterId) => {
+    const timeSlots = [];
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+
+    for (let date = new Date(startDateObj); date <= endDateObj; date.setDate(date.getDate() + 1)) {
+        let currentHour = startHour;
+        let currentMinute = startMinute;
+
+        while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
+            const slotTime = `${String(currentHour).padStart(2, "0")}:${String(currentMinute).padStart(2, "0")}`;
+            const slotDate = date.toISOString().split("T")[0];
+
+            timeSlots.push({
+                date: slotDate,
+                time: slotTime,
+                isTimeSlotAvailable: true,
+                diagnosticCenterId,
+                visitType: "DiagnosticTest",
+                visitMode: "InPerson",
+                status: "Pending",
+                comments: "Pending"
+            });
+
+            currentHour += 1;
+            currentMinute = 0;
+        }
+    }
+
+    return timeSlots;
 };
 
 //get all diagnostic centers
