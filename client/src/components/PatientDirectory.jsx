@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
 import AppointmentCard from "./AppointmentCard";
@@ -8,13 +10,15 @@ import "../assets/css/PatientDirectory.css";
 import axios from "axios";
 
 export default function PatientDirectory() {
-  // state to store doctors
+  // defines states
   const [doctors, setDoctors] = useState([]);
-  // state to store postcode
   const [postcodePrefix, setpostcodePrefix] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [tests, setTests] = useState([]);
-  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState(null);
+
   const navigate = useNavigate();
 
   const userId = "671e7a21ec143e564acc28eb";
@@ -29,12 +33,25 @@ export default function PatientDirectory() {
       const data = response.data;
       // console.log("Parsed doctor data:", data);
       setDoctors(data);
-
     } catch (error) {
       console.error("Error fetching doctors:", error);
       alert("catch error: An error occured while fetching doctors");
     }
   };
+
+  // fetches appointments and tests on component mount
+  useEffect(() => {
+    // function to check if user is logged in
+
+    // for testing
+    // const userId = "671e7a21ec143e564acc28eb";
+    if (!userId) {
+      navigate("/login");
+    } else {
+      fetchAppointments(userId);
+      fetchTests(userId);
+    }
+  }, [navigate, userId]);
 
   // useEffect to fetch doctors when postcodePrefix changes
   useEffect(() => {
@@ -49,7 +66,7 @@ export default function PatientDirectory() {
   };
 
   // checks if patient is logged in
-  useEffect( () => {
+  useEffect(() => {
     // function to check if user is logged in
     // const userId = localStorage.getItem("userId");
     // for testing
@@ -76,13 +93,13 @@ export default function PatientDirectory() {
         setAppointments(response.data.appointments);
       } else {
         console.error("No upcoming appointments found for this user:", userId);
-          // setError("No upcoming appointments found.");
+        // setError("No upcoming appointments found.");
       }
     } catch (error) {
       console.error("Error fetching appointment data: ", error);
-      // setError("Error fetching appointment data.");
-    // } finally {
-    //   setLoading(false);
+      setError("Error fetching appointment data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,41 +126,83 @@ export default function PatientDirectory() {
     }
   };
 
-
-
   return (
     <div className="patient-directory">
-      <h1 className="directory-title">Find a Doctor</h1>
+      {/* <h1 className="directory-title">Find a Doctor</h1> */}
+      <h1 className="directory-title">Patient Directory</h1>
 
-      <SearchDoctor onSearch={handleSearchDoctor} />
-      <div className="doctor-list">
-        {doctors.map((doctor) => (
-          <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
-        ))}
+      <div className="tabs">
+        <button
+          className={`tab ${activeTab === "doctors" ? "active" : ""}`}
+          onClick={() => setActiveTab("doctors")}
+        >
+          Doctors
+        </button>
+        <button
+          className={`tab ${activeTab === "appointments" ? "active" : ""}`}
+          onClick={() => setActiveTab("appointments")}
+        >
+          Appointments
+        </button>
+        <button
+          className={`tab ${activeTab === "tests" ? "active" : ""}`}
+          onClick={() => setActiveTab("tests")}
+        >
+          Tests
+        </button>
       </div>
+
+      {/* renders loading state */}
+      {loading && <p>Loading appointments...</p>}
+
+      {/* renders error state  */}
+      {error && <p className="error-message">{error}</p>}
+
+      {/* renders DoctorCard */}
+      {activeTab === "doctors" && (
+        <div className="doctor-section">
+          <SearchDoctor onSearch={handleSearchDoctor} />
+          <div className="doctor-list">
+            {doctors.length > 0
+              ? doctors.map((doctor) => (
+                  <DoctorCard
+                    key={doctor._id || doctor.doctorId}
+                    doctor={doctor}
+                  />
+                ))
+              : !loading && <p>No doctors found for this postcode.</p>}
+          </div>
+        </div>
+      )}
 
       {/* renders Appointment Card */}
-      <div className="appointment-list"> 
-        {appointments.length > 0 ? (
-          appointments.map((appointment) => (
-            <AppointmentCard key={appointment.id} appointment={appointment} />
-          ))
-        ) : (
-          <p>No upcoming appointments found for the user.</p>
-        )}
-      </div>
+      {activeTab === "appointments" && (
+        <div className="appointment-section">
+          <h2>Appointments</h2>
+          <div className="appointment-list">
+            {appointments.length > 0
+              ? appointments.map((appointment) => (
+                  <AppointmentCard
+                    key={appointment.id}
+                    appointment={appointment}
+                  />
+                ))
+              : !loading && <p>No upcoming appointments found for the user.</p>}
+          </div>
+        </div>
+      )}
 
       {/* renders Test Card */}
-      <div className="test-list"> 
-        {tests.length > 0 ? (
-          tests.map((test) => (
-            <TestCard key={test.id} test={test} />
-          ))
-        ) : (
-          <p>No upcoming tests found for the user.</p>
-        )}
-      </div>
-
+      {activeTab === "tests" && (
+        <div className="tests-section">
+          <h2>Tests</h2>
+          <div className="test-list">
+            {tests.length > 0
+              ? tests.map((test) => <TestCard key={test.id} test={test} />)
+              : !loading && <p>No upcoming appointments found for the user.</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 } // end PatientDirectory

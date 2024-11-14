@@ -64,9 +64,6 @@ const App = () => {
   return (
     <Router>
       <HeaderPatient />
-      {/* <div className="app-layout"> */}
-      {/* <SideBar /> */}
-      {/* <div className="content"> */}
       <Routes>
         <Route path="/Login" element={<AuthenticationPage />} />
         <Route
@@ -108,10 +105,6 @@ const App = () => {
             !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
           }
         />
-        {/* <Route path */}
-      </Routes>
-      {/* </div> */}
-      {/* </div> */}
       <FooterPatient />
     </Router>
   );
