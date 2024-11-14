@@ -38,9 +38,9 @@ export default function PatientDirectory() {
   };
 
   // fetches appointments and tests on component mount
-  useEffect( () => {
+  useEffect(() => {
     // function to check if user is logged in
-    
+
     // for testing
     // const userId = "671e7a21ec143e564acc28eb";
     if (!userId) {
@@ -95,9 +95,9 @@ export default function PatientDirectory() {
       }
     } catch (error) {
       console.error("Error fetching appointment data: ", error);
-      // setError("Error fetching appointment data.");
-      // } finally {
-      //   setLoading(false);
+      setError("Error fetching appointment data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,7 +128,7 @@ export default function PatientDirectory() {
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
       <h1 className="directory-title">Patient Directory</h1>
-      
+
       <div className="tabs">
         <button
           className={`tab ${activeTab === "doctors" ? "active" : ""}`}
@@ -196,15 +196,11 @@ export default function PatientDirectory() {
           <h2>Tests</h2>
           <div className="test-list">
             {tests.length > 0
-              ? tests.map((test) => (
-                  <TestCard key={test.id} test={test} />
-                ))
+              ? tests.map((test) => <TestCard key={test.id} test={test} />)
               : !loading && <p>No upcoming appointments found for the user.</p>}
           </div>
         </div>
       )}
     </div>
   );
-  
-  
 } // end PatientDirectory
