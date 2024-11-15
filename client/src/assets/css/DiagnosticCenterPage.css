@@ -43,7 +43,7 @@ body {
   padding: var(--spacing-small);
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  width: 35%;
+  width: 45%;
   font-size: 16px;
   transition: var(--transition);
 }
@@ -105,26 +105,35 @@ td {
 
 .action-buttons {
   display: flex;
-  gap: var(--spacing-small);
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
-.action-buttons button {
-  background: none;
-  border: none;
+.action-buttons i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: #1f2937;
+  font-size: 1rem;
   cursor: pointer;
-  padding: var(--spacing-small);
-  font-size: 18px;
-  transition: var(--transition);
+  transition: background-color var(--transition), color var(--transition);
 }
 
-.action-buttons .view {
-  color: #2ecc71;
+.action-buttons i:hover {
+  background-color: #f3f4f6;
 }
-.action-buttons .edit {
-  color: #f39c12;
+
+.action-buttons .fa-trash-can {
+  color: #f87171;
 }
-.action-buttons .delete {
-  color: #e74c3c;
+
+.action-buttons .fa-trash-can:hover {
+  background-color: #fde8e8;
 }
 
 .modals {
@@ -148,8 +157,8 @@ td {
   box-shadow: var(--box-shadow);
   max-width: 500px;
   width: 100%;
-  max-height: 80vh; /* Set max height to allow scrolling within the viewport */
-  overflow-y: auto; /* Enables vertical scrolling if content exceeds max-height */
+  max-height: 80vh;
+  overflow-y: auto;
   transition: var(--transition);
 }
 

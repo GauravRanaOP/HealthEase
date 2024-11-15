@@ -4,6 +4,7 @@ import "../assets/css/ViewBookings.css";
 import Pagination from "./Pagination";
 import BookingModal from "./BookingModal";
 import DeleteModal from "./DeleteModal";
+import SideBar from "./SideBar";
 
 const ViewBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -110,93 +111,90 @@ const ViewBookings = () => {
   const handlePageChange = (page) => setCurrentPage(page);
 
   return (
-    <div className="bookings-table-container">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search Patients"
-          className="search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+    <div className="app-layout">
+      <SideBar />
+      <div className="bookings-table-container">
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search Patients"
+            className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="table-responsive">
+          <table className="bookings-table">
+            <thead>
+              <tr>
+                <th>Time Slot</th>
+                <th>Test</th>
+                <th>Patient ID</th>
+                <th>Test Status</th>
+                <th>Result</th>
+                <th>Location</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentBookings.map((booking) => (
+                <tr key={booking._id}>
+                  <td>{formatTimeSlot(booking.timeSlot)}</td>
+                  <td>{booking.test}</td>
+                  <td>{booking.patientId}</td>
+                  <td>{booking.testStatus}</td>
+                  <td>{booking.result}</td>
+                  <td>{booking.location}</td>
+                  <td className="action-buttons">
+                    <i
+                      className="fa-solid fa-eye"
+                      onClick={() => handleViewEdit(booking)}
+                    ></i>
+                    <i
+                      className="fa-solid fa-pen-to-square"
+                      onClick={() => handleViewEdit(booking, true)}
+                    ></i>
+                    <i
+                      className="fa-solid fa-trash-can"
+                      onClick={() => handleDelete(booking)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredBookings.length / bookingsPerPage)}
+          onPageChange={handlePageChange}
         />
+
+        <BookingModal
+          booking={selectedBooking}
+          isOpen={isModalOpen}
+          isEditMode={isEditMode}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveBooking}
+        />
+
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          booking={bookingToDelete}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+        />
+
+        {(isModalOpen || isDeleteModalOpen) && (
+          <div
+            className="modal-overlay"
+            onClick={() => {
+              isModalOpen ? setIsModalOpen(false) : cancelDelete();
+            }}
+          ></div>
+        )}
       </div>
-      <table className="bookings-table">
-        <thead>
-          <tr>
-            <th>Time Slot</th>
-            <th>Test</th>
-            <th>Patient ID</th>
-            <th>Doctor&apos;s Note</th>
-            <th>Test Status</th>
-            <th>Result</th>
-            <th>Location</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentBookings.map((booking) => (
-            <tr key={booking._id}>
-              <td>{formatTimeSlot(booking.timeSlot)}</td>
-              <td>{booking.test}</td>
-              <td>{booking.patientId}</td>
-              <td>{booking.doctorNote}</td>
-              <td>{booking.testStatus}</td>
-              <td>{booking.result}</td>
-              <td>{booking.location}</td>
-              <td className="action-buttons">
-                <button
-                  className="view"
-                  onClick={() => handleViewEdit(booking)}
-                >
-                  <i className="fa-solid fa-eye"></i>
-                </button>
-                <button
-                  className="edit"
-                  onClick={() => handleViewEdit(booking, true)}
-                >
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button
-                  className="delete"
-                  onClick={() => handleDelete(booking)}
-                >
-                  <i className="fas fa-trash-can"></i>
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(filteredBookings.length / bookingsPerPage)}
-        onPageChange={handlePageChange}
-      />
-
-      <BookingModal
-        booking={selectedBooking}
-        isOpen={isModalOpen}
-        isEditMode={isEditMode}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveBooking}
-      />
-
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        booking={bookingToDelete}
-        onClose={cancelDelete}
-        onConfirm={confirmDelete}
-      />
-
-      {(isModalOpen || isDeleteModalOpen) && (
-        <div
-          className="modal-overlay"
-          onClick={() => {
-            isModalOpen ? setIsModalOpen(false) : cancelDelete();
-          }}
-        ></div>
-      )}
     </div>
   );
 };
