@@ -13,6 +13,7 @@ import ViewBookingsRoute from "./routes/ViewBookingsRoute.js";
 import AdminClinicRoute from "./routes/AdminClinicRoute.js";
 import DiagnosticCenterRoutes from "./routes/DiagnosticCenterRoutes.js";
 import UserRoute from "./routes/UserRoute.js";
+import TestAppointmentRoute from "./routes/TestAppointmentRoute.js";
 
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
@@ -50,6 +51,9 @@ app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
 
 // routes for user
 app.use("/api", UserRoute);
+
+// routes for test appointment
+app.use("/api/test", TestAppointmentRoute)
 
 
 // route to get doctors by postcode prefix
