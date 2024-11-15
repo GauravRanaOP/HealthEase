@@ -1,94 +1,92 @@
 :root {
-    --primary-color: #385399;
-    --secondary-color: #fafafa;
-    --text-color: #2c2c2c;
-    --border-color: #9f9f9f;
-    --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    --font-main: "Ubuntu", sans-serif;
-    --font-secondary: "Montserrat", sans-serif;
-  }
-  
-  .timeslots-container {
-    margin: 20px;
-  }
-  
-  .timeslots-container p {
-    color: black;
-  }
-  
-  .timeslots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .timeslot-button {
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    cursor: pointer;
-    color: black;
-    border-radius: 7px;
-  }
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Lato", sans-serif;
+}
 
-  .timeslot-button:hover {
-    background-color: #1a73e8;
-    color: white;
-  }
-  
-  .timeslot-button.selected {
-    background-color: #1a73e8;
-    color: white;
-    border: 2px solid black;
-  }
-  
+.timeslots-container {
+  margin: 20px;
+}
+
+.timeslots-container p {
+  color: black;
+}
+
+.timeslots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timeslot-button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  color: black;
+  border-radius: 7px;
+}
+
+.timeslot-button:hover {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.timeslot-button.selected {
+  background-color: #1a73e8;
+  color: white;
+  border: 2px solid black;
+}
+
+.timeslots-actions {
+  margin-top: 20px;
+}
+
+.cancel-button,
+.confirm-button {
+  padding: 10px 20px;
+  margin-right: 15px;
+  border: none;
+  color: white;
+}
+
+h2 {
+  color: black;
+}
+
+.btn-cancel,
+.btn-confirm,
+.btn-custom {
+  width: 120px;
+  height: 40px;
+  border-radius: 32px;
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  margin-right: 15px;
+}
+
+.btn-cancel {
+  background-color: rgb(159, 26, 26);
+  color: var(--secondary-color);
+}
+
+.btn-confirm {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+@media screen and (max-width: 548px) {
   .timeslots-actions {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  
-  .cancel-button,
-  .confirm-button {
-    padding: 10px 20px;
-    margin-right: 15px;
-    border: none;
-    color: white;
-  }
-  
-  h2 {
-    color: black;
-  }
-  
-  .btn-cancel,
-  .btn-confirm,
-  .btn-custom {
-    width: 120px;
-    height: 40px;
-    border-radius: 32px;
-    font-family: var(--font-secondary);
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease;
-    padding: 10px 20px;
-    margin-right: 15px;
-  }
-  
-  .btn-cancel {
-    background-color: rgb(159, 26, 26);
-    color: var(--secondary-color);
-  }
-  
-  .btn-confirm {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-  }
-
-  @media screen and (max-width: 548px) {
-    .timeslots-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-  }
-  
+}

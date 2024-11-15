@@ -4,8 +4,14 @@
   --text-color: #2c2c2c;
   --border-color: #9f9f9f;
   --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  --font-main: "Ubuntu", sans-serif;
-  --font-secondary: "Montserrat", sans-serif;
+  --font-main: "Lato", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
 }
 
 .header {
@@ -41,10 +47,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 32px;
-  font-family: var(--font-secondary);
+  border-radius: 5px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease;
