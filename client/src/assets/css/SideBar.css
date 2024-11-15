@@ -4,15 +4,20 @@
   --text-color: #2c2c2c;
   --border-color: #9f9f9f;
   --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  --font-main: "Ubuntu", sans-serif;
-  --font-secondary: "Montserrat", sans-serif;
+  --font-main: "Lato", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
 }
 
 .sidebar {
   background-color: #f5f5f5;
   width: 200px;
   padding: 15px;
-  /* height: 100vh; */
   box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1);
   border-right: 3px solid var(--primary-color);
   transition: width 0.3s;
@@ -36,7 +41,7 @@
   margin-bottom: 10px;
   border-radius: 8px;
   color: var(--primary-color);
-  font-weight: bold;
+  font-weight: 600;
   transition: background-color 0.3s, box-shadow 0.3s;
   cursor: pointer;
 }
@@ -54,7 +59,7 @@
 
 .sidebar-item span {
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .sidebar-item.active {
@@ -90,4 +95,3 @@
   display: flex;
   align-items: center;
 }
- 

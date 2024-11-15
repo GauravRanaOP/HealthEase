@@ -4,8 +4,14 @@
   --text-color: #2c2c2c;
   --border-color: #9f9f9f;
   --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  --font-main: "Ubuntu", sans-serif;
-  --font-secondary: "Montserrat", sans-serif;
+  --font-main: "Lato", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
 }
 
 .footer {
@@ -20,7 +26,6 @@
   align-items: flex-start;
   padding-bottom: 20px;
   border-bottom: 2px solid var(--secondary-color);
-  font-family: var(--font-secondary);
 }
 
 .footer-left,
@@ -37,13 +42,19 @@
 
 .footer-logo p {
   margin-top: 15px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
 .newsletter {
   margin-top: 20px;
   font-size: 14px;
+}
+
+.newsletter h3 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .newsletter-input {
@@ -58,31 +69,39 @@
   background-color: var(--secondary-color);
   color: var(--text-color);
   box-shadow: var(--box-shadow);
+  font-size: 12px;
 }
 
 .newsletter-input button {
   width: 100px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  font-family: var(--font-secondary);
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  background-color: #2c2c2c;
+  background-color: var(--text-color);
   color: var(--secondary-color);
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease;
 }
 
 .newsletter-input button:hover {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .footer-links {
   display: flex;
   justify-content: space-between;
+}
+
+.footer-links h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .footer-links ul {
@@ -95,8 +114,7 @@
 }
 
 .footer-links ul li a {
-  font-size: 16px;
-  font-family: var(--font-secondary);
+  font-size: 14px;
   color: var(--secondary-color);
   text-decoration: none;
   transition: color 0.3s ease;
@@ -115,8 +133,13 @@
   align-items: baseline;
 }
 
+.footer-social h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .footer-social a {
-  font-size: 24px;
+  font-size: 22px;
   color: var(--secondary-color);
   text-decoration: none;
   transition: color 0.3s ease;
@@ -124,7 +147,7 @@
 }
 
 .footer-social a:hover {
-  color: var(--text-color);
+  font-size: 24px;
 }
 
 .footer-bottom {
@@ -132,9 +155,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
-  font-family: var(--font-secondary);
-  font-weight: bold;
+  font-size: 13px;
 }
 
 .footer-bottom a {

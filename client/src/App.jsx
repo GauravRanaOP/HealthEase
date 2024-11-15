@@ -105,6 +105,7 @@ const App = () => {
             !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
           }
         />
+      </Routes>
       <FooterPatient />
     </Router>
   );

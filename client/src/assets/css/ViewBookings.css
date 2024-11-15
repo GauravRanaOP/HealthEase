@@ -4,8 +4,7 @@
   --text-color: #2c2c2c;
   --border-color: #9f9f9f;
   --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  --font-main: "Ubuntu", sans-serif;
-  --font-secondary: "Montserrat", sans-serif;
+  --font-main: "Lato", sans-serif;
   --spacing-small: 10px;
   --spacing-medium: 20px;
   --spacing-large: 40px;
@@ -16,18 +15,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-secondary);
+  font-family: var(--font-main);
 }
 
 .bookings-table-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: var(--spacing-medium) 0;
+  margin: var(--spacing-large) auto;
   background: var(--secondary-color);
   border-radius: 10px;
   box-shadow: var(--box-shadow);
   padding: var(--spacing-small) 0;
+  width: 80%;
+  max-width: 1000px;
 }
 
 .search-container {
@@ -47,10 +48,17 @@
   transition: border var(--transition);
 }
 
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .bookings-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+  table-layout: fixed;
+  min-width: 800px;
 }
 
 .bookings-table th,
@@ -73,21 +81,35 @@
 
 .action-buttons {
   display: flex;
-  gap: var(--spacing-small);
-  justify-content: flex-start;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
-.action-buttons button {
-  background-color: transparent;
-  border: none;
+.action-buttons i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: #1f2937;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 8px;
-  transition: background-color var(--transition);
+  transition: background-color var(--transition), color var(--transition);
 }
 
-.action-buttons button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+.action-buttons i:hover {
+  background-color: #f3f4f6;
+}
+
+.action-buttons .fa-trash-can {
+  color: #f87171;
+}
+
+.action-buttons .fa-trash-can:hover {
+  background-color: #fde8e8;
 }
 
 .pagination {
@@ -117,7 +139,7 @@
   cursor: not-allowed;
 }
 
-/* Modal */
+/* Responsive Modal */
 .modal-container {
   position: fixed;
   top: 0;

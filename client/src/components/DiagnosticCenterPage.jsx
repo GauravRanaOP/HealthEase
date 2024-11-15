@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/DiagnosticCenterPage.css";
+import Pagination from "./Pagination";
+import SideBar from "./SideBar";
 
 const DiagnosticCenterPage = () => {
   const [centers, setCenters] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [centersPerPage] = useState(8);
 
   //state to store new center
   const [newCenter, setNewCenter] = useState({
@@ -112,17 +116,29 @@ const DiagnosticCenterPage = () => {
       .catch(console.log);
   };
 
-  //search centers
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
-
-  //control modals
-  const handleModalToggle = (modal, state) =>
-    setModalState({ ...modalState, [modal]: state });
+  // Search centers
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
 
   //filter centers
   const filteredCenters = centers.filter((center) =>
     center.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  //calculate the current page of centers
+  const currentCenters = filteredCenters.slice(
+    (currentPage - 1) * centersPerPage,
+    currentPage * centersPerPage
+  );
+
+  //handle page change
+  const handlePageChange = (page) => setCurrentPage(page);
+
+  //control modals
+  const handleModalToggle = (modal, state) =>
+    setModalState({ ...modalState, [modal]: state });
 
   //modal content object
   const modalContent = {
@@ -254,88 +270,91 @@ const DiagnosticCenterPage = () => {
   };
 
   return (
-    <div className="dc-container">
-      <div className="dc-container-header">
-        <input
-          type="text"
-          placeholder="Search Diagnostic Centers"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-        <button
-          className="create-btn"
-          onClick={() => handleModalToggle("showCreate", true)}
-        >
-          <i className="fa fa-plus"></i>Create
-        </button>
-      </div>
+    <div className="app-layout">
+      <SideBar />
+      <div className="dc-container">
+        <div className="dc-container-header">
+          <input
+            type="text"
+            placeholder="Search Diagnostic Centers"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <button
+            className="create-btn"
+            onClick={() => handleModalToggle("showCreate", true)}
+          >
+            <i className="fa fa-plus"></i>Create
+          </button>
+        </div>
 
-      {["showCreate", "showView", "showEdit", "showDelete"].map(
-        (modal) =>
-          modalState[modal] && (
-            <div key={modal} className="modals">
-              <div className="modals-content">
-                <span
-                  className="close"
-                  onClick={() => handleModalToggle(modal, false)}
-                >
-                  &times;
-                </span>
-                {modalContent[modal.replace("show", "").toLowerCase()]}
+        {["showCreate", "showView", "showEdit", "showDelete"].map(
+          (modal) =>
+            modalState[modal] && (
+              <div key={modal} className="modals">
+                <div className="modals-content">
+                  <span
+                    className="close"
+                    onClick={() => handleModalToggle(modal, false)}
+                  >
+                    &times;
+                  </span>
+                  {modalContent[modal.replace("show", "").toLowerCase()]}
+                </div>
               </div>
-            </div>
-          )
-      )}
+            )
+        )}
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Contact No</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCenters.map((center) => (
-            <tr key={center._id}>
-              <td>{center.name}</td>
-              <td>{center.contactNo}</td>
-              <td>{center.email}</td>
-              <td className="action-buttons">
-                <button
-                  className="view"
-                  onClick={() => {
-                    setCurrentCenter(center);
-                    handleModalToggle("showView", true);
-                  }}
-                >
-                  <i className="fa-solid fa-eye"></i>
-                </button>
-                <button
-                  className="edit"
-                  onClick={() => {
-                    setCurrentCenter(center);
-                    setNewCenter(center);
-                    handleModalToggle("showEdit", true);
-                  }}
-                >
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button
-                  className="delete"
-                  onClick={() => {
-                    setCurrentCenter(center);
-                    handleModalToggle("showDelete", true);
-                  }}
-                >
-                  <i className="fa-solid fa-trash-can"></i>
-                </button>
-              </td>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Contact No</th>
+              <th>Email</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentCenters.map((center) => (
+              <tr key={center._id}>
+                <td>{center.name}</td>
+                <td>{center.contactNo}</td>
+                <td>{center.email}</td>
+                <td className="action-buttons">
+                  <i
+                    className="fa-solid fa-eye"
+                    onClick={() => {
+                      setCurrentCenter(center);
+                      handleModalToggle("showView", true);
+                    }}
+                  ></i>
+                  <i
+                    className="fa-solid fa-pen-to-square"
+                    onClick={() => {
+                      setCurrentCenter(center);
+                      setNewCenter(center);
+                      handleModalToggle("showEdit", true);
+                    }}
+                  ></i>
+                  <i
+                    className="fa-solid fa-trash-can"
+                    onClick={() => {
+                      setCurrentCenter(center);
+                      handleModalToggle("showDelete", true);
+                    }}
+                  ></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredCenters.length / centersPerPage)}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };
