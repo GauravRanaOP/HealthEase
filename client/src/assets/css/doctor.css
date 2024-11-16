@@ -11,11 +11,31 @@ body {
   background-color: #eeeeee;
 }
 
+.voice-recognization {
+  margin: 20px;
+}
+
 .search-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 20px 0;
+}
+
+.stop-button {
+  background-color: #cb2020;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Add space between buttons if needed */
 }
 
 .search-input {
