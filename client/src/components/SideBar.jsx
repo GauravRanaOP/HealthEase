@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link , useNavigate } from "react-router-dom"; // Import Link for navigation
 import "../assets/css/SideBar.css";
 import { useAuth } from "../components/authentication/AuthContext.jsx";
@@ -39,6 +39,10 @@ const SideBar = () => {
     label: "Logout",
     path: "/logout",
   };
+
+  useEffect(()=> {
+
+  }, []);
 
   const links = navLinks["admin"] || [];
 
