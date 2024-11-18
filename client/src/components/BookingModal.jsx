@@ -44,14 +44,12 @@ const BookingModal = ({ booking, isOpen, isEditMode, onClose, onSave }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-container">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h2>{isEditMode ? "Edit Booking" : "View Booking"}</h2>
-          <button className="modal-close-icon" onClick={onClose}>
-            <i className="fa-solid fa-times"></i>
-          </button>
-        </div>
+    <div className="modals">
+      <div className="modals-content">
+        <h2>{isEditMode ? "Edit Booking" : "View Booking"}</h2>
+        <span className="close" onClick={onClose}>
+          &times;
+        </span>
         {isEditMode ? (
           <div className="modal-edit-booking-form">
             <form onSubmit={handleSubmit}>
@@ -126,7 +124,9 @@ const BookingModal = ({ booking, isOpen, isEditMode, onClose, onSave }) => {
                 />
               </div>
               <div className="modal-actions">
-                <button type="submit">Save</button>
+                <button className="modal-confirm-delete" type="submit">
+                  Save
+                </button>
               </div>
             </form>
           </div>
