@@ -111,106 +111,105 @@ export const getTestAppointmentTimeslots = async (req, res) => {
 
 // update operation: books an appointment
 export const updateTestAppointmentTimeslot = async (req, res) => {
-    // const { appointmentId } = req.body;
-    const { appointmentId } = req.params;
-  
-    const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
-  
-    const updatedData = req.body;
-    console.log(`appointmentId is : `, appointmentId);
-    console.log(`userId is : `, userId);
-    
-    if (!appointmentId) {
+  // const { appointmentId } = req.body;
+  const { appointmentId } = req.params;
+
+  const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
+
+  const updatedData = req.body;
+  console.log(`appointmentId is : `, appointmentId);
+  console.log(`userId is : `, userId);
+
+  if (!appointmentId) {
+    return res.status(404).json({
+      message: "appointmentId is required",
+    });
+  }
+
+  try {
+    // finds the appointment by Id
+    const appointment = await Appointment.findById(appointmentId);
+    console.log(`Updating appointment ID: ${appointmentId} with data: `, updatedData);
+
+    if (!appointment) {
       return res.status(404).json({
-        message: "appointmentId is required",
+        message: "The selected timeslot is no longer available. Please choose another timeslot.",
       });
     }
-  
-    try {
-      // finds the appointment by Id
-      const appointment = await Appointment.findById(appointmentId);
-      console.log(`Updating appointment ID: ${appointmentId} with data: `, updatedData);
-  
-      if (!appointment) {
-        return res.status(404).json({
-          message: "The selected timeslot is no longer available. Please choose another timeslot.",
-        });
-      }
-  
-      // retrieves doctor information
-      const diagnosticCenter = await DiagnosticCenter.findById(appointment.diagnosticCenterId);
-      if(!diagnosticCenter) {
-        return res.status(404).json({
-          message: "Diagnostic Center not found.",
-        });
-      }
-  
-      // retrives doctors details using userId from the doctor profile
-      const user = await User.findById(diagnosticCenter.userid);
-      if (!user) {
-        return res.status(404).json({
-          message: "User information for diagnostic center not found",
-        });
-      }
-      const diagnosticCenterName = `${user.firstName} ${user.lastName}`;
-  
-      // updates the appointment to mark it as booked
-      appointment.isTimeSlotAvailable = false;
-      appointment.status = "Confirmed";
-      // appointment.patientId = userId;   // will be modified once the login module is implemented.
-      appointment.comments = "Booking Confirmed";
-  
-      await appointment.save();
-  
-      res.status(200).json({
-        // message: `Appointment successfully booked with Dr. ${appointment.doctorId} on ${appointment.date} at ${appointment.time}.`,
-        message: `Appointment successfully booked at Diagnostic Center ${diagnosticCenterName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment time`,
-      });
-  
-    } catch (error) {
-      res.status(500).json({
-        message: "Server error: Error booking appointment.",
-        error: error.message,
+
+    // retrieves doctor information
+    const diagnosticCenter = await DiagnosticCenter.findById(appointment.diagnosticCenterId);
+    if (!diagnosticCenter) {
+      return res.status(404).json({
+        message: "Diagnostic Center not found.",
       });
     }
-  };
+
+    // retrives doctors details using userId from the doctor profile
+    const user = await User.findById(diagnosticCenter.userid);
+    if (!user) {
+      return res.status(404).json({
+        message: "User information for diagnostic center not found",
+      });
+    }
+    const diagnosticCenterName = `${user.firstName} ${user.lastName}`;
+
+    // updates the appointment to mark it as booked
+    appointment.isTimeSlotAvailable = false;
+    appointment.status = "Confirmed";
+    // appointment.patientId = userId;   // will be modified once the login module is implemented.
+    appointment.comments = "Booking Confirmed";
+
+    await appointment.save();
+
+    res.status(200).json({
+      // message: `Appointment successfully booked with Dr. ${appointment.doctorId} on ${appointment.date} at ${appointment.time}.`,
+      message: `Appointment successfully booked at Diagnostic Center ${diagnosticCenterName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment time`,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error: Error booking appointment.",
+      error: error.message,
+    });
+  }
+};
 
 // check operation: gets one diagnostic center appointment (same as doctor one appointment, so can be removed, just keeping for now for testing)
 export const getOneTestAppointmentTimeslot = async (req, res) => {
-    // const { appointmentId } = req.body;
-  
-    let appointmentId;
-    // checks if appointmentId is in the route parameter or query parameter
-    if (req.params.appointmentId) {
-      // from path parameter
-      appointmentId = req.params.appointmentId;
-    } else if (req.query.appointmentId) {
-      // from query parameter
-      appointmentId = req.query.appointmentId;
-    } else {
-      return res.status(400).json({ message: "appointmentId is required" });
-    }
-  
-    if (!appointmentId) {
-      return res.status(404).json({ message: "appointmentId is required." });
-    }
-  
-    try {
-      // fetches the timeslots
-      const timeslot = await Appointment.findById(appointmentId);
-  
-      if (timeslot) {
-        res.status(200).json(timeslot);
-      } else {
-        res.status(200).json([]);
-      }
-    } catch (error) {
-      res
-        .status(500)
-        .json({
-          message: "Server error: Error fetching the timeslot: ",
-          error: error.message,
-        });
-    }
-  };
+  // const { appointmentId } = req.body;
 
+  let appointmentId;
+  // checks if appointmentId is in the route parameter or query parameter
+  if (req.params.appointmentId) {
+    // from path parameter
+    appointmentId = req.params.appointmentId;
+  } else if (req.query.appointmentId) {
+    // from query parameter
+    appointmentId = req.query.appointmentId;
+  } else {
+    return res.status(400).json({ message: "appointmentId is required" });
+  }
+
+  if (!appointmentId) {
+    return res.status(404).json({ message: "appointmentId is required." });
+  }
+
+  try {
+    // fetches the timeslots
+    const timeslot = await Appointment.findById(appointmentId);
+
+    if (timeslot) {
+      res.status(200).json(timeslot);
+    } else {
+      res.status(200).json([]);
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Server error: Error fetching the timeslot: ",
+        error: error.message,
+      });
+  }
+};

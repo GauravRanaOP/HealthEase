@@ -17,12 +17,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
   font-family: var(--font-main);
-  color: var(--text-color);
-  background-color: var(--secondary-color);
 }
 
 .dc-container {
@@ -211,8 +206,7 @@ td {
   background-color: var(--primary-hover-color);
 }
 
-.modals form input,
-.modals form textarea {
+.modals form input {
   width: 100%;
   padding: var(--spacing-small);
   margin: 1rem 0;
@@ -221,12 +215,6 @@ td {
   font-size: 16px;
 }
 
-.modals form input:focus,
-.modals form textarea:focus {
+.modals form input:focus {
   border-color: var(--primary-color);
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
 }
