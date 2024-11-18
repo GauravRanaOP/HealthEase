@@ -1,73 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendarAlt,
-  faClock,
-  faCommentDots,
-  faLocationDot,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 
 export default function TestCard({ test }) {
-
-  // defines state
-  const [showDetails, setShowDetails] = useState(false);
  
-  if (!test) return null;
+  const navigate = useNavigate();
 
-  // diagnostic center address
-  const { streetAddress, city, province, country, postCode } = test.diagnosticCenterAddress || {};
-
-  // function to toggle details button
-  const handleDetailsToggle = () => {
-    setShowDetails(prevShowDetails => !prevShowDetails);
+  // checks if test data is available
+  if (!test) {
+    return <div>Loading diagnostic center...</div>;
   }
+
+  // // destructures diagnostic center address
+  // const { streetAddress, city, province, postCode } = test.diagnosticCenters?.[0]?.address || {};
+
+  // navigates to TestTimeslots page when book now button is clicked
+  const handleBookNowClick = () => {
+    if (test._id) {
+      navigate (`/TestTimeslots/${test._id}`);
+    } else {
+      console.log("TestId is undefined");
+    }
+  };
 
   return (
     <div className="test-card">
-      <h3>
-        {test.diagnosticCenterName}
-        <span className="visit-type">
-          {/* {test.visitType === "DoctorVisit" ? "At Clinic" : "At Lab"} */}
-          {test.status}
-          </span>
-      </h3>
-      <div className="test-card-items"> 
-
-        <div className="test-card-address">
-          {streetAddress && (
-            <p>
-              <FontAwesomeIcon icon={faLocationDot} className="icon"  />
-              {streetAddress}, {city}, {province}, {country}, {postCode}
-            </p>
+      <h3>{test.name}</h3>
+      <div className="test-card-p-container">
+        <p>{test.description}</p>
+          {test.diagnosticCenters && test.diagnosticCenters.length > 0 ? (
+            test.diagnosticCenters.map((dc, index) => (
+              <p key={index}>
+                <FontAwesomeIcon icon={faLocationDot} className="icon" />
+                {dc.address?.streetAddress}, {dc.address?.city} ,{dc.address?.province}, {dc.address?.postCode}
+              </p>
+            ))
+          ) : (
+            <p>No diagnostic centers available</p>
           )}
-        </div>
-        <div className="test-card-date-time">
-          <p><FontAwesomeIcon icon={faCalendarAlt} className="icon"/>{test.date}</p>  
-          <p><FontAwesomeIcon icon={faClock} className="icon"/>{test.time}</p>
-        </div>
-        
-        <div className="test-card-details-btn">
-          <button onClick={handleDetailsToggle}>
-            {showDetails ? "Hide Details" : "Details"}
-          </button>
-          
-        </div>
-        
       </div>
-      
-      
-      {/* renders details when showDetails is true */}
-      {showDetails && (
-        <div className="test-card-p-container">
-          <p>Visit Mode: {test.visitMode}</p>
-          <p>Status: {test.status}</p>
-          <p><FontAwesomeIcon icon={faCommentDots} className="icon"/>
-            Comments: {test.comments}
-          </p>
+
+      <div className="test-card-open-container">
+        <div>Available Now</div>
+        <div>
+          <button onClick={handleBookNowClick}>
+            Book Now
+            <FontAwesomeIcon icon={faArrowRight} className="arrow-right-icon" />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
