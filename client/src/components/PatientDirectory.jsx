@@ -5,6 +5,7 @@ import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
 import AppointmentCard from "./AppointmentCard";
 import TestCard from "./TestCard";
+import SearchTest from "./SearchTest";
 
 import "../assets/css/PatientDirectory.css";
 import axios from "axios";
@@ -13,6 +14,7 @@ export default function PatientDirectory() {
   // defines states
   const [doctors, setDoctors] = useState([]);
   const [postcodePrefix, setpostcodePrefix] = useState("");
+  const [testname, setTestname] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,6 +67,7 @@ export default function PatientDirectory() {
     setpostcodePrefix(postcode);
   };
 
+
   // checks if patient is logged in
   useEffect(() => {
     // function to check if user is logged in
@@ -78,6 +81,13 @@ export default function PatientDirectory() {
       fetchAppointments(userId);
     }
   }, [navigate, userId]);
+
+  
+  // function to handle search test
+  const handleSearchTest = (name) => {
+    setTestname(name);
+  };
+
 
   // fetches appointments
   const fetchAppointments = async (userId) => {
@@ -103,6 +113,7 @@ export default function PatientDirectory() {
     }
   };
 
+
   // fetches tests
   const fetchTests = async (userId) => {
     setLoading(true);
@@ -126,6 +137,7 @@ export default function PatientDirectory() {
     }
   };
 
+  
   return (
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
@@ -144,6 +156,11 @@ export default function PatientDirectory() {
         >
           Appointments
         </button>
+        <button 
+          className={`tab ${activeTab === "searchTests" ? "active" : "" }` }
+          onClick={ () => setActiveTab("searchTests")}>
+        Search Tests
+        </button>
         <button
           className={`tab ${activeTab === "tests" ? "active" : ""}`}
           onClick={() => setActiveTab("tests")}
@@ -158,7 +175,7 @@ export default function PatientDirectory() {
       {/* renders error state  */}
       {error && <p className="error-message">{error}</p>}
 
-      {/* renders DoctorCard */}
+      {/* renders Search Doctor */}
       {activeTab === "doctors" && (
         <div className="doctor-section">
           <SearchDoctor onSearch={handleSearchDoctor} />
@@ -175,7 +192,7 @@ export default function PatientDirectory() {
         </div>
       )}
 
-      {/* renders Appointment Card */}
+      {/* renders Doctor Appointment Card */}
       {activeTab === "appointments" && (
         <div className="appointment-section">
           <h2>Appointments</h2>
@@ -192,7 +209,23 @@ export default function PatientDirectory() {
         </div>
       )}
 
-      {/* renders Test Card */}
+      {/* renders Search Test */}
+      {activeTab === "searchTests" && (
+        <div className="test-section">
+          <SearchTest onSearch={handleSearchTest} />  
+          <div className="test-list">
+            {tests.length > 0 ? (
+              tests.map( (test) => (
+                <TestCard key={test._id || test.testId} test={test} />
+              ))
+            ) : (
+              !loading && <p>No tests found with this name.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* renders Test Appointment Card */}
       {activeTab === "tests" && (
         <div className="tests-section">
           <h2>Tests</h2>
