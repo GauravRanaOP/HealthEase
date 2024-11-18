@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
-import AppointmentCard from "./AppointmentCard";
+import DoctorAppointmentCard from "./DoctorAppointmentCard";
 import TestCard from "./TestCard";
+import TestAppointmentCard from "./TestAppointmentCard";
 import SearchTest from "./SearchTest";
 
 import "../assets/css/PatientDirectory.css";
@@ -15,8 +16,9 @@ export default function PatientDirectory() {
   const [doctors, setDoctors] = useState([]);
   const [postcodePrefix, setpostcodePrefix] = useState("");
   const [testname, setTestname] = useState("");
-  const [appointments, setAppointments] = useState([]);
+  const [doctorAppointments, setDoctorAppointments] = useState([]);
   const [tests, setTests] = useState([]);
+  const [testAppointments, setTestAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState(null);
@@ -25,35 +27,44 @@ export default function PatientDirectory() {
 
   const userId = "671e7a21ec143e564acc28eb";
 
-  // fetch doctors based on postcode
+
+  // fetches appointments and tests on component mount
+  useEffect(() => {
+    if (userId) {
+      
+      fetchDoctorAppointments(userId);
+      fetchTestAppointments(userId);
+    } else {
+      navigate("/login");
+    }
+  }, [userId, navigate]);
+
+
+  // fetches doctors based on postcode
   const fetchDoctors = async (postcodePrefix) => {
     try {
       const response = await axios.get(
         `http://localhost:3002/api/doctors/postcode/${postcodePrefix}`
       );
-
-      const data = response.data;
-      // console.log("Parsed doctor data:", data);
-      setDoctors(data);
+      setDoctors(response.data);
     } catch (error) {
       console.error("Error fetching doctors:", error);
-      alert("catch error: An error occured while fetching doctors");
     }
   };
 
-  // fetches appointments and tests on component mount
-  useEffect(() => {
-    // function to check if user is logged in
 
-    // for testing
-    // const userId = "671e7a21ec143e564acc28eb";
-    if (!userId) {
-      navigate("/login");
-    } else {
-      fetchAppointments(userId);
-      fetchTests(userId);
+  // fetches tests based on test name
+  const fetchTests = async (testname) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/api/test/name/${testname}`
+      );
+      setTests(response.data);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
     }
-  }, [navigate, userId]);
+  };
+
 
   // useEffect to fetch doctors when postcodePrefix changes
   useEffect(() => {
@@ -62,12 +73,26 @@ export default function PatientDirectory() {
     }
   }, [postcodePrefix]);
 
-  // function to handle search
+  // useEffect to fetch tests when test name changes
+  useEffect(() => {
+    if (testname) {
+      fetchTests(testname);
+    }
+  }, [testname]);
+
+
+  // function to handle search doctor
   const handleSearchDoctor = (postcode) => {
     setpostcodePrefix(postcode);
   };
 
 
+  // function to handle search test
+  const handleSearchTest = (name) => {
+    setTestname(name);
+  };
+
+  
   // checks if patient is logged in
   useEffect(() => {
     // function to check if user is logged in
@@ -78,32 +103,25 @@ export default function PatientDirectory() {
       navigate("/login");
     } else {
       // fetches appointments when patientId is set
-      fetchAppointments(userId);
+      fetchDoctorAppointments(userId);
     }
   }, [navigate, userId]);
 
-  
-  // function to handle search test
-  const handleSearchTest = (name) => {
-    setTestname(name);
-  };
 
-
-  // fetches appointments
-  const fetchAppointments = async (userId) => {
+  // fetches doctor appointments for the user
+  const fetchDoctorAppointments = async (userId) => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get(
         `http://localhost:3002/api/patient/appointments?patientId=${userId}`
       );
-
-      console.log("Response data: ", response.data.appointments);
-      // console.log("Response patientId: ", response.data.appointments.patientId);
-
+      // console.log("Response data: ", response.data.appointments);
       if (response.data.appointments && response.status === 200) {
-        setAppointments(response.data.appointments);
+        setDoctorAppointments(response.data.appointments || []);
       } else {
         console.error("No upcoming appointments found for this user:", userId);
-        // setError("No upcoming appointments found.");
+        setError("No upcoming appointments found.");
       }
     } catch (error) {
       console.error("Error fetching appointment data: ", error);
@@ -113,9 +131,8 @@ export default function PatientDirectory() {
     }
   };
 
-
-  // fetches tests
-  const fetchTests = async (userId) => {
+  // fetches test appointments for the user
+  const fetchTestAppointments = async (userId) => {
     setLoading(true);
     setError(null);
     try {
@@ -124,7 +141,7 @@ export default function PatientDirectory() {
       );
       // console.log("Response data: ", response.data.appointments);
       if (response.data.tests && response.status === 200) {
-        setTests(response.data.tests || []);
+        setTestAppointments(response.data.tests || []);
       } else {
         console.error("No upcoming tests found for this user:", userId);
         setError("No upcoming tests found.");
@@ -137,37 +154,34 @@ export default function PatientDirectory() {
     }
   };
 
-  
   return (
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
       <h1 className="directory-title">Patient Directory</h1>
 
       <div className="tabs">
-        <button
-          className={`tab ${activeTab === "doctors" ? "active" : ""}`}
-          onClick={() => setActiveTab("doctors")}
-        >
-          Doctors
+        <button 
+          className={`tab ${activeTab === "searchDoctors" ? "active" : "" }` }
+          onClick={ () => setActiveTab("searchDoctors")}>
+        Search Doctors
         </button>
-        <button
-          className={`tab ${activeTab === "appointments" ? "active" : ""}`}
-          onClick={() => setActiveTab("appointments")}
-        >
-          Appointments
+        <button 
+          className={`tab ${activeTab === "doctorAppointments" ? "active" : "" }` }
+          onClick={ () => setActiveTab("doctorAppointments")}>
+        Doctor Appointments
         </button>
         <button 
           className={`tab ${activeTab === "searchTests" ? "active" : "" }` }
           onClick={ () => setActiveTab("searchTests")}>
         Search Tests
         </button>
-        <button
-          className={`tab ${activeTab === "tests" ? "active" : ""}`}
-          onClick={() => setActiveTab("tests")}
-        >
-          Tests
+        <button 
+          className={`tab ${activeTab === "testAppointments" ? "active" : "" }` }
+          onClick={ () => setActiveTab("testAppointments")}>
+        Test Appointments
         </button>
       </div>
+
 
       {/* renders loading state */}
       {loading && <p>Loading appointments...</p>}
@@ -176,35 +190,33 @@ export default function PatientDirectory() {
       {error && <p className="error-message">{error}</p>}
 
       {/* renders Search Doctor */}
-      {activeTab === "doctors" && (
+      {activeTab === "searchDoctors" && (
         <div className="doctor-section">
-          <SearchDoctor onSearch={handleSearchDoctor} />
+          <SearchDoctor onSearch={handleSearchDoctor} />  
           <div className="doctor-list">
-            {doctors.length > 0
-              ? doctors.map((doctor) => (
-                  <DoctorCard
-                    key={doctor._id || doctor.doctorId}
-                    doctor={doctor}
-                  />
-                ))
-              : !loading && <p>No doctors found for this postcode.</p>}
+            {doctors.length > 0 ? (
+              doctors.map( (doctor) => (
+                <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
+              ))
+            ) : (
+              !loading && <p>No doctors found for this postcode.</p>
+            )}
           </div>
         </div>
       )}
 
-      {/* renders Doctor Appointment Card */}
-      {activeTab === "appointments" && (
+      {/* renders Doctor Appointments */}
+      {activeTab === "doctorAppointments" && (
         <div className="appointment-section">
           <h2>Appointments</h2>
-          <div className="appointment-list">
-            {appointments.length > 0
-              ? appointments.map((appointment) => (
-                  <AppointmentCard
-                    key={appointment.id}
-                    appointment={appointment}
-                  />
-                ))
-              : !loading && <p>No upcoming appointments found for the user.</p>}
+          <div className="appointment-list"> 
+            {doctorAppointments.length > 0 ? (
+              doctorAppointments.map((appointment) => (
+                <DoctorAppointmentCard key={appointment.id} appointment={appointment} />
+              ))
+            ) : (
+              !loading && <p>No upcoming appointments found for the user.</p>
+            )}
           </div>
         </div>
       )}
@@ -212,15 +224,13 @@ export default function PatientDirectory() {
       {/* renders Search Test */}
       {activeTab === "searchTests" && (
         <div className="test-section">
-          <SearchTest onSearch={handleSearchTest} />  
+          <SearchTest onSearch={handleSearchTest} />
           <div className="test-list">
-            {tests.length > 0 ? (
-              tests.map( (test) => (
-                <TestCard key={test._id || test.testId} test={test} />
-              ))
-            ) : (
-              !loading && <p>No tests found with this name.</p>
-            )}
+            {tests.length > 0
+              ? tests.map((test) => (
+                  <TestCard key={test._id || test.testId} test={test} />
+                ))
+              : !loading && <p>No tests found with this name.</p>}
           </div>
         </div>
       )}
