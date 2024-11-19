@@ -41,11 +41,15 @@ const AppointmentSchema = new Schema({
     doctorNote: String,
     status: {
         type: String,
-        default: 'Pending'
+        default: ['Pending', 'Confirmed', 'TestResultsAvailable', 'DoctorNoteAvaiable', 'TestPendingAtDC', 'Completed']
     },
     comments: {
         type: String,
         default: 'Pending'
+    },
+    isDirectTest: {
+        type: Boolean,
+        default: false
     }
 });
 

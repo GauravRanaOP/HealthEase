@@ -133,26 +133,27 @@ export const updateTestAppointmentTimeslot = async (req, res) => {
   
       if (!appointment) {
         return res.status(404).json({
-          message: "The selected timeslot is no longer available. Please choose another timeslot.",
+          message: "Server: The selected timeslot is no longer available. Please choose another timeslot.",
         });
       }
   
-      // retrieves doctor information
+      // retrieves diagnostic center information
       const diagnosticCenter = await DiagnosticCenter.findById(appointment.diagnosticCenterId);
       if(!diagnosticCenter) {
         return res.status(404).json({
-          message: "Diagnostic Center not found.",
+          message: "Server: Diagnostic Center not found.",
         });
       }
   
-      // retrives doctors details using userId from the doctor profile
-      const user = await User.findById(diagnosticCenter.userid);
-      if (!user) {
-        return res.status(404).json({
-          message: "User information for diagnostic center not found",
-        });
-      }
-      const diagnosticCenterName = `${user.firstName} ${user.lastName}`;
+      // retrives diagnostic center details using userId from the doctor profile
+      // const user = await User.findById(diagnosticCenter.userid);
+      // if (!user) {
+      //   return res.status(404).json({
+      //     message: "Server: User information for diagnostic center not found",
+      //   });
+      // }
+      // const diagnosticCenterName = `${user.firstName} ${user.lastName}`;
+      const diagnosticCenterName = diagnosticCenter.name;
   
       // updates the appointment to mark it as booked
       appointment.isTimeSlotAvailable = false;
