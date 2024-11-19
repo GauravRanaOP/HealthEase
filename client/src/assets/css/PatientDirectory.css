@@ -27,6 +27,12 @@
   color: var(--text-color);
 }
 
+.welcome-msg {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
 .tabs {
   display: flex;
   justify-content: center;

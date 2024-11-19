@@ -14,15 +14,15 @@ export const updateAppointmentStatuses = async () => {
       isTimeSlotAvailable: false,
       isDirectTest: false,
       // avoids processing already updated appointments
-      status: { $ne: "DoctorNoteAvaiable" },
+      status: { $ne: "Doctor Note Avaiable" },
     });
 
     for (const appointment of doctorAppointments) {
       if (appointment.doctorNote) {
-        appointment.status = "DoctorNoteAvaiable";
+        appointment.status = "Doctor Note Avaiable";
         await appointment.save();
         console.log(
-          `Appointment ${appointment._id}: Status updated to DoctorNoteAvaiable`
+          `Appointment ${appointment._id}: Status updated to Doctor Note Avaiable`
         );
 
         
@@ -39,18 +39,18 @@ export const updateAppointmentStatuses = async () => {
 
     for (const appointment of diagnosticAppointments) {
       if (appointment.testResult) {
-        appointment.status = "TestResultsAvailable";
+        appointment.status = "Test Results Available";
         await appointment.save();
         console.log(
-          `Appointment ${appointment._id}: Status updated to TestResultsAvailable`
+          `Appointment ${appointment._id}: Status updated to Test Results Available`
         );
         
 
-      } else if (appointment.status !== "TestPendingAtDC") {
-        appointment.status = "TestPendingAtDC";
+      } else if (appointment.status !== "Test Pending At DC") {
+        appointment.status = "Test Pending At DC";
         await appointment.save();
         console.log(
-          `Appointment ${appointment._id}: Status updated to TestPendingAtDC`
+          `Appointment ${appointment._id}: Status updated to Test Pending At DC`
         );
 
       }

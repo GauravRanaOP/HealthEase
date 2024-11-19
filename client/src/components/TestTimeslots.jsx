@@ -28,10 +28,7 @@ export default function TestTimeslots() {
       // formats the date to yyyy-mm-dd
       const formattedDate = selectedDate.toISOString().split("T")[0];
       // debugging
-      console.log(
-        "TestTimeslotsPage:Fetching timeslots for date: ",
-        formattedDate
-      );
+      //console.log("TestTimeslotsPage:Fetching timeslots for date: ", formattedDate);
       try {
         const response = await axios.get(
           `http://localhost:3002/api/test/availableTimeslots?diagnosticCenterId=${diagnosticCenterId}&date=${formattedDate}`

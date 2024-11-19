@@ -37,10 +37,7 @@ export default function DoctorTimeslots() {
       // formats the date to yyyy-mm-dd
       const formattedDate = selectedDate.toISOString().split("T")[0];
       // debugging
-      console.log(
-        "DoctorTimeslotsPage:Fetching timeslots for date: ",
-        formattedDate
-      );
+      //console.log("DoctorTimeslotsPage:Fetching timeslots for date: ",formattedDate);
       try {
         const response = await axios.get(
           `http://localhost:3002/api/doctors/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`

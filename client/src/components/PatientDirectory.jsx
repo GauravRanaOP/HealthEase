@@ -40,12 +40,12 @@ export default function PatientDirectory() {
   
   // ensures userData has a fallback to localStorage if it is not available
   const userId = userData || JSON.parse(localStorage.getItem("user_data"))?.userId;
-  console.log("userId outside useEffect:", userId);
+  //console.log("userId outside useEffect:", userId);
 
   // fetches data only when userData is available and loading is complete
   useEffect(() => {
-    console.log("useEffect triggered");
-    console.log("userId from AuthContext or localStorage:", userId);
+    //console.log("useEffect triggered");
+    //console.log("userId from AuthContext or localStorage:", userId);
 
     if (userId) {
       fetchUserData(userId);
@@ -95,7 +95,7 @@ export default function PatientDirectory() {
         `http://localhost:3002/api/test/name?name=${testname}`
       );
       // debugging
-      console.log("Test response:", response.data);
+      //console.log("Test response:", response.data);
       setTests(response.data);    // stores the test with their diagnostic centers
     } catch (error) {
       console.error("Error fetching doctors:", error);
@@ -143,7 +143,7 @@ export default function PatientDirectory() {
       //console.log("API Response data: ", response.data.appointments);
       if (response.data.appointments && response.status === 200) {
         setDoctorAppointments(response.data.appointments || []);
-        console.log("setDoctorAppointments: ", setDoctorAppointments);
+        //console.log("setDoctorAppointments: ", setDoctorAppointments);
       } else {
         console.error("No upcoming appointments found for this user:", userId);
         setError("No upcoming appointments found.");
@@ -165,7 +165,7 @@ export default function PatientDirectory() {
       const response = await axios.get(
         `http://localhost:3002/api/patient/tests?patientId=${userId}`
       );
-      console.log("Response data: ", response.data.appointments);
+      //console.log("Response data: ", response.data.appointments);
       if (response.data.tests && response.status === 200) {
         setTestAppointments(response.data.tests || []);
       } else {
@@ -184,8 +184,8 @@ export default function PatientDirectory() {
   return (
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
-      <h1 className="directory-title">Patient Directory</h1>
-      {userDetails ? <p>Welcome, {userDetails.firstName}</p> : <p>Welcome back </p>}
+      {/*<h1 className="directory-title">Patient Directory</h1> */}
+      {userDetails ? <h3 className="welcome-msg">Welcome, {userDetails.firstName}</h3> : <p>Welcome back </p>}
 
       <div className="tabs">
         <button 
@@ -242,7 +242,7 @@ export default function PatientDirectory() {
       {/* renders Doctor Appointments */}
       {activeTab === "doctorAppointments" && (
         <div className="appointment-section">
-          <h2>Appointments</h2>
+          {/* <h2>Appointments</h2> */}
           <div className="appointment-list"> 
             {doctorAppointments.length > 0 ? (
               doctorAppointments.map((appointment) => (
@@ -272,7 +272,7 @@ export default function PatientDirectory() {
       {/* renders Test Appointments */}
       {activeTab === "testAppointments" && (
       <div className="tests-section">
-        <h2>Tests</h2>
+        {/* <h2>Tests</h2> */}
         <div className="test-list"> 
           {testAppointments.length > 0 ? (
             testAppointments.map((test) => (
