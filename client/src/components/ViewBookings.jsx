@@ -123,47 +123,45 @@ const ViewBookings = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className="table-responsive">
-          <table className="bookings-table">
-            <thead>
-              <tr>
-                <th>Time Slot</th>
-                <th>Test</th>
-                <th>Patient ID</th>
-                <th>Test Status</th>
-                <th>Result</th>
-                <th>Location</th>
-                <th>Action</th>
+        <table>
+          <thead>
+            <tr>
+              <th>Time Slot</th>
+              <th>Test</th>
+              <th>Patient ID</th>
+              <th>Test Status</th>
+              <th>Result</th>
+              <th>Location</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentBookings.map((booking) => (
+              <tr key={booking._id}>
+                <td>{formatTimeSlot(booking.timeSlot)}</td>
+                <td>{booking.test}</td>
+                <td>{booking.patientId}</td>
+                <td>{booking.testStatus}</td>
+                <td>{booking.result}</td>
+                <td>{booking.location}</td>
+                <td className="action-buttons">
+                  <i
+                    className="fa-solid fa-eye"
+                    onClick={() => handleViewEdit(booking)}
+                  ></i>
+                  <i
+                    className="fa-solid fa-pen-to-square"
+                    onClick={() => handleViewEdit(booking, true)}
+                  ></i>
+                  <i
+                    className="fa-solid fa-trash-can"
+                    onClick={() => handleDelete(booking)}
+                  ></i>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {currentBookings.map((booking) => (
-                <tr key={booking._id}>
-                  <td>{formatTimeSlot(booking.timeSlot)}</td>
-                  <td>{booking.test}</td>
-                  <td>{booking.patientId}</td>
-                  <td>{booking.testStatus}</td>
-                  <td>{booking.result}</td>
-                  <td>{booking.location}</td>
-                  <td className="action-buttons">
-                    <i
-                      className="fa-solid fa-eye"
-                      onClick={() => handleViewEdit(booking)}
-                    ></i>
-                    <i
-                      className="fa-solid fa-pen-to-square"
-                      onClick={() => handleViewEdit(booking, true)}
-                    ></i>
-                    <i
-                      className="fa-solid fa-trash-can"
-                      onClick={() => handleDelete(booking)}
-                    ></i>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
 
         <Pagination
           currentPage={currentPage}

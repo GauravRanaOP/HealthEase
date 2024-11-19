@@ -9,13 +9,14 @@ const DiagnosticCenterPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [centersPerPage] = useState(8);
+  const [centerToDelete, setCenterToDelete] = useState(null);
 
-  //state to store new center
+  // State to store new center and selected center for edit/view
   const [newCenter, setNewCenter] = useState({
     name: "",
     contactNo: "",
     email: "",
-    testsOffered: [],
+    password: "",
     address: {
       streetAddress: "",
       city: "",
@@ -23,50 +24,52 @@ const DiagnosticCenterPage = () => {
       country: "",
       postCode: "",
     },
-    availability: {
-      startDate: "",
-      endDate: "",
-      startTime: "",
-      endTime: "",
-      type: "DiagnosticCenter",
-    },
   });
+  const [selectedCenter, setSelectedCenter] = useState(null);
 
-  //state to control modals
+  // State to control modals
   const [modalState, setModalState] = useState({
     showCreate: false,
     showView: false,
     showEdit: false,
     showDelete: false,
   });
-  const [currentCenter, setCurrentCenter] = useState(null);
 
-  //fetch centers
+  // Fetch diagnostic centers
   useEffect(() => {
     axios
       .get("http://localhost:3002/api/diagnostic-centers")
       .then((response) => setCenters(response.data))
-      .catch(console.log);
+      .catch(console.error);
   }, []);
 
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewCenter((prev) => ({ ...prev, [name]: value }));
+    if (name.includes("address.")) {
+      const addressField = name.split(".")[1];
+      setNewCenter((prev) => ({
+        ...prev,
+        address: { ...prev.address, [addressField]: value },
+      }));
+    } else {
+      setNewCenter((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  //create new center
+  // Create new diagnostic center
   const handleCreate = (e) => {
     e.preventDefault();
     axios
       .post("http://localhost:3002/api/diagnostic-centers", newCenter)
       .then((response) => {
         setCenters([...centers, response.data]);
-        setModalState((prev) => ({ ...prev, showCreate: false }));
+        setModalState({ ...modalState, showCreate: false });
         setNewCenter({
           name: "",
           contactNo: "",
           email: "",
-          testsOffered: [],
+          password: "",
           address: {
             streetAddress: "",
             city: "",
@@ -74,78 +77,72 @@ const DiagnosticCenterPage = () => {
             country: "",
             postCode: "",
           },
-          availability: {
-            startDate: "",
-            endDate: "",
-            startTime: "",
-            endTime: "",
-            type: "DiagnosticCenter",
-          },
         });
       })
-      .catch(console.log);
+      .catch((error) => {
+        console.error(
+          "Error creating diagnostic center:",
+          error.response?.data || error.message
+        );
+        alert("Failed to create diagnostic center.");
+      });
   };
 
-  //update center
+  // Update diagnostic center
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3002/api/diagnostic-centers/${currentCenter._id}`,
+        `http://localhost:3002/api/diagnostic-centers/${selectedCenter._id}`,
         newCenter
       )
       .then((response) => {
         setCenters(
           centers.map((center) =>
-            center._id === currentCenter._id ? response.data : center
+            center._id === selectedCenter._id ? response.data : center
           )
         );
-        setModalState((prev) => ({ ...prev, showEdit: false }));
+        setModalState({ ...modalState, showEdit: false });
+        setSelectedCenter(null);
       })
-      .catch(console.log);
+      .catch((error) => {
+        console.error(
+          "Error updating diagnostic center:",
+          error.response?.data || error.message
+        );
+        alert("Failed to update diagnostic center.");
+      });
   };
 
-  //delete center
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     axios
-      .delete(`http://localhost:3002/api/diagnostic-centers/${id}`)
+      .delete(
+        `http://localhost:3002/api/diagnostic-centers/${centerToDelete._id}`
+      )
       .then(() => {
-        setCenters(centers.filter((center) => center._id !== id));
-        setModalState((prev) => ({ ...prev, showDelete: false }));
+        // Update the UI
+        setCenters(
+          centers.filter((center) => center._id !== centerToDelete._id)
+        );
+        setModalState({ ...modalState, showDelete: false });
+        alert("Diagnostic center deleted successfully.");
+        setCenterToDelete(null);
       })
-      .catch(console.log);
+      .catch((error) => {
+        console.error(
+          "Error deleting diagnostic center:",
+          error.response?.data || error.message
+        );
+        alert("Failed to delete diagnostic center.");
+      });
   };
 
-  // Search centers
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
-  };
-
-  //filter centers
-  const filteredCenters = centers.filter((center) =>
-    center.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  //calculate the current page of centers
-  const currentCenters = filteredCenters.slice(
-    (currentPage - 1) * centersPerPage,
-    currentPage * centersPerPage
-  );
-
-  //handle page change
-  const handlePageChange = (page) => setCurrentPage(page);
-
-  //control modals
-  const handleModalToggle = (modal, state) =>
-    setModalState({ ...modalState, [modal]: state });
-
-  //modal content object
+  // Modal content object
   const modalContent = {
     create: (
       <form onSubmit={handleCreate}>
-        <h2>Create New Center</h2>
-        {["name", "contactNo", "email"].map((field) => (
+        <h2>Create New Diagnostic Center</h2>
+        {["name", "email", "password", "contactNo"].map((field) => (
           <input
             key={field}
             type={field === "email" ? "email" : "text"}
@@ -156,81 +153,52 @@ const DiagnosticCenterPage = () => {
             required
           />
         ))}
-        <textarea
-          name="testsOffered"
-          placeholder="Tests Offered (comma separated)"
-          value={newCenter.testsOffered}
-          onChange={(e) => handleInputChange(e)}
-        />
-
         <h3>Address</h3>
         {["streetAddress", "city", "province", "country", "postCode"].map(
           (field) => (
             <input
               key={field}
               type="text"
-              name={field}
+              name={`address.${field}`}
               placeholder={field.replace(/([A-Z])/g, " $1")}
               value={newCenter.address[field]}
-              onChange={(e) =>
-                setNewCenter((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, [field]: e.target.value },
-                }))
-              }
+              onChange={handleInputChange}
               required
             />
           )
         )}
-
-        <h3>Availability</h3>
-        {["startDate", "endDate", "startTime", "endTime"].map((field) => (
-          <input
-            key={field}
-            type={field.includes("Date") ? "date" : "time"}
-            name={field}
-            value={newCenter.availability[field]}
-            onChange={(e) =>
-              setNewCenter((prev) => ({
-                ...prev,
-                availability: { ...prev.availability, [field]: e.target.value },
-              }))
-            }
-            required
-          />
-        ))}
-        <div className="button-container">
-          <button className="submit-btn" type="submit">
-            Submit
-          </button>
-        </div>
+        <button className="submit-btn" type="submit">
+          Submit
+        </button>
       </form>
     ),
     view: (
       <div className="view-center">
-        <h2>View Center</h2>
+        <h2>View Diagnostic Center</h2>
         <p>
-          <strong>Name:</strong> {currentCenter?.name}
+          <strong>Name:</strong> {selectedCenter?.name}
         </p>
         <p>
-          <strong>Contact No:</strong> {currentCenter?.contactNo}
+          <strong>Contact No:</strong> {selectedCenter?.contactNo}
         </p>
         <p>
-          <strong>Email:</strong> {currentCenter?.email}
+          <strong>Email:</strong> {selectedCenter?.email}
         </p>
         <p>
-          <strong>Tests Offered:</strong>{" "}
-          {currentCenter?.testsOffered.join(", ")}
+          <strong>Address:</strong>{" "}
+          {selectedCenter?.addressId
+            ? `${selectedCenter.addressId.streetAddress}, ${selectedCenter.addressId.city}, ${selectedCenter.addressId.province}, ${selectedCenter.addressId.country} - ${selectedCenter.addressId.postCode}`
+            : "N/A"}
         </p>
       </div>
     ),
     edit: (
       <form onSubmit={handleUpdate}>
-        <h2>Edit Center</h2>
+        <h2>Edit Diagnostic Center</h2>
         {["name", "contactNo", "email"].map((field) => (
           <input
             key={field}
-            type={field === "email" ? "email" : "text"}
+            type="text"
             name={field}
             placeholder={field.replace(/([A-Z])/g, " $1")}
             value={newCenter[field]}
@@ -238,31 +206,45 @@ const DiagnosticCenterPage = () => {
             required
           />
         ))}
-        <textarea
-          name="testsOffered"
-          placeholder="Tests Offered (comma separated)"
-          value={newCenter.testsOffered}
-          onChange={(e) => handleInputChange(e)}
-        />
-        <div className="button-container">
-          <button className="update-btn" type="submit">
-            Submit
-          </button>
-        </div>
+        <h3>Address</h3>
+        {["streetAddress", "city", "province", "country", "postCode"].map(
+          (field) => (
+            <input
+              key={field}
+              type="text"
+              name={`address.${field}`}
+              placeholder={field.replace(/([A-Z])/g, " $1")}
+              value={newCenter.address[field]}
+              disabled
+            />
+          )
+        )}
+        <button className="update-btn" type="submit">
+          Update
+        </button>
       </form>
     ),
     delete: (
       <div className="delete-center">
-        <h2>Are you sure you want to delete this center?</h2>
+        <h3>Are you sure you want to delete?</h3>
         <p>
-          <strong>Name:</strong> {currentCenter?.name}
+          <strong>Name:</strong> {centerToDelete?.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {centerToDelete?.email}
         </p>
         <div className="button-container">
-          <button onClick={() => handleDelete(currentCenter._id)}>
-            Yes, Delete
+          <button className="confirm-btn" onClick={handleDelete}>
+            Yes
           </button>
-          <button onClick={() => handleModalToggle("showDelete", false)}>
-            Cancel
+          <button
+            className="cancel-btn"
+            onClick={() => {
+              setModalState({ ...modalState, showDelete: false });
+              setCenterToDelete(null);
+            }}
+          >
+            No
           </button>
         </div>
       </div>
@@ -278,28 +260,30 @@ const DiagnosticCenterPage = () => {
             type="text"
             placeholder="Search Diagnostic Centers"
             value={searchQuery}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
             className="create-btn"
-            onClick={() => handleModalToggle("showCreate", true)}
+            onClick={() => setModalState({ ...modalState, showCreate: true })}
           >
             <i className="fa fa-plus"></i>Create
           </button>
         </div>
 
-        {["showCreate", "showView", "showEdit", "showDelete"].map(
-          (modal) =>
-            modalState[modal] && (
-              <div key={modal} className="modals">
+        {Object.keys(modalState).map(
+          (key) =>
+            modalState[key] && (
+              <div className="modals" key={key}>
                 <div className="modals-content">
                   <span
                     className="close"
-                    onClick={() => handleModalToggle(modal, false)}
+                    onClick={() =>
+                      setModalState({ ...modalState, [key]: false })
+                    }
                   >
                     &times;
                   </span>
-                  {modalContent[modal.replace("show", "").toLowerCase()]}
+                  {modalContent[key.replace("show", "").toLowerCase()]}
                 </div>
               </div>
             )
@@ -311,36 +295,45 @@ const DiagnosticCenterPage = () => {
               <th>Name</th>
               <th>Contact No</th>
               <th>Email</th>
+              <th>Address</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {currentCenters.map((center) => (
+            {centers.map((center) => (
               <tr key={center._id}>
                 <td>{center.name}</td>
                 <td>{center.contactNo}</td>
                 <td>{center.email}</td>
+                <td>
+                  {center.addressId
+                    ? `${center.addressId.streetAddress}, ${center.addressId.city}, ${center.addressId.province}, ${center.addressId.country} - ${center.addressId.postCode}`
+                    : "Address not available"}
+                </td>
                 <td className="action-buttons">
                   <i
                     className="fa-solid fa-eye"
                     onClick={() => {
-                      setCurrentCenter(center);
-                      handleModalToggle("showView", true);
+                      setSelectedCenter(center);
+                      setModalState({ ...modalState, showView: true });
                     }}
                   ></i>
                   <i
                     className="fa-solid fa-pen-to-square"
                     onClick={() => {
-                      setCurrentCenter(center);
-                      setNewCenter(center);
-                      handleModalToggle("showEdit", true);
+                      setSelectedCenter(center);
+                      setNewCenter({
+                        ...center,
+                        address: center.addressId || {},
+                      });
+                      setModalState({ ...modalState, showEdit: true });
                     }}
                   ></i>
                   <i
                     className="fa-solid fa-trash-can"
                     onClick={() => {
-                      setCurrentCenter(center);
-                      handleModalToggle("showDelete", true);
+                      setCenterToDelete(center);
+                      setModalState({ ...modalState, showDelete: true });
                     }}
                   ></i>
                 </td>
@@ -351,8 +344,8 @@ const DiagnosticCenterPage = () => {
 
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredCenters.length / centersPerPage)}
-          onPageChange={handlePageChange}
+          totalPages={Math.ceil(centers.length / centersPerPage)}
+          onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
     </div>
