@@ -17,7 +17,7 @@ export default function TestCentersList({ test }) {
           //`http://localhost:3002/api/name/${name}`
           `http://localhost:3002/api/test/${testId}`
         );
-        console.log("Testcenterslist: ", response.data);
+        //console.log("Testcenterslist: ", response.data);
         if (response.data) {
           setTestDetails(response.data);
         }
