@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import DoctorTimeslots from "./DoctorTimeslots";
 import { useNavigate } from "react-router-dom";
+
 
 export default function DoctorCard({ doctor }) {
   // const [showTimeslots, setshowTimeslots] = useState(false);   // ** removed as we are navigating to seperate page now

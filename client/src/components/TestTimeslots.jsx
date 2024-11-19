@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AuthContext } from "./authentication/AuthContext";
+
 import axios from "axios";
-// library for date selection
 import DatePicker from "react-datepicker";
-// css for datepicker library
+
+import { useAuth } from "./authentication/AuthContext.jsx";
+
 import "react-datepicker/dist/react-datepicker.css";
-// css for the page
-import "../assets/css/DoctorTimeslots.css";     // change
+import "../assets/css/DoctorTimeslots.css";     // change name
 
 
 export default function TestTimeslots() {
   const { diagnosticCenterId } = useParams();   // to get diagnosticCenterId from url 
   const navigate = useNavigate();
-  const { userId } = useContext(AuthContext);
+  const { userData } = useAuth();
 
+  // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
@@ -74,18 +75,24 @@ export default function TestTimeslots() {
       return;
     }
 
-    // const userId = "Test UserId"; // placeholder until the login module is implemented - fetch from session
-    const userId = localStorage.getItem("userId");
+    if (!userData) {
+      alert("No user data found. Please login to continue.");
+      return;
+    }
+
+    // gets userId from userData object in AuthContext.jsx
+    const userId = userData.userId;
     const appointmentId = selectedTimeslot.appointmentId;
 
     // debug: logs the appointment id
-    console.log("TestTimeslot: appointmentId: ", appointmentId);
+    console.log("TestTimeslot: appointmentId: ", appointmentId, "userId:", userId);
 
     try {
       // backend request to book the appointment
+      // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
       const response = await axios.put(
         `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-        // { userId }
+        { userId }    // send userId in the request body
       );
 
       setBookingMessage(response.data.message);

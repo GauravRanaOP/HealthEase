@@ -2,6 +2,8 @@ import Appointment from "../models/Appointment.js";
 import Availability from "../models/Availability.js";
 import Doctor from "../models/Doctor.js";
 import User from "../models/User.js";
+import Clinic from "../models/Clinic.js";
+import Address from "../models/Address.js";
 
 
 // helper function to increment time by 1 hour
@@ -14,7 +16,7 @@ function incrementTime(time, duration = 60) {
   return date.toTimeString().slice(0, 5);
 }
 
-// creates appointments from availability
+// creates doctor appointments from availability
 export const createDoctorAppointments = async (req, res) => {
   try {
     // fetches all availability records
@@ -47,16 +49,17 @@ export const createDoctorAppointments = async (req, res) => {
               doctorId: doctorId,
               status: "Pending",
               comments: "Pending",
+              isDirectTest: false
             });
 
             // saves appointment to database
             await appointment.save();
             console.log(
-              `Appointment created for doctor: ${doctorId} on ${startDate} at ${currentTimeSlot}`
+              `Doctor Appointment created with doctor: ${doctorId} on ${startDate} at ${currentTimeSlot}`
             );
           } else {
             console.log(
-              `Appointment already exists for doctor: ${doctorId} on ${startDate} at ${currentTimeSlot}`
+              `Doctor Appointment already exists for doctor: ${doctorId} on ${startDate} at ${currentTimeSlot}`
             );
           }
         }
@@ -65,9 +68,9 @@ export const createDoctorAppointments = async (req, res) => {
         currentTimeSlot = nextTimeSlot;
       }
     }
-    console.log("Appointments created successfully");
+    console.log("Doctor Appointments created successfully");
   } catch (error) {
-    console.error("Error creating appointments: ", error);
+    console.error("Error creating doctor appointments: ", error);
   }
 };
 
@@ -99,6 +102,7 @@ export const getDoctorAppointmentTimeslots = async (req, res) => {
       isTimeSlotAvailable: true,
       status: "Pending",
       visitType: "DoctorVisit",
+      isDirectTest: false
       // }).sort({ date: 1, time: 1});
     }).sort({ time: 1 });
 
@@ -124,15 +128,17 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
   // const { appointmentId } = req.body;
   const { appointmentId } = req.params;
 
-  const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
+  //const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
+  const { userId } = req.body;
 
   const updatedData = req.body;
   console.log(`appointmentId is : `, appointmentId);
   console.log(`userId is : `, userId);
   
-  if (!appointmentId) {
+  if (!appointmentId || !userId) {
+  //if (!appointmentId || !userId) {
     return res.status(404).json({
-      message: "appointmentId is required",
+      message: "appointmentId and userId are required",
     });
   }
 
@@ -155,7 +161,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
       });
     }
 
-    // retrives doctors details using userId from the doctor profile
+    // retrives user details for the doctor
     const user = await User.findById(doctor.userid);
     if (!user) {
       return res.status(404).json({
@@ -167,17 +173,16 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
     // updates the appointment to mark it as booked
     appointment.isTimeSlotAvailable = false;
     appointment.status = "Confirmed";
-    // appointment.patientId = userId;   // will be modified once the login module is implemented.
+    appointment.patientId = userId;   // sets userId from local storage
     appointment.comments = "Booking Confirmed";
 
     await appointment.save();
 
     res.status(200).json({
-      // message: `Appointment successfully booked with Dr. ${appointment.doctorId} on ${appointment.date} at ${appointment.time}.`,
-      message: `Appointment successfully booked with Dr. ${doctorName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment times`,
+      message: `Appointment successfully booked with Dr. ${doctorName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment time`,
     });
 
-  } catch (error) {s
+  } catch (error) {
     res.status(500).json({
       message: "Server error: Error booking appointment.",
       error: error.message,
@@ -185,7 +190,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
   }
 };
 
-// check operaiton: check
+// check operation: gets one doctor appointment
 export const getOneDoctorAppointmentTimeslot = async (req, res) => {
   // const { appointmentId } = req.body;
 
@@ -223,3 +228,4 @@ export const getOneDoctorAppointmentTimeslot = async (req, res) => {
       });
   }
 };
+

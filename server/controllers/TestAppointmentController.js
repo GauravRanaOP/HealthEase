@@ -83,7 +83,7 @@ export const getTestAppointmentTimeslots = async (req, res) => {
     : new Date().toISOString().split("T")[0];
 
   try {
-    // fetches available timeslots using doctorId
+    // fetches available test timeslots
     const availableTimeslots = await Appointment.find({
       diagnosticCenterId: diagnosticCenterId,
       date: date,
@@ -114,15 +114,16 @@ export const updateTestAppointmentTimeslot = async (req, res) => {
     // const { appointmentId } = req.body;
     const { appointmentId } = req.params;
   
-    const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
-  
+    //const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
+    const { userId } = req.body;
+
     const updatedData = req.body;
     console.log(`appointmentId is : `, appointmentId);
     console.log(`userId is : `, userId);
     
-    if (!appointmentId) {
+    if (!appointmentId || !userId) {
       return res.status(404).json({
-        message: "appointmentId is required",
+        message: "appointmentId and userId are required",
       });
     }
   
@@ -144,27 +145,17 @@ export const updateTestAppointmentTimeslot = async (req, res) => {
           message: "Server: Diagnostic Center not found.",
         });
       }
-  
-      // retrives diagnostic center details using userId from the doctor profile
-      // const user = await User.findById(diagnosticCenter.userid);
-      // if (!user) {
-      //   return res.status(404).json({
-      //     message: "Server: User information for diagnostic center not found",
-      //   });
-      // }
-      // const diagnosticCenterName = `${user.firstName} ${user.lastName}`;
       const diagnosticCenterName = diagnosticCenter.name;
   
       // updates the appointment to mark it as booked
       appointment.isTimeSlotAvailable = false;
       appointment.status = "Confirmed";
-      // appointment.patientId = userId;   // will be modified once the login module is implemented.
+      appointment.patientId = userId;    // sets userId from local storage
       appointment.comments = "Booking Confirmed";
   
       await appointment.save();
   
       res.status(200).json({
-        // message: `Appointment successfully booked with Dr. ${appointment.doctorId} on ${appointment.date} at ${appointment.time}.`,
         message: `Appointment successfully booked at Diagnostic Center ${diagnosticCenterName} on ${appointment.date} at ${appointment.time}. Please be available 30 min prior to appointment time`,
       });
   

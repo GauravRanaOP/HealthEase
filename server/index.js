@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors"; // Importing CORS
+import { updateAppointmentStatuses } from "./utils/scheduler.js";
 
 
 // imports the db.js file to establish the MongoDB connection
@@ -50,7 +51,7 @@ app.use("/api/bookings", ViewBookingsRoute);
 app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
 
 // routes for user
-app.use("/api", UserRoute);
+app.use("/api/user", UserRoute);
 
 // routes for test appointment
 app.use("/api/test", TestAppointmentRoute)
