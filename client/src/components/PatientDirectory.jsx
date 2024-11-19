@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
 
 import SearchDoctor from "./SearchDoctor";
 import DoctorCard from "./DoctorCard";
@@ -7,54 +9,86 @@ import DoctorAppointmentCard from "./DoctorAppointmentCard";
 import TestCard from "./TestCard";
 import TestAppointmentCard from "./TestAppointmentCard";
 import SearchTest from "./SearchTest";
+import { useAuth } from "./authentication/AuthContext.jsx";
 
 import "../assets/css/PatientDirectory.css";
-import axios from "axios";
+
 
 export default function PatientDirectory() {
-  // defines states
-  const [doctors, setDoctors] = useState([]);
-  const [postcodePrefix, setpostcodePrefix] = useState("");
-  const [testname, setTestname] = useState("");
-  const [doctorAppointments, setDoctorAppointments] = useState([]);
-  const [tests, setTests] = useState([]);
-  const [testAppointments, setTestAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState(null);
 
   const navigate = useNavigate();
+  const { userData } = useAuth();
 
-  const userId = "671e7a21ec143e564acc28eb";
+  // defines states
+  const [doctors, setDoctors] = useState([]);
+  const [postcodePrefix, setpostcodePrefix] = useState("");   // search for doctors is performed by postcode
+  const [tests, setTests] = useState([]);
+  const [testname, setTestname] = useState("");               // search for test is performed by the test name
+  const [doctorAppointments, setDoctorAppointments] = useState([]);
+  const [testAppointments, setTestAppointments] = useState([]);
+  //const [loading, setLoading] = useState(true);     // old loading state, replaced with 4 different loading states for each tab
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
 
+  // defines loading states for each tab
+  const [doctorsLoading, setDoctorsLoading] = useState(false);
+  const [testsLoading, setTestsLoading] = useState(false);
+  const [doctorAppointmentsLoading, setDoctorAppointmentsLoading] = useState(false);
+  const [testAppointmentsLoading, setTestAppointmentsLoading] = useState(false);
 
-  // fetches appointments and tests on component mount
+  
+  // ensures userData has a fallback to localStorage if it is not available
+  const userId = userData || JSON.parse(localStorage.getItem("user_data"))?.userId;
+  console.log("userId outside useEffect:", userId);
+
+  // fetches data only when userData is available and loading is complete
   useEffect(() => {
+    console.log("useEffect triggered");
+    console.log("userId from AuthContext or localStorage:", userId);
+
     if (userId) {
-      
+      fetchUserData(userId);
       fetchDoctorAppointments(userId);
       fetchTestAppointments(userId);
     } else {
-      navigate("/login");
+      console.log("No userId found, user might not be logged in.");
     }
-  }, [userId, navigate]);
+  }, [userId]);
+
+
+  // fetches user details (if logged in )
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3002/api/user?userId=${userId}`
+      );
+      setUserDetails(response.data.user);
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+    }
+  };
 
 
   // fetches doctors based on postcode
   const fetchDoctors = async (postcodePrefix) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3002/api/doctors/postcode/${postcodePrefix}`
-      );
-      setDoctors(response.data);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-    }
+  setDoctorsLoading(true);
+  try {
+    const response = await axios.get(
+      `http://localhost:3002/api/doctors/postcode/${postcodePrefix}`
+    );
+    setDoctors(response.data);
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+  } finally {
+    setDoctorsLoading(false);
+  }
   };
 
 
   // fetches tests based on test name
   const fetchTests = async (testname) => {
+    setTestsLoading(true);
     try {
       const response = await axios.get(
         // `http://localhost:3002/api/test/name/${testname}`
@@ -65,9 +99,11 @@ export default function PatientDirectory() {
       setTests(response.data);    // stores the test with their diagnostic centers
     } catch (error) {
       console.error("Error fetching doctors:", error);
+    } finally {
+      setTestsLoading(false);
     }
   };
-
+ 
 
   // useEffect to fetch doctors when postcodePrefix changes
   useEffect(() => {
@@ -89,39 +125,25 @@ export default function PatientDirectory() {
     setpostcodePrefix(postcode);
   };
 
-
+   
   // function to handle search test
   const handleSearchTest = (name) => {
     setTestname(name);
   };
 
-  
-  // checks if patient is logged in
-  useEffect(() => {
-    // function to check if user is logged in
-    // const userId = localStorage.getItem("userId");
-    // for testing
-    const userId = "671e7a21ec143e564acc28eb";
-    if (!userId) {
-      navigate("/login");
-    } else {
-      // fetches appointments when patientId is set
-      fetchDoctorAppointments(userId);
-    }
-  }, [navigate, userId]);
 
-
-  // fetches doctor appointments for the user
+  // fetches doctor appointments for the logged-in user
   const fetchDoctorAppointments = async (userId) => {
-    setLoading(true);
+    setDoctorAppointmentsLoading(true);
     setError(null);
     try {
       const response = await axios.get(
         `http://localhost:3002/api/patient/appointments?patientId=${userId}`
       );
-      // console.log("Response data: ", response.data.appointments);
+      //console.log("API Response data: ", response.data.appointments);
       if (response.data.appointments && response.status === 200) {
         setDoctorAppointments(response.data.appointments || []);
+        console.log("setDoctorAppointments: ", setDoctorAppointments);
       } else {
         console.error("No upcoming appointments found for this user:", userId);
         setError("No upcoming appointments found.");
@@ -130,19 +152,20 @@ export default function PatientDirectory() {
       console.error("Error fetching appointment data: ", error);
       setError("Error fetching appointment data.");
     } finally {
-      setLoading(false);
+      setDoctorAppointmentsLoading(false);
     }
   };
 
-  // fetches test appointments for the user
+
+  // fetches test appointments for the logged-in user
   const fetchTestAppointments = async (userId) => {
-    setLoading(true);
+    setTestAppointmentsLoading(true);
     setError(null);
     try {
       const response = await axios.get(
         `http://localhost:3002/api/patient/tests?patientId=${userId}`
       );
-      // console.log("Response data: ", response.data.appointments);
+      console.log("Response data: ", response.data.appointments);
       if (response.data.tests && response.status === 200) {
         setTestAppointments(response.data.tests || []);
       } else {
@@ -153,14 +176,16 @@ export default function PatientDirectory() {
       console.error("Error fetching test data: ", error);
       setError("Error fetching test data.");
     } finally {
-      setLoading(false);
+      setTestAppointmentsLoading(false);
     }
   };
 
+  
   return (
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
       <h1 className="directory-title">Patient Directory</h1>
+      {userDetails ? <p>Welcome, {userDetails.firstName}</p> : <p>Welcome back </p>}
 
       <div className="tabs">
         <button 
@@ -185,10 +210,16 @@ export default function PatientDirectory() {
         </button>
       </div>
 
-
       {/* renders loading state */}
-      {loading && <p>Loading appointments...</p>}
+      {/* {loading && <p>Loading data...</p>} */}
 
+      {/* Conditional loading for individual sections */}
+      {doctorsLoading && activeTab === "searchDoctors" && <p>Loading doctors...</p>}
+      {testsLoading && activeTab === "searchTests" && <p>Loading tests...</p>}
+      {doctorAppointmentsLoading && activeTab === "doctorAppointments" && <p>Loading appointments...</p>}
+      {testAppointmentsLoading && activeTab === "testAppointments" && <p>Loading test appointments...</p>}
+
+      
       {/* renders error state  */}
       {error && <p className="error-message">{error}</p>}
 
@@ -202,7 +233,7 @@ export default function PatientDirectory() {
                 <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
               ))
             ) : (
-              !loading && <p>No doctors found for this postcode.</p>
+              !doctorsLoading && <p>No doctors found for this postcode.</p>
             )}
           </div>
         </div>
@@ -217,9 +248,9 @@ export default function PatientDirectory() {
               doctorAppointments.map((appointment) => (
                 <DoctorAppointmentCard key={appointment.id} appointment={appointment} />
               ))
-            ) : (
-              !loading && <p>No upcoming appointments found for the user.</p>
-            )}
+             ) : (
+              !doctorAppointmentsLoading && <p>No upcoming appointments found for the user.</p>
+            )} 
           </div>
         </div>
       )}
@@ -233,22 +264,28 @@ export default function PatientDirectory() {
               ? tests.map((test) => (
                   <TestCard key={test.test._id} test={test.test} />
                 ))
-              : !loading && <p>No tests found with this name.</p>}
+              : !testsLoading && <p>No tests found with this name.</p>}
           </div>
         </div>
       )}
 
-      {/* renders Test Appointment Card */}
-      {activeTab === "tests" && (
-        <div className="tests-section">
-          <h2>Tests</h2>
-          <div className="test-list">
-            {tests.length > 0
-              ? tests.map((test) => <TestCard key={test.id} test={test} />)
-              : !loading && <p>No upcoming appointments found for the user.</p>}
-          </div>
+      {/* renders Test Appointments */}
+      {activeTab === "testAppointments" && (
+      <div className="tests-section">
+        <h2>Tests</h2>
+        <div className="test-list"> 
+          {testAppointments.length > 0 ? (
+            testAppointments.map((test) => (
+              <TestAppointmentCard key={test.id} test={test} />
+            ))
+          ) : (
+            !testAppointmentsLoading && <p>No upcoming appointments found for the user.</p>
+          )}
         </div>
+      </div>
       )}
+      
     </div>
   );
+  
 } // end PatientDirectory

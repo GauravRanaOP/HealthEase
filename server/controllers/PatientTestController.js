@@ -1,6 +1,7 @@
 import Appointment from "../models/Appointment.js";
 import Address from "../models/Address.js";
 import DiagnosticCenter from "../models/DiagnosticCenter.js";
+import mongoose from "mongoose";
 
 
 // fetches tests for a specific patient (userId) that are not marked as done
@@ -13,12 +14,24 @@ export const getPatientTests = async (req, res) => {
     }
   
     try {
+      // converts the string `patientId` to ObjectId
+      const objectId = mongoose.Types.ObjectId.isValid(patientId)
+      ? new mongoose.Types.ObjectId(patientId)
+      : null;
+
+      if (!objectId) {
+        return res.status(400).json({ message: "Invalid User ID format." });
+      }
+      
+
       // finds tests with visitType and status is not equal to "Done"
       const tests = await Appointment.find({
         patientId: patientId,
         visitType: "DiagnosticTest",
         diagnosticCenterId: { $exists: true},
         status: { $ne: "Done"},
+        isTimeSlotAvailable: false,
+        isDirectTest: true,
       }).sort({ date: 1, time: 1 });
   
       if (tests.length > 0) {

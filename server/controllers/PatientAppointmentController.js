@@ -1,32 +1,47 @@
 import Appointment from "../models/Appointment.js";
 import Doctor from "../models/Doctor.js";
 import Address from "../models/Address.js";
+import mongoose from "mongoose";
 
 
 // fetches appointments for a specific patient (userId) that are not marked as done
 export const getPatientAppointments = async (req, res) => {
     const patientId = req.query.patientId;
+    console.log("Fetching appointments for patientId:", patientId);
   
-    // gets the patientId
     if (!patientId) {
       return res.status(400).json({ message: "User ID is required. "});
     }
   
     try {
+      // converts the string `patientId` to ObjectId
+      const objectId = mongoose.Types.ObjectId.isValid(patientId)
+      ? new mongoose.Types.ObjectId(patientId)
+      : null;
+
+      if (!objectId) {
+        return res.status(400).json({ message: "Invalid User ID format." });
+      }
+      console.log("Fetching appointments for objectId:", objectId);
+
       // finds appointments for the logged-in user where status is not done
       const appointments = await Appointment.find({
-        patientId: patientId,
+        patientId: objectId,
+        visitType: "DoctorVisit",
+        doctorId: { $exists: true},
         status: { $ne: "Done"},
+        isTimeSlotAvailable: false,
+        isDirectTest: false,
       }).sort({ date: 1, time: 1 });
+      console.log("Appointments fetched: ", appointments);
   
       if (appointments.length > 0) {
-        // populated clinic address
+        // populates clinic address
         const appointmentWithClinicAddress = await Promise.all(
           appointments.map(async (appointment) => {
             const doctor = await Doctor.findById(appointment.doctorId).populate('clinicId');
             const clinic = doctor?.clinicId;
   
-            // retrieves clinic address
             let fullAddress = null;
             let clinicName = null;
   
@@ -44,6 +59,7 @@ export const getPatientAppointments = async (req, res) => {
               }
             }
   
+            // returns clinic address and name
             return {
               ...appointment.toObject(),
               clinicAddress: fullAddress,
@@ -65,4 +81,3 @@ export const getPatientAppointments = async (req, res) => {
     }
   
   };
-  

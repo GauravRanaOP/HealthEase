@@ -4,6 +4,7 @@ import User from "../models/User.js"
 // fetches user details by userId
 export const getUserDetails = async (req, res) => {
     const userId = req.query.userId;
+    console.log ("Server: userId in Usercontroller: ", userId);
 
     if (!userId) {
         return res.status(400).json({ message: "Server error: UserID is required."});

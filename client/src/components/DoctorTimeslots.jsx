@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios";
-// library for date selection
 import DatePicker from "react-datepicker";
-// css for datepicker library
+
+import { useAuth } from "./authentication/AuthContext.jsx";
+
 import "react-datepicker/dist/react-datepicker.css";
-// css for the page
 import "../assets/css/DoctorTimeslots.css";
+
 
 // // helper function to format date to mm/dd/yyyy
 // const formatDateToDisplay = (date) => {
@@ -17,15 +19,19 @@ import "../assets/css/DoctorTimeslots.css";
 // };
 
 export default function DoctorTimeslots() {
+  
   const { doctorId } = useParams();
   const navigate = useNavigate();
+  const { userData } = useAuth();
+
+  // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
   const [showConfirmation, setshowConfirmation] = useState(false);
   const [bookingMessage, setBookingMessage] = useState("");
 
-  // fetches timeslots based on doctorId and selected date
+  // fetches doctor appointment timeslots based on doctorId and selected date
   useEffect(() => {
     const fetchTimeslots = async () => {
       // formats the date to yyyy-mm-dd
@@ -76,21 +82,29 @@ export default function DoctorTimeslots() {
       return;
     }
 
-    // const userId = "Test UserId"; // placeholder until the login module is implemented - fetch from session
+    if (!userData) {
+      alert("No user data found. Please login to continue.");
+      return;
+    }
+
+    // gets userId from userData object in AuthContext.jsx
+    const userId = userData.userId;
     const appointmentId = selectedTimeslot.appointmentId;
 
     // debug: logs the appointment id
-    console.log("DoctorTimeslot: appointmentId: ", appointmentId);
+    console.log("DoctorTimeslot: appointmentId: ", appointmentId, "userId:", userId);
 
     try {
       // backend request to book the appointment
       // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
       const response = await axios.put(
-        `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}` // appointmentId as path parameter
+        `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+        { userId }    // send userId in the request body
       );
 
       setBookingMessage(response.data.message);
       setshowConfirmation(false);
+
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");
@@ -100,53 +114,48 @@ export default function DoctorTimeslots() {
   return (
     <div className="timeslots-container">
       {!bookingMessage && (
-        <>
-          <div className="appointment-date">
-            <h2>Appointment Date:</h2>
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              dateFormat="MM/dd/yyyy"
-              placeholderText="Select a date"
-            />
-          </div>
+      <>
+        <h2>Appointment Date:</h2>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="MM/dd/yyyy"
+          placeholderText="Select a date"
+        />
 
-          <h2>Appointment Time:</h2>
-          <div className="timeslots">
-            {timeslot.length > 0 ? (
-              timeslot.map((timeslot, index) => (
-                <button
-                  key={index}
-                  className={`timeslot-button ${
-                    selectedTimeslot?.time === timeslot.time ? "selected" : ""
-                  }`}
-                  onClick={() => handleTimeslotSelect(timeslot)}
-                >
-                  {timeslot.time}
-                </button>
-              ))
-            ) : (
-              <p>No available timeslots for this date.</p>
-            )}
-          </div>
+        <h2>Appointment Time:</h2>
+        <div className="timeslots">
+          {timeslot.length > 0 ? (
+            timeslot.map((timeslot, index) => (
+              <button
+                key={index}
+                className={`timeslot-button ${selectedTimeslot?.time === timeslot.time ? "selected" : ""}`}
+                onClick={() => handleTimeslotSelect(timeslot)}
+              >
+                {timeslot.time}
+              </button>
+            ))
+          ) : (
+            <p>No available timeslots for this date.</p>
+          )}
+        </div>
 
-          <div className="timeslots-actions">
-            <button
-              className="btn-cancel"
-              onClick={() => setselectedTimeslot(null)}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn-confirm"
-              onClick={() => {
-                handleConfirmClick();
-              }}
-            >
-              Confirm
-            </button>
-          </div>
-        </>
+        <div className="timeslots-actions">
+          <button
+            className="btn-cancel"
+            onClick={() => setselectedTimeslot(null)}
+          >Cancel
+          </button>
+          <button
+            className="btn-confirm"
+            onClick={() => {
+              handleConfirmClick();
+            }}
+          >Confirm
+          </button>
+        </div>
+
+      </>
       )}
 
       {showConfirmation && selectedTimeslot && (
@@ -170,14 +179,13 @@ export default function DoctorTimeslots() {
       {bookingMessage && (
         <div>
           <p className="booking-message">{bookingMessage}</p>
-          <button
+          <button 
             onClick={() => navigate("/patientDirectory")}
             className="btn-custom"
-          >
-            Continue
-          </button>
+            >Continue</button>
         </div>
       )}
+
     </div>
   );
 }

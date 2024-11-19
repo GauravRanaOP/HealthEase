@@ -51,7 +51,7 @@ app.use("/api/bookings", ViewBookingsRoute);
 app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
 
 // routes for user
-app.use("/api", UserRoute);
+app.use("/api/user", UserRoute);
 
 // routes for test appointment
 app.use("/api/test", TestAppointmentRoute)
