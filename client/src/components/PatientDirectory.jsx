@@ -57,9 +57,12 @@ export default function PatientDirectory() {
   const fetchTests = async (testname) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/test/name/${testname}`
+        // `http://localhost:3002/api/test/name/${testname}`
+        `http://localhost:3002/api/test/name?name=${testname}`
       );
-      setTests(response.data);
+      // debugging
+      console.log("Test response:", response.data);
+      setTests(response.data);    // stores the test with their diagnostic centers
     } catch (error) {
       console.error("Error fetching doctors:", error);
     }
@@ -228,7 +231,7 @@ export default function PatientDirectory() {
           <div className="test-list">
             {tests.length > 0
               ? tests.map((test) => (
-                  <TestCard key={test._id || test.testId} test={test} />
+                  <TestCard key={test.test._id} test={test.test} />
                 ))
               : !loading && <p>No tests found with this name.</p>}
           </div>
