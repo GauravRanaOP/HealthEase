@@ -52,8 +52,7 @@ export default function TestCentersList({ test }) {
             <div key={index} className="test-center-card">
               <div className="test-center-card-body">
                 <h3>{dc.diagnosticCenterName}</h3>
-                {/* for testing */}
-                <h3>Diagnostic Center ID: {dc.diagnosticCenterId}</h3>  
+              
                 <p>
                   <FontAwesomeIcon
                     icon={faLocationDot}
