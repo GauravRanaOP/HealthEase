@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors"; // Importing CORS
+import { updateAppointmentStatuses } from "./utils/scheduler.js";
 
 
 // imports the db.js file to establish the MongoDB connection
