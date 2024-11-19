@@ -8,29 +8,30 @@ export default function TestCard({ test }) {
  
   const navigate = useNavigate();
 
-  // checks if test data is available
-  if (!test) {
-    return <div>Loading diagnostic center...</div>;
-  }
+  // // checks if test data is available
+  // if (!test) {
+  //   return <div>Loading diagnostic center...</div>;
+  // }
 
   // // destructures diagnostic center address
   // const { streetAddress, city, province, postCode } = test.diagnosticCenters?.[0]?.address || {};
 
-  // navigates to TestTimeslots page when book now button is clicked
-  const handleBookNowClick = () => {
+  // navigates to TestCentersList page when book now button is clicked
+  const handleTestCenterDetailsClick = () => {
     if (test._id) {
-      navigate (`/TestTimeslots/${test._id}`);
+      navigate (`/testCentersList/${test._id}`);
     } else {
       console.log("TestId is undefined");
     }
   };
+
 
   return (
     <div className="test-card">
       <h3>{test.name}</h3>
       <div className="test-card-p-container">
         <p>{test.description}</p>
-          {test.diagnosticCenters && test.diagnosticCenters.length > 0 ? (
+          {/* {test.diagnosticCenters && test.diagnosticCenters.length > 0 ? (
             test.diagnosticCenters.map((dc, index) => (
               <p key={index}>
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
@@ -39,18 +40,19 @@ export default function TestCard({ test }) {
             ))
           ) : (
             <p>No diagnostic centers available</p>
-          )}
+          )} */}
       </div>
 
       <div className="test-card-open-container">
-        <div>Available Now</div>
+        {/* <div>Available Now</div> */}
         <div>
-          <button onClick={handleBookNowClick}>
-            Book Now
+          <button onClick={handleTestCenterDetailsClick}>
+            Test Center Details
             <FontAwesomeIcon icon={faArrowRight} className="arrow-right-icon" />
           </button>
         </div>
       </div>
     </div>
   );
+  
 }

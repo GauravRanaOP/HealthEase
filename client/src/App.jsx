@@ -23,6 +23,8 @@ import DiagnosticCenterPage from "./components/DiagnosticCenterPage";
 import RegistrationForm from "./components/authentication/RegistrationForm";
 import AuthenticationPage from "./components/authentication/AuthenticationPage";
 import { useAuth } from "./components/authentication/AuthContext.jsx";
+import TestTimeslots from "./components/TestTimeslots";
+import TestCentersList from "./components/TestCentersList";
 
 const route = createBrowserRouter([
   {
@@ -103,6 +105,18 @@ const App = () => {
           path="/diagnostic-center"
           element={
             !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
+          }
+        />
+        <Route
+          path="/testTimeslots/:diagnosticCenterId"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <TestTimeslots />
+          }
+        />
+        <Route
+          path="/testCentersList/:testId"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <TestCentersList />
           }
         />
       </Routes>
