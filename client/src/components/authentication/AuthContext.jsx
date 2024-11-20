@@ -6,15 +6,18 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const[userDataRole, setUserDataRole] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const storedData = JSON.parse(localStorage.getItem("user_data"));
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("user_data"));
     if (storedData) {
-      const { userToken, userId } = storedData;
+      const { userToken, userRole, userId } = storedData;
       setToken(userToken);
       setUserData(userId);
+      setUserDataRole(userRole);
       setIsAuthenticated(true);
     }
     // const storedToken = localStorage.getItem("token");
@@ -32,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 
     setToken(newToken);
     setUserData({ userId, userRole });
+    setUserDataRole(userRole);
     setIsAuthenticated(true);
   };
 
@@ -39,6 +43,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user_data");
     setToken(null);
     setUserData(null);
+    setUserDataRole(null);
     setIsAuthenticated(false);
   };
 
@@ -50,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         userData,
+        userDataRole,
       }}
     >
       {children}
