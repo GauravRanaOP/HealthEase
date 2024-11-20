@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
+  Navigate,
 } from "react-router-dom";
 import HeaderPatient from "./components/HeaderPatient";
 import FooterPatient from "./components/FooterPatient";
@@ -25,6 +26,7 @@ import AuthenticationPage from "./components/authentication/AuthenticationPage";
 import { useAuth } from "./components/authentication/AuthContext.jsx";
 import TestTimeslots from "./components/TestTimeslots";
 import TestCentersList from "./components/TestCentersList";
+import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
 
 const route = createBrowserRouter([
   {
@@ -62,7 +64,7 @@ const route = createBrowserRouter([
 ]);
 
 const App = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, userData } = useAuth();
   return (
     <Router>
       <HeaderPatient />
@@ -117,6 +119,17 @@ const App = () => {
           path="/testCentersList/:testId"
           element={
             !isAuthenticated ? <AuthenticationPage /> : <TestCentersList />
+          }
+        />
+        <Route
+          path="/diagnostic-admin"
+          element={
+            isAuthenticated &&
+            userData?.userRole === "DiagnosticCenterAdmin" ? (
+              <DiagnosticCenterAdmin />
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
       </Routes>
