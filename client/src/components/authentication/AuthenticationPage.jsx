@@ -36,8 +36,8 @@ const AuthenticationPage = () => {
         const { token, user } = response.data;
         login(token, { userId: user._id, userRole: user.userRole });
 
-        if (user.userRole === "DiagnosticCenterAdmin") {
-          navigate("/diagnostic-admin");
+        if (user.userRole === "Patient") {
+          navigate("/patientDirectory");
         } else {
           navigate("/");
         }

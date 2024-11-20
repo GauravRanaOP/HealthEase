@@ -7,7 +7,7 @@ import { useAuth } from "../components/authentication/AuthContext.jsx";
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
-  const { logout } = useAuth();
+  const { userDataRole, logout } = useAuth();
   const navigate = useNavigate(); 
 
 
@@ -16,20 +16,19 @@ const SideBar = () => {
   };
 
   const navLinks = {
-    admin: [
+    Admin: [
       { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
-      { icon: "fa-solid fa-stethoscope", label: "Clinic", path: "/getDoctor" },
-      { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
       { icon: "fa-solid fa-flask-vial", label: "Health Test", path: "/adminTest" },
       { icon: "fa-solid fa-flask-vial", label: "Health Clinic", path: "/adminClinic" },
-
     ],
-    clinicAdmin: [
+    ClinicAdmin: [
       { icon: "fas fa-house", label: "Dashboard", path: "/" },
-      { icon: "fas fa-user-doctor", label: "Add Doctor", path: "/add-doctor" },
+      { icon: "fa-solid fa-stethoscope", label: "Clinic", path: "/getDoctor" },
       { icon: "fa-solid fa-calendar-days", label: "Add Availability", path: "/add-availability" },
     ],
-    diagnosticCenterAdmin: [
+    DiagnosticCenterAdmin: [
+      { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
+      { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
       { icon: "fa-solid fa-calendar-check", label: "View Bookings", path: "/view-bookings" },
     ],
   };
@@ -40,11 +39,9 @@ const SideBar = () => {
     path: "/logout",
   };
 
-  useEffect(()=> {
 
-  }, []);
 
-  const links = navLinks["admin"] || [];
+  const links = navLinks[userDataRole] || [];
 
   const handleLinkClick = (index) => {
     setActiveLink(index);
@@ -57,6 +54,7 @@ const SideBar = () => {
 
   return (
     <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+      {console.log(userDataRole)}
       <div className="toggle-btn" onClick={toggleSidebar}>
         <i className={`fas ${isCollapsed ? "fa-angles-right" : "fa-angles-left"}`}></i>
       </div>
