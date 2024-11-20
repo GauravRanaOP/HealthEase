@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "../../assets/css/authentication/AuthenticationStyle.css";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom"; // Import Link for navigation
-
 
 const AuthenticationPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,10 +20,9 @@ const AuthenticationPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:3002/api/auth/login",
@@ -33,13 +31,20 @@ const AuthenticationPage = () => {
           loginPassword,
         }
       );
-      console.log("Login Response: ", response.data);
+
       if (response.status === 200) {
-        login(response.data.token, response.data.user._id);
-        navigate("/");
+        const { token, user } = response.data;
+        login(token, { userId: user._id, userRole: user.userRole });
+
+        if (user.userRole === "DiagnosticCenterAdmin") {
+          navigate("/diagnostic-admin");
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
-      console.error("Login Error: ", error);
+      console.error("Login Error:", error);
+      alert(error.response?.data || "Login failed.");
     }
   };
 

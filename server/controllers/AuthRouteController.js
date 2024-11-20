@@ -5,22 +5,24 @@ import jwt from "jsonwebtoken"; // Ensure jwt is imported
 export const login = async (req, res) => {
   const { loginEmail, loginPassword } = req.body;
 
-  const user = await User.findOne({ email: loginEmail });
+  try {
+    const user = await User.findOne({ email: loginEmail });
 
-  if (!user) return res.status(400).send("Invalid email or password.");
+    if (!user) return res.status(400).send("Invalid email or password.");
 
-  const validPassword = await bcrypt.compare(loginPassword, user.password);
+    const validPassword = await bcrypt.compare(loginPassword, user.password);
+    if (!validPassword) return res.status(400).send("Invalid email or password.");
 
-  if (!validPassword)
-    return res.status(400).send("Invalid username or password.");
+    const token = jwt.sign({ userId: user.id, userRole: user.userRole }, process.env.JWT_SECRET);
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-
-  res.status(200).json({
-    token,
-    status: "success",
-    user
-  })
+    res.status(200).json({
+      token,
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.status(500).send("Internal server error.");
+  }
 };
 
 export const register = async (req, res) => {
