@@ -1,5 +1,5 @@
 import express from "express";
-import { create, deleteClinic, getAll, getOne, updateClinic } from "../controllers/AdminClinic.js";
+import { create, deleteClinic, getAll, getOne, updateClinic } from "../controllers/AdminClinicController.js";
 
 const AdminClinicRoute = express.Router();
 

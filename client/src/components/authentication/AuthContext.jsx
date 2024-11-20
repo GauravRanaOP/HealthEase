@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     );
 
     setToken(newToken);
-    setUserData({ userId, userRole });
+    setUserData(userId);
     setUserDataRole(userRole);
     setIsAuthenticated(true);
   };

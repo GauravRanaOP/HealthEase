@@ -6,6 +6,7 @@ import Pagination from "../components/Pagination";
 import useSpeechRecognition from "../hooks/useSpeechRecognization";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../components/authentication/AuthContext.jsx";
 
 const Doctor = () => {
   const [Doctors, setDoctors] = useState([]);
@@ -17,6 +18,8 @@ const Doctor = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [doctorsPerPage] = useState(4);
   const [searchQuery, setSearchQuery] = useState("");
+  const { userData } = useAuth();
+  const [count, setCount] = useState(0);
 
   const {
     text,
@@ -26,7 +29,6 @@ const Doctor = () => {
     hasRecognitionSupport,
   } = useSpeechRecognition();
 
-  const textSpeech = text;
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -52,12 +54,22 @@ const Doctor = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3002/api/getDoctor");
-      setDoctors(response.data);
+      try {
+        if (userData) {
+          const response = await axios.get("http://localhost:3002/api/getDoctor");
+          const filteredDoctors = response.data.filter(
+            (doctor) => doctor.clinicId._id === userData
+          );
+          setDoctors(filteredDoctors);
+        }
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
     };
-
+  
     fetchData();
-  }, []);
+  }, [userData]); // Add userData as a dependency
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -200,6 +212,7 @@ const Doctor = () => {
 
   return (
     <div className="doctor-table-container app-layout">
+      {console.log(userData)}
       <SideBar />
       <div className="content">
         <div className="search-container">
@@ -264,7 +277,7 @@ const Doctor = () => {
                 <td>{Doctor.userid.firstName}</td>
                 <td>{Doctor.userid.lastName}</td>
                 <td>{Doctor.speciality}</td>
-                <td>{Doctor.email || "johndoe123@gmail.com"}</td>
+                <td>{Doctor.userid.email || "johndoe123@gmail.com"}</td>
                 <td>
                   <button
                     className="view"
