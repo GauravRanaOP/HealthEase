@@ -64,7 +64,7 @@ const route = createBrowserRouter([
 ]);
 
 const App = () => {
-  const { isAuthenticated, userData } = useAuth();
+  const { isAuthenticated, userData, userDataRole } = useAuth();
   return (
     <Router>
       <HeaderPatient />
@@ -125,7 +125,7 @@ const App = () => {
           path="/diagnostic-admin"
           element={
             isAuthenticated &&
-            userData?.userRole === "DiagnosticCenterAdmin" ? (
+            userDataRole === "DiagnosticCenterAdmin" ? (
               <DiagnosticCenterAdmin />
             ) : (
               <Navigate to="/login" replace />

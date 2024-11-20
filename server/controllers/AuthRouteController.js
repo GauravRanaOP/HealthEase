@@ -1,19 +1,26 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt"; // Ensure bcrypt is imported
 import jwt from "jsonwebtoken"; // Ensure jwt is imported
+import Clinic from "../models/Clinic.js";
 
 export const login = async (req, res) => {
   const { loginEmail, loginPassword } = req.body;
 
   try {
-    const user = await User.findOne({ email: loginEmail });
-
-    if (!user) return res.status(400).send("Invalid email or password.");
-
+    const user =
+      (await User.findOne({ email: loginEmail })) ||
+      (await Clinic.findOne({ email: loginEmail }));
+    if (!user) {
+      return res.status(400).send("Invalid email or password.");
+    }
     const validPassword = await bcrypt.compare(loginPassword, user.password);
-    if (!validPassword) return res.status(400).send("Invalid email or password.");
+    if (!validPassword)
+      return res.status(400).send("Invalid email or password.");
 
-    const token = jwt.sign({ userId: user.id, userRole: user.userRole }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { userId: user.id, userRole: user.userRole },
+      process.env.JWT_SECRET
+    );
 
     res.status(200).json({
       token,
@@ -51,11 +58,10 @@ export const register = async (req, res) => {
 
     const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
 
-
     res.status(201).json({
       message: "User registered successfully",
       userId: savedUser._id,
-      token
+      token,
     });
   } catch (error) {
     console.error(error);

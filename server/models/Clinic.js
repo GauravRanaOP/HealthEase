@@ -32,11 +32,21 @@ const ClinicSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Doctor'
     },
+    password: {
+        type: String,
+        required: [true, "Please provide a password"],
+      },
     // availabilityId: {           // is it necessary to add availability for clinic? we are adding availability for doctors.
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'Availability'
     // }
 });
+
+ClinicSchema.methods.verifyPassword = async function (password) {
+    const clinic = this;
+    const isMatch = await bcrypt.compare(password, clinic.password);
+    return isMatch;
+  };
 
 // exports clinic module
 const Clinic = mongoose.model('Clinic', ClinicSchema);
