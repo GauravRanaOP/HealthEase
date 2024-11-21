@@ -78,7 +78,7 @@ export default function TestTimeslots() {
     }
 
     // gets userId from userData object in AuthContext.jsx
-    const userId = userData.userId;
+    const userId = userData;
     const appointmentId = selectedTimeslot.appointmentId;
 
     // debug: logs the appointment id
