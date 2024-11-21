@@ -38,6 +38,12 @@ const AuthenticationPage = () => {
 
         if (user.userRole === "Patient") {
           navigate("/patientDirectory");
+        } else if (user.userRole === "Admin") {
+          navigate("/adminTest");
+        } else if (user.userRole === "ClinicAdmin") {
+          navigate("/getDoctor");
+        } else if (user.userRole === "DiagnosticCenterAdmin") {
+          navigate("/getBookings");
         } else {
           navigate("/");
         }
