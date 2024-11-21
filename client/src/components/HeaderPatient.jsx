@@ -1,16 +1,24 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/HeaderPatient.css";
 import logo from "../assets/images/logo.png";
+import { isAuthenticated, useAuth } from "../components/authentication/AuthContext.jsx";
 
 const HeaderPatient = () => {
   const [isLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate(); 
 
   const user = useMemo(() => ({ name: "John Doe", role: "Admin" }), []);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthContext
+    navigate("/login"); // Redirect to /login after logout
   };
 
   return (
@@ -31,9 +39,9 @@ const HeaderPatient = () => {
       <div className={`nav-links ${menuOpen ? "open" : ""}`}>
         {!isLoggedIn ? (
           <>
+          {/* {isAuthenticated} */}
             <div className="login-btns">
-              <button className="login-btn">Login</button>
-              <button className="register-btn">Register</button>
+              <button className="login-btn" onClick={handleLogout}>Logout</button>
             </div>
           </>
         ) : (
