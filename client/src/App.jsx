@@ -72,7 +72,7 @@ const App = () => {
         <Route path="/Login" element={<AuthenticationPage />} />
         <Route
           path="/"
-          element={!isAuthenticated ? <AuthenticationPage /> : <PatientDirectory />}
+          element={!isAuthenticated ? <AuthenticationPage /> : <Dashboard />}
         />
         {/* <Route path="/register" element={<RegistrationForm />} /> */}
         <Route

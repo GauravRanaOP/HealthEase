@@ -18,8 +18,9 @@ const SideBar = () => {
   const navLinks = {
     Admin: [
       { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
-      { icon: "fa-solid fa-flask-vial", label: "Health Test", path: "/adminTest" },
-      { icon: "fa-solid fa-flask-vial", label: "Health Clinic", path: "/adminClinic" },
+      { icon: "fa-solid fa-flask-vial", label: "Tests", path: "/adminTest" },
+      { icon: "fa-solid fa-flask-vial", label: "Clinics", path: "/adminClinic" },
+      { icon: "fa-solid fa-hospital", label: "Diagnostic Centers", path: "/diagnostic-center" },
     ],
     ClinicAdmin: [
       { icon: "fas fa-house", label: "Dashboard", path: "/" },
@@ -28,8 +29,8 @@ const SideBar = () => {
     ],
     DiagnosticCenterAdmin: [
       { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
-      { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
-      { icon: "fa-solid fa-calendar-check", label: "View Bookings", path: "/view-bookings" },
+      // { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
+      { icon: "fa-solid fa-calendar-check", label: "Appointments", path: "/getBookings" },
     ],
   };
 
