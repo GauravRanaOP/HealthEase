@@ -16,7 +16,7 @@ export const addAvailability = async (req, res) => {
             return res.status(404).json({ message: "Diagnostic center not found" });
         }
 
-        //create and save the availability
+        //create and save availability
         const newAvailability = new Availability({
             startDate,
             endDate,
@@ -44,13 +44,13 @@ export const getDiagnosticCenterByAddress = async (req, res) => {
     const { userId } = req.params;
 
     try {
-        //find the user document
+        //find user document
         const user = await User.findById(userId);
         if (!user || !user.addressId) {
             return res.status(404).json({ message: "User or Address ID not found." });
         }
 
-        //find the diagnostic center by address id
+        //find diagnostic center by address id
         const center = await DiagnosticCenter.findOne({ addressId: user.addressId });
         if (!center) {
             return res.status(404).json({ message: "Diagnostic center not found." });
@@ -59,6 +59,26 @@ export const getDiagnosticCenterByAddress = async (req, res) => {
         res.status(200).json(center);
     } catch (error) {
         console.error("Error fetching Diagnostic Center:", error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//fetch diagnostic center details
+export const getDiagnosticCenterDetails = async (req, res) => {
+    const { centerId } = req.params;
+
+    try {
+        const center = await DiagnosticCenter.findById(centerId).populate({
+            path: 'testsOffered',
+            select: 'name _id',
+        });
+        if (!center) {
+            return res.status(404).json({ message: "Diagnostic center not found." });
+        }
+
+        res.status(200).json(center);
+    } catch (error) {
+        console.error("Error fetching diagnostic center details:", error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -155,24 +175,27 @@ const generateTimeSlots = (startDate, endDate, startTime, endTime, diagnosticCen
     return timeSlots;
 };
 
-//add Tests to Diagnostic Center
+//update tests offered by diagnostic center
 export const updateTestsOffered = async (req, res) => {
     const { centerId } = req.params;
-    const { tests } = req.body; //array of test Ids
+    const { tests } = req.body;
 
     try {
-        //validate test Ids
+        //validate test ids
         const validTests = await Test.find({ _id: { $in: tests } });
         if (validTests.length !== tests.length) {
             return res.status(400).json({ message: "Some test IDs are invalid." });
         }
 
-        //update the diagnostic center with the selected tests
+        //update the diagnostic center with selected tests
         const updatedCenter = await DiagnosticCenter.findByIdAndUpdate(
             centerId,
             { testsOffered: tests },
             { new: true }
-        ).populate("testsOffered"); //populate to return updated test details
+        ).populate({
+            path: 'testsOffered',
+            select: 'name _id',
+        });
 
         if (!updatedCenter) {
             return res.status(404).json({ message: "Diagnostic center not found." });
@@ -184,6 +207,36 @@ export const updateTestsOffered = async (req, res) => {
         });
     } catch (error) {
         console.error("Error updating tests offered:", error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//remove a test from diagnostic center
+export const removeTestFromCenter = async (req, res) => {
+    const { centerId, testId } = req.params;
+
+    try {
+        const center = await DiagnosticCenter.findById(centerId);
+        if (!center) {
+            return res.status(404).json({ message: "Diagnostic center not found." });
+        }
+
+        //remove the testId from testsOffered
+        center.testsOffered = center.testsOffered.filter(
+            (test) => test.toString() !== testId
+        );
+
+        await center.save();
+
+        //populate the updated testsOffered
+        const populatedCenter = await DiagnosticCenter.findById(centerId).populate('testsOffered');
+
+        res.status(200).json({
+            message: "Test removed successfully.",
+            center: populatedCenter,
+        });
+    } catch (error) {
+        console.error("Error removing test:", error.message);
         res.status(500).json({ message: error.message });
     }
 };
