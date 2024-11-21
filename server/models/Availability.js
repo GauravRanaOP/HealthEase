@@ -12,14 +12,19 @@ const AvailabilitySchema = new Schema({
     startTime: String,
     endTime: String,
     type: {                 // distinguishes between doctor or center(DC/Clinic)
-        type: String, 
+        type: String,
         required: true,
         enum: ['Doctor', 'DiagnosticCenter', 'Clinic']
     },
     doctorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Doctor'
-    }
+    },
+    diagnosticCenterId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DiagnosticCenter",
+        required: true,
+    },
 });
 
 // exports Availability module

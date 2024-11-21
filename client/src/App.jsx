@@ -64,7 +64,7 @@ const route = createBrowserRouter([
 ]);
 
 const App = () => {
-  const { isAuthenticated, userData, userDataRole } = useAuth();
+  const { isAuthenticated, userDataRole } = useAuth();
   return (
     <Router>
       <HeaderPatient />
