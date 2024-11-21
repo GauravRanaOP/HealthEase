@@ -2,13 +2,13 @@ import { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/HeaderPatient.css";
 import logo from "../assets/images/logo.png";
-import { isAuthenticated, useAuth } from "../components/authentication/AuthContext.jsx";
+import { useAuth } from "../components/authentication/AuthContext.jsx";
 
 const HeaderPatient = () => {
   const [isLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { logout } = useAuth();
-  const navigate = useNavigate(); 
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   const user = useMemo(() => ({ name: "John Doe", role: "Admin" }), []);
 
@@ -39,10 +39,17 @@ const HeaderPatient = () => {
       <div className={`nav-links ${menuOpen ? "open" : ""}`}>
         {!isLoggedIn ? (
           <>
-          {/* {isAuthenticated} */}
-            <div className="login-btns">
-              <button className="login-btn" onClick={handleLogout}>Logout</button>
-            </div>
+            {isAuthenticated ? (
+              <div className="login-btns">
+                <button className="login-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="login-btns">
+                <button className="login-btn">Login</button>
+              </div>
+            )}
           </>
         ) : (
           <>
