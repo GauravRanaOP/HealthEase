@@ -79,7 +79,7 @@ const AuthenticationPage = () => {
 
       if (response.status === 201) {
         login(response.data.token, response.data.userId);
-        navigate("/");
+        navigate("/patientDirectory");
       }
 
       console.log("Registration Response: ", response.data);

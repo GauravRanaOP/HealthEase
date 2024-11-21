@@ -138,7 +138,7 @@ const AdminClinic = () => {
         <div className="admin-test-search-container">
           <input
             type="text"
-            placeholder="Search Patients"
+            placeholder="Search Clinics"
             className="admin-test-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
