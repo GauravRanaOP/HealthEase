@@ -124,11 +124,10 @@ const App = () => {
         <Route
           path="/diagnostic-admin"
           element={
-            isAuthenticated &&
-            userDataRole === "DiagnosticCenterAdmin" ? (
-              <DiagnosticCenterAdmin />
+            !isAuthenticated && userDataRole === "DiagnosticCenterAdmin" ? (
+              <AuthenticationPage />
             ) : (
-              <Navigate to="/login" replace />
+              <DiagnosticCenterAdmin />
             )
           }
         />

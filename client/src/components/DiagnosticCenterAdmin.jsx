@@ -18,11 +18,21 @@ const DiagnosticCenterAdmin = () => {
 
   const [tests, setTests] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
+  const [assignedTests, setAssignedTests] = useState([]);
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   //fetch diagnostic center id using addressId from user data
   useEffect(() => {
     const fetchCenterId = async () => {
-      const storedData = JSON.parse(localStorage.getItem("user_data")); //get user data from local storage
+      const storedData = JSON.parse(localStorage.getItem("user_data"));
       if (!storedData || !storedData.userId) {
         setMessage("Error: User data missing in local storage.");
         return;
@@ -45,7 +55,7 @@ const DiagnosticCenterAdmin = () => {
     fetchCenterId();
   }, []);
 
-  //fetch all availabilities for the center
+  //fetch all availabilities for center
   useEffect(() => {
     const fetchAvailabilities = async () => {
       if (centerId) {
@@ -87,6 +97,32 @@ const DiagnosticCenterAdmin = () => {
     fetchTests();
   }, []);
 
+  //fetch assigned tests
+  useEffect(() => {
+    const fetchAssignedTests = async () => {
+      if (centerId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:3002/api/diagnostic-centers/${centerId}`
+          );
+          console.log("Assigned Tests Response:", response.data.testsOffered);
+          setAssignedTests(response.data.testsOffered || []);
+          setSelectedTests(
+            (response.data.testsOffered || []).map((test) => test._id)
+          );
+        } catch (error) {
+          console.error(
+            "Error fetching assigned tests:",
+            error.response?.data || error.message
+          );
+          setMessage("Failed to fetch assigned tests.");
+        }
+      }
+    };
+
+    fetchAssignedTests();
+  }, [centerId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAvailability((prev) => ({ ...prev, [name]: value }));
@@ -100,7 +136,7 @@ const DiagnosticCenterAdmin = () => {
     setSelectedTests(selectedOptions);
   };
 
-  //add tests for the center
+  //add or update tests
   const handleSubmitTests = async () => {
     if (!centerId) {
       setMessage("Error: Diagnostic Center ID is missing.");
@@ -108,17 +144,47 @@ const DiagnosticCenterAdmin = () => {
     }
 
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:3002/api/diagnostic-centers/${centerId}/tests`,
         { tests: selectedTests }
       );
-      setMessage("Tests added successfully!");
+      setMessage("Tests updated successfully!");
+
+      //update assignedTests and selectedTests
+      const updatedTestsOffered = response.data.center.testsOffered;
+      setAssignedTests(updatedTestsOffered);
+      setSelectedTests(updatedTestsOffered.map((test) => test._id));
     } catch (error) {
       console.error(
         "Error updating tests:",
         error.response?.data || error.message
       );
       setMessage("Failed to update tests. Please try again.");
+    }
+  };
+
+  //remove a test
+  const handleRemoveTest = async (testId) => {
+    if (!centerId) {
+      setMessage("Error: Diagnostic Center ID is missing.");
+      return;
+    }
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:3002/api/diagnostic-centers/${centerId}/tests/${testId}`
+      );
+      setMessage("Test removed successfully!", 3000);
+
+      const updatedTestsOffered = response.data.center.testsOffered;
+      setAssignedTests(updatedTestsOffered);
+      setSelectedTests(updatedTestsOffered.map((test) => test._id));
+    } catch (error) {
+      console.error(
+        "Error removing test:",
+        error.response?.data || error.message
+      );
+      setMessage("Failed to remove test. Please try again.");
     }
   };
 
@@ -157,7 +223,6 @@ const DiagnosticCenterAdmin = () => {
       setEditMode(false);
       setCurrentAvailabilityId(null);
 
-      // Refresh availabilities
       const response = await axios.get(
         `http://localhost:3002/api/diagnostic-centers/${centerId}/availabilities`
       );
@@ -191,7 +256,6 @@ const DiagnosticCenterAdmin = () => {
       );
       setMessage("Availability deleted successfully!");
 
-      // Refresh availabilities
       setAvailabilities((prev) =>
         prev.filter((availability) => availability._id !== availabilityId)
       );
@@ -230,6 +294,25 @@ const DiagnosticCenterAdmin = () => {
             Save Tests
           </button>
         </div>
+
+        <h2 className="section-title-tests">Assigned Tests</h2>
+        <ul className="assigned-tests-list">
+          {assignedTests.length > 0 ? (
+            assignedTests.map((test) => (
+              <li key={test._id} className="assigned-test-item">
+                <span className="test-name">{test.name}</span>
+                <button
+                  className="remove-test-btn"
+                  onClick={() => handleRemoveTest(test._id)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))
+          ) : (
+            <p>No tests assigned to this center.</p>
+          )}
+        </ul>
 
         <h2 className="section-title-availability">
           Add or Update Availability

@@ -25,7 +25,7 @@ export const createDiagnosticCenter = async (req, res) => {
             email,
             addressId: savedAddress._id,
         });
-        await newCenter.save();
+        const savedCenter = await newCenter.save();
 
         const newUser = new User({
             email,
@@ -36,7 +36,9 @@ export const createDiagnosticCenter = async (req, res) => {
         });
         await newUser.save();
 
-        res.status(201).json({ message: "Diagnostic center created successfully." });
+        const populatedCenter = await DiagnosticCenter.findById(savedCenter._id).populate("addressId");
+
+        res.status(201).json(populatedCenter);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

@@ -112,6 +112,53 @@
   border-radius: 4px;
 }
 
+.assigned-tests-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-large) auto;
+  width: 60%;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.assigned-test-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-medium);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition);
+}
+
+.assigned-test-item:hover {
+  background-color: var(--table-row-hover-bg);
+}
+
+.test-name {
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.remove-test-btn {
+  background-color: #f44336;
+  color: var(--secondary-color);
+  border: none;
+  border-radius: 6px;
+  padding: var(--spacing-small) var(--spacing-medium);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--box-shadow);
+}
+
+.remove-test-btn:hover {
+  background-color: #e53935;
+  transform: translateY(-2px);
+}
+
 .section-title-availability {
   font-size: 1.75rem;
   color: var(--heading-color);
