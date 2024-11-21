@@ -46,12 +46,10 @@ export const updateAppointmentStatuses = async () => {
         );
         
 
-      } else if (appointment.status !== "Test Pending At DC") {
-        appointment.status = "Test Pending At DC";
+      } else if (appointment.status !== "Result Pending At DC") {
+        appointment.status = "Result Pending At DC";
         await appointment.save();
-        console.log(
-          `Appointment ${appointment._id}: Status updated to Test Pending At DC`
-        );
+        console.log(`Appointment ${appointment._id}: Status updated to Result Pending At DC`);
 
       }
     }

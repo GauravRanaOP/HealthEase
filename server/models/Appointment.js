@@ -41,7 +41,7 @@ const AppointmentSchema = new Schema({
     doctorNote: String,
     status: {
         type: String,
-        default: ['Pending', 'Confirmed', 'Test Results Available', 'Doctor Note Avaiable', 'Test Pending At DC', 'Completed']
+        default: ['Pending', 'Confirmed', 'Test Results Available', 'Doctor Note Avaiable', 'Result Pending At DC', 'Completed']
     },
     comments: {
         type: String,
