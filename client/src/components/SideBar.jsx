@@ -28,9 +28,8 @@ const SideBar = () => {
       { icon: "fa-solid fa-calendar-days", label: "Add Availability", path: "/add-availability" },
     ],
     DiagnosticCenterAdmin: [
-      // { icon: "fa-solid fa-house", label: "Dashboard", path: "/" },
-      // { icon: "fas fa-hospital", label: "Diagnostics Center", path: "/getBookings" },
       { icon: "fa-solid fa-calendar-check", label: "Appointments", path: "/getBookings" },
+      { icon: "fa-solid fa-hospital", label: "Manage Center", path: "/diagnostic-admin" },
     ],
   };
 
