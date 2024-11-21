@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../assets/css/admintest.css";
 import SideBar from "./SideBar";
+import Pagination from "./Pagination";
+
 
 const AdminClinic = () => {
   const [AdminClinic, setAdminClinic] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(null); // For selected test details
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [clinicsPerPage] = useState(8);
+  const [searchQuery, setSearchQuery] = useState("");
+
+
   const [currentClinic, setCurrentClinic] = useState({
     name: "",
     email: "",
@@ -107,6 +114,23 @@ const AdminClinic = () => {
     }
   };
 
+  const filteredClinics = AdminClinic.filter((clinic) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return Object.values(clinic).some((value) =>
+      String(value).toLowerCase().includes(lowerCaseQuery)
+    ); // check if any field contains the search query
+  });
+
+  // paginate as per search query
+  const currentClinics = filteredClinics.slice(
+    (currentPage - 1) * clinicsPerPage,
+    currentPage * clinicsPerPage
+  );
+
+  // handle page change
+  const handlePageChange = (page) => setCurrentPage(page);
+
+
   return (
     <div className="app-layout">
       <SideBar />
@@ -116,6 +140,8 @@ const AdminClinic = () => {
             type="text"
             placeholder="Search Patients"
             className="admin-test-search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
             className="admin-test-add-button"
@@ -133,7 +159,7 @@ const AdminClinic = () => {
             </tr>
           </thead>
           <tbody>
-            {AdminClinic.map((Test) => (
+            {currentClinics.map((Test) => (
               <tr className="admin-test-tr" key={Test._id}>
                 <td className="admin-test-td">{Test.name}</td>
                 <td className="admin-test-td description">{Test.email}</td>
@@ -162,14 +188,11 @@ const AdminClinic = () => {
           </tbody>
         </table>
 
-        {/* Pagination (if needed) */}
-        <div className="admin-test-pagination">
-          <button className="disabled">Previous</button>
-          <button className="active">1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>Next</button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredClinics.length / clinicsPerPage)}
+          onPageChange={handlePageChange}
+        />
 
         {/* Add Test Modal */}
         {isAddModalOpen && (
