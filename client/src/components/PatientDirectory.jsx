@@ -191,7 +191,7 @@ export default function PatientDirectory() {
       <div>
         <img className="hero-image"
           sizes="(max-width: 790px) 100vw, 790px"
-          srcset={`${heroImg200} 200w, ${heroImg790} 790w`}
+          srcSet={`${heroImg200} 200w, ${heroImg790} 790w`}
           src={heroImg790}
           alt="Graphic illustration of a hospital scene" 
           />
