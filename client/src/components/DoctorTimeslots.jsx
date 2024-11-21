@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
 
 import { useAuth } from "./authentication/AuthContext.jsx";
+import CheckoutForm from "./CheckoutForm.jsx";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/css/DoctorTimeslots.css";
 
+const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ17SaRliXyVOcLoTjqU2NGUt5kpDoCLESapPqkz4jz5BGdtWsH6d00INEwhjtB");    // key from stripe dashboard
 
-// // helper function to format date to mm/dd/yyyy
-// const formatDateToDisplay = (date) => {
-//   const month = date.getMonth() + 1;
-//   const day = date.getDate();
-//   const year = date.getFullYear();
-//   return `${month}/${day}/${year}`;
-// };
 
 export default function DoctorTimeslots() {
   
@@ -180,6 +177,19 @@ export default function DoctorTimeslots() {
             onClick={() => navigate("/patientDirectory")}
             className="btn-custom"
             >Continue</button>
+        </div>
+      )}
+
+      {/* Payment Section */}
+      {showConfirmation && selectedTimeslot && (
+        <div className="payment-container">
+          <Elements stripe={stripePromise}>
+            <CheckoutForm
+              selectedTimeslot={selectedTimeslot}
+              userData={userData}
+              doctorId={doctorId}
+            />
+          </Elements>
         </div>
       )}
 
