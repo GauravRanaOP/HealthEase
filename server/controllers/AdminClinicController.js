@@ -1,5 +1,6 @@
 import Clinic from "../models/Clinic.js";
 import Address from "../models/Address.js";
+import bcrypt from "bcrypt"; // Ensure bcrypt is imported
 
 export const create = async (req, res) => {
   try {
@@ -12,7 +13,12 @@ export const create = async (req, res) => {
     clinic.name = data.name;
     clinic.contactNo = data.contactNo;
     clinic.email = data.email;
+    clinic.userRole = "ClinicAdmin";
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash("qwe", salt);
+
+    clinic.password = hashedPassword;
     const address = new Address();
     address.streetAddress = data.streetAddress;
     address.city = data.city;
