@@ -1,94 +1,130 @@
 :root {
-    --primary-color: #385399;
-    --secondary-color: #fafafa;
-    --text-color: #2c2c2c;
-    --border-color: #9f9f9f;
-    --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    --font-main: "Ubuntu", sans-serif;
-    --font-secondary: "Montserrat", sans-serif;
-  }
-  
-  .timeslots-container {
-    margin: 20px;
-  }
-  
-  .timeslots-container p {
-    color: black;
-  }
-  
-  .timeslots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .timeslot-button {
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    cursor: pointer;
-    color: black;
-    border-radius: 7px;
-  }
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #d3d3d3;
+  --selected-bg-color: #aaaaaa;
+  --font-main: "Lato", sans-serif;
+  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .timeslot-button:hover {
-    background-color: #1a73e8;
-    color: white;
-  }
-  
-  .timeslot-button.selected {
-    background-color: #1a73e8;
-    color: white;
-    border: 2px solid black;
-  }
-  
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+.timeslots-container {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+}
+
+.timeslots-container h2 {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.appointment-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.appointment-date h2 {
+  margin: 0;
+}
+
+.timeslots-container input[type="date"],
+.timeslots-container .react-datepicker__input-container input {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  width: auto;
+}
+
+.timeslots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.timeslot-button {
+  padding: 8px 16px;
+  border: 2px dashed var(--border-color);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 90px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.timeslot-button:hover {
+  border: 1px solid var(--selected-bg-color);
+  background-color: var(--selected-bg-color);
+}
+
+.timeslot-button.selected {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.timeslots-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 2rem;
+  border-top: 2px solid var(--border-color);
+}
+
+.btn-cancel,
+.btn-confirm {
+  margin-top: 1.5rem;
+  width: 120px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel {
+  background-color: #777;
+  color: white;
+}
+
+.btn-confirm {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #a3a3a3;
+}
+
+.btn-confirm:hover {
+  background-color: #2d4373;
+}
+
+@media screen and (max-width: 548px) {
   .timeslots-actions {
-    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
-  
-  .cancel-button,
-  .confirm-button {
-    padding: 10px 20px;
-    margin-right: 15px;
-    border: none;
-    color: white;
-  }
-  
-  h2 {
-    color: black;
-  }
-  
-  .btn-cancel,
-  .btn-confirm,
-  .btn-custom {
-    width: 120px;
-    height: 40px;
-    border-radius: 32px;
-    font-family: var(--font-secondary);
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease;
-    padding: 10px 20px;
-    margin-right: 15px;
-  }
-  
-  .btn-cancel {
-    background-color: rgb(159, 26, 26);
-    color: var(--secondary-color);
-  }
-  
-  .btn-confirm {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-  }
-
-  @media screen and (max-width: 548px) {
-    .timeslots-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-  }
-  
+}

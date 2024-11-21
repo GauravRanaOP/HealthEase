@@ -1,129 +1,130 @@
 import PropTypes from "prop-types";
+import { useState, useEffect, useCallback } from "react";
 
-// booking modal component for view and edit bookings
 const BookingModal = ({ booking, isOpen, isEditMode, onClose, onSave }) => {
-  if (!isOpen) return null;
+  const [formValues, setFormValues] = useState({});
 
-  // function to format time slot
-  const formatTimeSlot = (timeSlot) => {
-    const date = new Date(timeSlot);
-    return date.toLocaleTimeString("en-US", {
+  useEffect(() => {
+    if (isOpen && booking) {
+      // Using a functional update for the initial state
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        timeSlot: booking.timeSlot,
+        test: booking.test,
+        patientId: booking.patientId,
+        doctorNote: booking.doctorNote,
+        testStatus: booking.testStatus,
+        result: booking.result,
+        location: booking.location,
+      }));
+    }
+  }, [isOpen, booking]);
+
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  }, []);
+
+  const formatTimeSlot = useCallback((timeSlot) => {
+    return new Date(timeSlot).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
     });
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave({ ...booking, ...formValues });
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="modal-container">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h2>{isEditMode ? "Edit Booking" : "View Booking"}</h2>
-          <button className="modal-close-icon" onClick={onClose}>
-            <i className="fa-solid fa-times"></i>
-          </button>
-        </div>
+    <div className="modals">
+      <div className="modals-content">
+        <h2>{isEditMode ? "Edit Booking" : "View Booking"}</h2>
+        <span className="close" onClick={onClose}>
+          &times;
+        </span>
         {isEditMode ? (
           <div className="modal-edit-booking-form">
-            <form>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label>Time Slot:</label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={formatTimeSlot(booking.timeSlot)}
-                        onChange={(e) =>
-                          onSave({ ...booking, timeSlot: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Test:</label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={booking.test}
-                        onChange={(e) =>
-                          onSave({ ...booking, test: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Patient ID:</label>
-                    </td>
-                    <td>
-                      <input type="text" value={booking.patientId} disabled />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Doctor&apos;s Note:</label>
-                    </td>
-                    <td>
-                      <textarea
-                        rows="3"
-                        value={booking.doctorNote}
-                        onChange={(e) =>
-                          onSave({ ...booking, doctorNote: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Test Status:</label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={booking.testStatus}
-                        onChange={(e) =>
-                          onSave({ ...booking, testStatus: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Result:</label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={booking.result}
-                        onChange={(e) =>
-                          onSave({ ...booking, result: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Location:</label>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={booking.location}
-                        onChange={(e) =>
-                          onSave({ ...booking, location: e.target.value })
-                        }
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="timeSlot">Time Slot:</label>
+                <input
+                  type="text"
+                  id="timeSlot"
+                  name="timeSlot"
+                  value={formatTimeSlot(formValues.timeSlot) || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="test">Test:</label>
+                <input
+                  type="text"
+                  id="test"
+                  name="test"
+                  value={formValues.test || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="patientId">Patient ID:</label>
+                <input
+                  type="text"
+                  id="patientId"
+                  name="patientId"
+                  value={formValues.patientId || ""}
+                  disabled
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="doctorNote">Doctor&apos;s Note:</label>
+                <textarea
+                  id="doctorNote"
+                  name="doctorNote"
+                  rows="3"
+                  value={formValues.doctorNote || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="testStatus">Test Status:</label>
+                <input
+                  type="text"
+                  id="testStatus"
+                  name="testStatus"
+                  value={formValues.testStatus || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="result">Result:</label>
+                <input
+                  type="text"
+                  id="result"
+                  name="result"
+                  value={formValues.result || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="location">Location:</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formValues.location || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div className="modal-actions">
-                <button type="button" onClick={() => onSave(booking)}>
+                <button className="modal-confirm-delete" type="submit">
                   Save
                 </button>
               </div>
@@ -131,38 +132,36 @@ const BookingModal = ({ booking, isOpen, isEditMode, onClose, onSave }) => {
           </div>
         ) : (
           <div className="modal-view-booking-details">
-            <table>
-              <tbody>
-                <tr>
-                  <td>Time Slot</td>
-                  <td>{formatTimeSlot(booking.timeSlot)}</td>
-                </tr>
-                <tr>
-                  <td>Test</td>
-                  <td>{booking.test}</td>
-                </tr>
-                <tr>
-                  <td>Patient ID</td>
-                  <td>{booking.patientId}</td>
-                </tr>
-                <tr>
-                  <td>Doctor&apos;s Note</td>
-                  <td>{booking.doctorNote || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Test Status</td>
-                  <td>{booking.testStatus}</td>
-                </tr>
-                <tr>
-                  <td>Result</td>
-                  <td>{booking.result || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Location</td>
-                  <td>{booking.location}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="booking-details-card">
+              <div className="detail-label">Time Slot</div>
+              <div className="detail-value">
+                {formatTimeSlot(booking.timeSlot)}
+              </div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Test</div>
+              <div className="detail-value">{booking.test}</div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Patient ID</div>
+              <div className="detail-value">{booking.patientId}</div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Doctor&apos;s Note</div>
+              <div className="detail-value">{booking.doctorNote || "N/A"}</div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Test Status</div>
+              <div className="detail-value">{booking.testStatus}</div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Result</div>
+              <div className="detail-value">{booking.result || "N/A"}</div>
+            </div>
+            <div className="booking-details-card">
+              <div className="detail-label">Location</div>
+              <div className="detail-value">{booking.location}</div>
+            </div>
           </div>
         )}
       </div>
@@ -170,9 +169,8 @@ const BookingModal = ({ booking, isOpen, isEditMode, onClose, onSave }) => {
   );
 };
 
-// prop types for booking modal
 BookingModal.propTypes = {
-  booking: PropTypes.object.isRequired,
+  booking: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

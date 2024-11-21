@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios";
-// library for date selection
 import DatePicker from "react-datepicker";
-// css for datepicker library
+
+import { useAuth } from "./authentication/AuthContext.jsx";
+
 import "react-datepicker/dist/react-datepicker.css";
-// css for the page
 import "../assets/css/DoctorTimeslots.css";
+
 
 // // helper function to format date to mm/dd/yyyy
 // const formatDateToDisplay = (date) => {
@@ -17,24 +19,25 @@ import "../assets/css/DoctorTimeslots.css";
 // };
 
 export default function DoctorTimeslots() {
+  
   const { doctorId } = useParams();
   const navigate = useNavigate();
+  const { userData } = useAuth();
+
+  // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
   const [showConfirmation, setshowConfirmation] = useState(false);
   const [bookingMessage, setBookingMessage] = useState("");
 
-  // fetches timeslots based on doctorId and selected date
+  // fetches doctor appointment timeslots based on doctorId and selected date
   useEffect(() => {
     const fetchTimeslots = async () => {
       // formats the date to yyyy-mm-dd
       const formattedDate = selectedDate.toISOString().split("T")[0];
       // debugging
-      console.log(
-        "DoctorTimeslotsPage:Fetching timeslots for date: ",
-        formattedDate
-      );
+      //console.log("DoctorTimeslotsPage:Fetching timeslots for date: ",formattedDate);
       try {
         const response = await axios.get(
           `http://localhost:3002/api/doctors/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
@@ -76,21 +79,29 @@ export default function DoctorTimeslots() {
       return;
     }
 
-    // const userId = "Test UserId"; // placeholder until the login module is implemented - fetch from session
+    if (!userData) {
+      alert("No user data found. Please login to continue.");
+      return;
+    }
+
+    // gets userId from userData object in AuthContext.jsx
+    const userId = userData;
     const appointmentId = selectedTimeslot.appointmentId;
 
     // debug: logs the appointment id
-    console.log("DoctorTimeslot: appointmentId: ", appointmentId);
+    console.log("DoctorTimeslot: appointmentId: ", appointmentId, "userId:", userId);
 
     try {
       // backend request to book the appointment
       // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
       const response = await axios.put(
         `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+        { userId }    // send userId in the request body
       );
 
       setBookingMessage(response.data.message);
       setshowConfirmation(false);
+
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");

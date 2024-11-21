@@ -1,6 +1,29 @@
+:root {
+  --primary-color: #385399;
+  --primary-hover-color: #4666b9;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Lato", sans-serif;
+  --spacing-small: 10px;
+  --spacing-medium: 20px;
+  --spacing-large: 40px;
+  --transition: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
 body {
   background-color: #eeeeee;
 }
+
+
 
 .admin-test-search-container {
   display: flex;
@@ -33,8 +56,9 @@ body {
 }
 
 .admin-test-table-container {
-  margin: 20px;
-  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: auto;
+  padding: var(--spacing-large);
 }
 
 .admin-test-table {
@@ -42,6 +66,8 @@ body {
   border-collapse: collapse;
   margin-top: 20px;
   font-size: 16px;
+  margin-top: var(--spacing-medium);
+
 }
 
 .admin-test-thead {
@@ -50,18 +76,19 @@ body {
 
 .admin-test-table th,
 .admin-test-table td {
-  padding: 12px;
-  border: 1px solid #ddd;
+  padding: var(--spacing-medium);
   text-align: left;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .admin-test-table th {
-  background-color: white;
+  background-color: var(--primary-color);
+  color: #fff;
   font-weight: bold;
 }
 
 .admin-test-table td {
-  background-color: #f5f5f5;
+  background-color: #fff;
 }
 
 .admin-test-tr:nth-child(even) .admin-test-td {
@@ -103,6 +130,22 @@ body {
 .admin-test-td button:hover {
   opacity: 0.7;
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  z-index: 1000;
+}
+
 
 /* Pagination */
 .admin-test-pagination {

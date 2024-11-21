@@ -1,5 +1,18 @@
-body{
-  background-color: #EEEEEE;
+:root {
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #9f9f9f;
+  --box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  --font-main: "Lato", sans-serif;
+}
+
+body {
+  background-color: #eeeeee;
+}
+
+.voice-recognization {
+  margin: 20px;
 }
 
 .search-container {
@@ -7,6 +20,22 @@ body{
   justify-content: space-between;
   align-items: center;
   margin: 20px 0;
+}
+
+.stop-button {
+  background-color: #cb2020;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Add space between buttons if needed */
 }
 
 .search-input {
@@ -34,8 +63,8 @@ body{
 
 /* Doctor table container */
 .doctor-table-container {
-  margin: 20px;
-  font-family: Arial, sans-serif;
+  /* margin: 20px; */
+  font-family: var(--font-main);
 }
 
 /* Table styling */
@@ -54,14 +83,14 @@ thead {
 
 .doctor-table th {
   background-color: white; /* Set header background color to white */
-  color: black;            /* Set text color to black for contrast */
-  padding: 10px;          /* Adjust padding for better spacing */
-  text-align: left;       /* Align text to the left */
+  color: black; /* Set text color to black for contrast */
+  padding: 10px; /* Adjust padding for better spacing */
+  text-align: left; /* Align text to the left */
   border: 1px solid #ddd; /* Optional: add a border for a cleaner look */
 }
 
 .doctor-table td {
-  padding: 10px;          /* Maintain padding for table data cells */
+  padding: 10px; /* Maintain padding for table data cells */
 }
 
 th {

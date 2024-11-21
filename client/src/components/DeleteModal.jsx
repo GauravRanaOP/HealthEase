@@ -5,14 +5,10 @@ const DeleteModal = ({ isOpen, booking, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-container">
-      <div className="modal-content">
-        <div className="modal-header">
+    <div className="modals">
+      <div className="modals-content">
           <h2>Confirm Deletion</h2>
-          <button className="modal-close-icon" onClick={onClose}>
-            <i className="fa-solid fa-times"></i>
-          </button>
-        </div>
+          <span className="close" onClick={onClose}>&times;</span>
         <div className="modal-delete-confirmation">
           <p>
             Are you sure you want to delete the booking for{" "}
@@ -51,7 +47,7 @@ const DeleteModal = ({ isOpen, booking, onClose, onConfirm }) => {
 // prop types for delete modal
 DeleteModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  booking: PropTypes.object.isRequired,
+  booking: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
 };
