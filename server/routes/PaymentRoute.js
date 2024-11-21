@@ -5,3 +5,5 @@ const PaymentRoute = express.Router();
 
 // endpoint to create payment intent
 PaymentRoute.get("/intent", createPaymentIntent);
+
+export default PaymentRoute;
