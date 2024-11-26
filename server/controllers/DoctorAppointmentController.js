@@ -132,6 +132,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
   const updatedData = req.body;
   console.log(`appointmentId is : `, appointmentId);
   console.log(`userId is : `, userId);
+  console.log(`paymentStatus is : `, paymentStatus);
   
   if (!appointmentId || !userId || !paymentStatus) {
     return res.status(404).json({
@@ -146,7 +147,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
 
     if (!appointment) {
       return res.status(404).json({
-        message: "The selected timeslot is no longer available. Please choose another timeslot.",
+        message: "Server: The selected timeslot is no longer available. Please choose another timeslot.",
       });
     }
 
@@ -158,7 +159,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
     const doctor = await Doctor.findById(appointment.doctorId);
     if(!doctor) {
       return res.status(404).json({
-        message: "Doctor not found.",
+        message: "Server: Doctor not found.",
       });
     }
 
