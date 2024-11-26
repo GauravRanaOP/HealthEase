@@ -14,14 +14,65 @@ const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { timeslot, doctorId, userData } = location.state || {};
+  const { timeslot, doctorId, diagnosticCenterId, userData, appointmentType } = location.state || {};
+  const { state } = location;
 
   // defines states
   const [bookingMessage, setBookingMessage] = useState("");
+  const [appointmentDetails, setAppointmentDetails] = useState({});
+  const [paymentType, setPaymentType] = useState("");
 
-  if (!timeslot || !doctorId || !userData) {
-    return <p>Error: Missing appointment details.</p>;
-  }
+
+  // if (!timeslot || !doctorId || !userData) {
+  //   return <p>Error: Missing appointment details.</p>;
+  // }
+
+  // useEffect(() => {
+  //   if (state) {
+  //     if (state.doctorId) {
+  //       setPaymentType("Doctor Appointment");
+  //       setAppointmentDetails({
+  //         id: state.doctorId,
+  //         timeslot: state.timeslot,
+  //         userData: state.userData,
+  //       });
+  //     } else if (state.diagnosticCenterId) {
+  //       setPaymentType("Test Appointment");
+  //       setAppointmentDetails({
+  //         id: state.diagnosticCenterId,
+  //         timeslot: state.timeslot,
+  //         userData: state.userData,
+  //       });
+  //     } else {
+  //       console.error("No valid appointment data found");
+  //     }
+  //   }
+  // }, [state]);
+
+
+  // set appointment details and type based on the passed data
+  useEffect(() => {
+    if (appointmentType) {
+      if (appointmentType === "doctor") {
+        setPaymentType("Doctor Appointment");
+        setAppointmentDetails({
+          id: doctorId,
+          timeslot: timeslot,
+          userData: userData,
+        });
+      } else if (appointmentType === "test") {
+        setPaymentType("Test Appointment");
+        setAppointmentDetails({
+          id: diagnosticCenterId,
+          timeslot: timeslot,
+          userData: userData,
+        });
+      } else {
+        console.error("Invalid appointment type");
+      }
+    }
+  }, [appointmentType, doctorId, diagnosticCenterId, timeslot, userData]);
+
 
   // function to handle payment
   const handlePaymentSuccess = async (paymentResult) => {
@@ -29,14 +80,41 @@ export default function PaymentPage() {
     const userId = userData;
 
     try {
-        // calls the backend to update the timeslot status after successful payment
-      const response = await axios.put(
-        `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
-        {
-          userId,
-          paymentStatus: "Paid",
-        }
-      );
+      
+      let response;
+
+      // // calls the backend to update the timeslot status after successful payment
+      // const response = await axios.put(
+      //   `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+      //   {
+      //     userId,
+      //     paymentStatus: "Paid",
+      //   }
+      // );
+
+      // calls backend api based on appointment type
+      if (paymentType === "Doctor Appointment") {
+        // For doctor appointment, update the doctor timeslot
+        response = await axios.put(
+          `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+          {
+            userId,
+            paymentStatus: "Paid",
+          }
+        );
+      } else if (paymentType === "Test Appointment") {
+        // For test appointment, update the test center timeslot
+        response = await axios.put(
+          `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,
+          {
+            userId,
+            paymentStatus: "Paid",
+          }
+        );
+      } else {
+        throw new Error("Invalid appointment type");
+      }
+
       setBookingMessage(response.data.message);
 
     } catch (error) {
