@@ -13,23 +13,32 @@ export default function TestCard({ test }) {
 
   // defines state
   const [showDetails, setShowDetails] = useState(false);
+  const [showTestResults, setShowTestResults] = useState(false);
  
   if (!test) return null;
 
   // diagnostic center address
   const { streetAddress, city, province, country, postCode } = test.diagnosticCenterAddress || {};
+  const { testResult, comments, date, time, status, visitMode } = test;
 
   // function to toggle details button
   const handleDetailsToggle = () => {
     setShowDetails(prevShowDetails => !prevShowDetails);
   }
 
+  // function to toggle visibility of test results
+  const handleViewTestResult = () => {
+    setShowTestResults((prevState) => !prevState); 
+    console.log('Test Result visibility:', !showTestResults);
+  };
+
+
+
   return (
     <div className="test-card">
       <h3>
         {test.diagnosticCenterName}
         <span className="visit-type">
-          {/* {test.visitType === "DoctorVisit" ? "At Clinic" : "At Lab"} */}
           {test.status}
           </span>
       </h3>
@@ -52,11 +61,26 @@ export default function TestCard({ test }) {
           <button onClick={handleDetailsToggle}>
             {showDetails ? "Hide Details" : "Details"}
           </button>
-          
         </div>
+
+        {/* test result */}
+        {testResult && (
+          <div className="test-card-view-testresult">
+            <button onClick={handleViewTestResult}>
+              {showTestResults ? "Hide Test Results" : "View Test Results"}
+            </button>
+          </div>
+        )}
         
       </div>
       
+      {/* renders test results */}
+      {showTestResults && (
+        <div className="appointment-result">
+          <p><strong>Test Results:</strong></p>
+          <p>{testResult}</p>
+        </div>
+      )}
       
       {/* renders details when showDetails is true */}
       {showDetails && (

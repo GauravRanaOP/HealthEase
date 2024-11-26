@@ -245,7 +245,7 @@
 }
 
 /* doctor note */
-.appointment-doctors-note {
+.appointment-result {
   border: 1px solid var(--primary-color); 
   background-color: #fcfcfc;
   color: var(--text-color);
@@ -259,16 +259,16 @@
   gap: 10px;
 }
 
-.appointment-doctors-note p {
+.appointment-result p {
   margin: 0;
 }
 
-.appointment-doctors-note p strong {
+.appointment-result p strong {
   font-weight: bold;
   color: var(--primary-color);
 }
 
-.appointment-card-view-note button {
+.appointment-card-view-doctornote button, .test-card-view-testresult button {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -279,11 +279,11 @@
   transition: background-color 0.3s ease;
 }
 
-.appointment-card-view-note button:hover {
+.appointment-card-view-doctornote button:hover, .test-card-view-testresult button:hover {
   background-color: #004494;
 }
 
-.appointment-card-view-note {
+.appointment-card-view-doctornote, .test-card-view-testresult {
   margin-top: 10px;
 }
 /* end doctor note */

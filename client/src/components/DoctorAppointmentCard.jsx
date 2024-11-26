@@ -47,14 +47,8 @@ export default function AppointmentCard({ appointment }) {
           )}
         </div>
         <div className="appointment-card-date-time">
-          <p>
-            <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
-            {appointment.date}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faClock} className="icon" />
-            {appointment.time}
-          </p>
+          <p><FontAwesomeIcon icon={faCalendarAlt} className="icon" />{appointment.date}</p>
+          <p><FontAwesomeIcon icon={faClock} className="icon" />{appointment.time}</p>
         </div>
 
         <div className="appointment-card-details-btn">
@@ -62,10 +56,10 @@ export default function AppointmentCard({ appointment }) {
             {showDetails ? "Hide Details" : "Details"}
           </button>
         </div>
+
         {/* doctors note */}
-        
         {doctorNote && (
-          <div className="appointment-card-view-note">
+          <div className="appointment-card-view-doctornote">
             <button onClick={handleViewDoctorNote}>
               {showDoctorNote ? "Hide Doctor's Note" : "View Doctor's Note"}
             </button>
@@ -76,7 +70,7 @@ export default function AppointmentCard({ appointment }) {
 
       {/* renders doctor's note */}
       {showDoctorNote && (
-        <div className="appointment-doctors-note">
+        <div className="appointment-result">
           <p><strong>Doctor's Note:</strong></p>
           <p>{doctorNote}</p>
         </div>
