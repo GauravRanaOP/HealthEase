@@ -2,35 +2,38 @@ import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendarAlt,
-  faClock,
-  faCommentDots,
-  faLocationDot,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faClock, faCommentDots, faLocationDot, faUser } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function AppointmentCard({ appointment }) {
   // defines state
   const [showDetails, setShowDetails] = useState(false);
+  const [showDoctorNote, setShowDoctorNote] = useState(false);
 
   if (!appointment) return null;
 
   // clinic address
-  const { streetAddress, city, province, country, postCode } =
-    appointment.clinicAddress || {};
+  const { streetAddress, city, province, country, postCode } = appointment.clinicAddress || {};
+  const { doctorNote, comments, date, time, status, visitMode } = appointment;
 
   // function to toggle details button
   const handleDetailsToggle = () => {
     setShowDetails((prevShowDetails) => !prevShowDetails);
   };
 
+  // function to toggle visibility of doctor's note
+  const handleViewDoctorNote = () => {
+    setShowDoctorNote((prevState) => !prevState); 
+    console.log('Doctor note visibility:', !showDoctorNote);
+  };
+
+
+
   return (
     <div className="appointment-card">
       <h3>
         {appointment.clinicName}
         <span className="visit-type">
-          {/* {appointment.visitType === "DoctorVisit" ? "At Clinic" : "At Lab"} */}
           {appointment.status}
         </span>
       </h3>
@@ -59,8 +62,27 @@ export default function AppointmentCard({ appointment }) {
             {showDetails ? "Hide Details" : "Details"}
           </button>
         </div>
+        {/* doctors note */}
+        
+        {doctorNote && (
+          <div className="appointment-card-view-note">
+            <button onClick={handleViewDoctorNote}>
+              {showDoctorNote ? "Hide Doctor's Note" : "View Doctor's Note"}
+            </button>
+          </div>
+        )}
+
       </div>
 
+      {/* renders doctor's note */}
+      {showDoctorNote && (
+        <div className="appointment-doctors-note">
+          <p><strong>Doctor's Note:</strong></p>
+          <p>{doctorNote}</p>
+        </div>
+      )}
+
+      
       {/* renders details when showDetails is true */}
       {showDetails && (
         <div className="appointment-card-p-container">

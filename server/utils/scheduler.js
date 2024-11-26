@@ -13,19 +13,19 @@ export const updateAppointmentStatuses = async () => {
       doctorId: { $exists: true },
       isTimeSlotAvailable: false,
       isDirectTest: false,
+      paymentStatus: "Paid",
       // avoids processing already updated appointments
-      status: { $ne: "Doctor Note Avaiable" },
+      status: { $ne: "Doctor Note Available" },
     });
 
     for (const appointment of doctorAppointments) {
       if (appointment.doctorNote) {
-        appointment.status = "Doctor Note Avaiable";
+        appointment.status = "Doctor Note Available";
         await appointment.save();
         console.log(
-          `Appointment ${appointment._id}: Status updated to Doctor Note Avaiable`
+          `Appointment ${appointment._id}: Status updated to Doctor Note Available`
         );
 
-        
       }
     }
 
@@ -35,6 +35,7 @@ export const updateAppointmentStatuses = async () => {
       diagnosticCenterId: { $exists: true },
       isTimeSlotAvailable: false,
       isDirectTest: true,
+      paymentStatus: "Paid",
     });
 
     for (const appointment of diagnosticAppointments) {
@@ -115,7 +116,7 @@ export const revertAppointmentStatuses = async () => {
 };
 
 //schedule the function to run every 15 minutes
-cron.schedule("*/15 * * * *", updateAppointmentStatuses, {
+cron.schedule("*/5 * * * *", updateAppointmentStatuses, {
     scheduled: true, // Start the cron job immediately upon app startup
     timezone: "UTC", // Optional: Change the timezone if needed
   });
@@ -126,4 +127,4 @@ cron.schedule("*/15 * * * *", updateAppointmentStatuses, {
 //   timezone: "UTC",
 // });
 
-console.log("Scheduler started: Runs every 15 minutes.");
+console.log("Scheduler started: Runs every 5 minutes.");
