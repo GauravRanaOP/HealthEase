@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
 
 import { useAuth } from "./authentication/AuthContext.jsx";
-import CheckoutForm from "./CheckoutForm.jsx";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/css/DoctorTimeslots.css";
@@ -138,29 +135,43 @@ export default function DoctorTimeslots() {
 
     try {
       setShowPaymentMessage(true);
-      navigate("/payment", {
-        state: {
-          timeslot: selectedTimeslot,
-          doctorId,
-          userData,
-        },
-      });
+
+      // navigate("/payment", {
+      //   state: {
+      //     timeslot: selectedTimeslot,
+      //     doctorId,
+      //     userData,
+      //   },
+      // });
+
+      // checks if the appointment is for a test or a doctor
+      if (doctorId) {
+        // API call for doctor appointment
+        navigate("/payment", {
+          state: {
+            timeslot: selectedTimeslot,
+            doctorId,
+            userData,
+            appointmentType: "doctor",
+          },
+        });
+      } else if (diagnosticCenterId) {
+        // API call for test appointment
+        navigate("/payment", {
+          state: {
+            timeslot: selectedTimeslot,
+            diagnosticCenterId,
+            userData,
+            appointmentType: "test",
+          },
+        });
+      }
 
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");
     }
   };
-
-  // const handlePaymentRedirect = () => {
-  //   navigate("/payment", {
-  //     state: {
-  //       timeslot: selectedTimeslot,
-  //       doctorId,
-  //     },
-  //   });
-  // };
-
 
   
   return (
