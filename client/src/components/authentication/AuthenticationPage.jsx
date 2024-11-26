@@ -38,6 +38,12 @@ const AuthenticationPage = () => {
 
         if (user.userRole === "Patient") {
           navigate("/patientDirectory");
+        } else if (user.userRole === "Admin") {
+          navigate("/adminTest");
+        } else if (user.userRole === "ClinicAdmin") {
+          navigate("/getDoctor");
+        } else if (user.userRole === "DiagnosticCenterAdmin") {
+          navigate("/getBookings");
         } else {
           navigate("/");
         }
@@ -73,7 +79,7 @@ const AuthenticationPage = () => {
 
       if (response.status === 201) {
         login(response.data.token, response.data.userId);
-        navigate("/");
+        navigate("/patientDirectory");
       }
 
       console.log("Registration Response: ", response.data);

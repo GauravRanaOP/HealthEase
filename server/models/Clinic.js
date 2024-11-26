@@ -36,6 +36,10 @@ const ClinicSchema = new Schema({
         type: String,
         required: [true, "Please provide a password"],
       },
+    userRole: {
+        type: String,
+        required: true,
+    }
     // availabilityId: {           // is it necessary to add availability for clinic? we are adding availability for doctors.
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'Availability'
@@ -50,4 +54,4 @@ ClinicSchema.methods.verifyPassword = async function (password) {
 
 // exports clinic module
 const Clinic = mongoose.model('Clinic', ClinicSchema);
-export default Clinic; 
+export default Clinic;

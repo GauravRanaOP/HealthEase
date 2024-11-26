@@ -13,6 +13,9 @@ import { useAuth } from "./authentication/AuthContext.jsx";
 
 import "../assets/css/PatientDirectory.css";
 
+import heroImg200 from "../assets/images/hero-img/hero_img_c_scale_w_200.png";
+import heroImg790 from "../assets/images/hero-img/hero_img_c_scale_w_790.png";
+
 
 export default function PatientDirectory() {
 
@@ -185,6 +188,14 @@ export default function PatientDirectory() {
     <div className="patient-directory">
       {/* <h1 className="directory-title">Find a Doctor</h1> */}
       {/*<h1 className="directory-title">Patient Directory</h1> */}
+      <div>
+        <img className="hero-image"
+          sizes="(max-width: 790px) 100vw, 790px"
+          srcSet={`${heroImg200} 200w, ${heroImg790} 790w`}
+          src={heroImg790}
+          alt="Graphic illustration of a hospital scene" 
+          />
+      </div>
       {userDetails ? <h3 className="welcome-msg">Welcome, {userDetails.firstName}</h3> : <p>Welcome back </p>}
 
       <div className="tabs">
