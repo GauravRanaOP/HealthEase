@@ -27,6 +27,8 @@ import { useAuth } from "./components/authentication/AuthContext.jsx";
 import TestTimeslots from "./components/TestTimeslots";
 import TestCentersList from "./components/TestCentersList";
 import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
+import PaymentPage from "./components/PaymentPage";
+
 
 const route = createBrowserRouter([
   {
@@ -129,6 +131,12 @@ const App = () => {
             ) : (
               <DiagnosticCenterAdmin />
             )
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            !isAuthenticated ? <AuthenticationPage /> : <PaymentPage />
           }
         />
       </Routes>

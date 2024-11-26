@@ -16,6 +16,8 @@ import DiagnosticCenterRoutes from "./routes/DiagnosticCenterRoutes.js";
 import UserRoute from "./routes/UserRoute.js";
 import TestAppointmentRoute from "./routes/TestAppointmentRoute.js";
 import DiagnosticCenterAdminRoutes from "./routes/DiagnosticCenterAdminRoutes.js";
+import PaymentRoute from "./routes/PaymentRoute.js";
+
 
 import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
 import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
@@ -58,7 +60,10 @@ app.use("/api/diagnostic-centers", DiagnosticCenterAdminRoutes);
 app.use("/api/user", UserRoute);
 
 // routes for test appointment
-app.use("/api/test", TestAppointmentRoute)
+app.use("/api/test", TestAppointmentRoute);
+
+// routes for payment
+app.use("/api/payment", PaymentRoute);
 
 
 // route to get doctors by postcode prefix

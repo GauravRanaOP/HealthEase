@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
 
 import { useAuth } from "./authentication/AuthContext.jsx";
+import CheckoutForm from "./CheckoutForm.jsx";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/css/DoctorTimeslots.css";
 
+// const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ17SaRliXyVOcLoTjqU2NGUt5kpDoCLESapPqkz4jz5BGdtWsH6d00INEwhjtB");    // key from stripe dashboard
 
-// // helper function to format date to mm/dd/yyyy
-// const formatDateToDisplay = (date) => {
-//   const month = date.getMonth() + 1;
-//   const day = date.getDate();
-//   const year = date.getFullYear();
-//   return `${month}/${day}/${year}`;
-// };
 
 export default function DoctorTimeslots() {
   
@@ -29,7 +26,9 @@ export default function DoctorTimeslots() {
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
   const [showConfirmation, setshowConfirmation] = useState(false);
-  const [bookingMessage, setBookingMessage] = useState("");
+  // const [bookingMessage, setBookingMessage] = useState("");
+  const [showPaymentMessage, setShowPaymentMessage] = useState(false);
+
 
   // fetches doctor appointment timeslots based on doctorId and selected date
   useEffect(() => {
@@ -73,6 +72,55 @@ export default function DoctorTimeslots() {
     }
   };
 
+//   const handleConfirmClick = () => {
+//     if (selectedTimeslot) {
+//         navigate("/payment", 
+//         { 
+//           state: { 
+//             timeslot: selectedTimeslot, 
+//             doctorId 
+//           }, 
+//         });
+//     } else {
+//         alert("Please select a timeslot before confirming");
+//     }
+// };
+
+  // const handleBooking = async () => {
+  //   if (!selectedTimeslot) {
+  //     alert("Please select a timeslot before confirming");
+  //     return;
+  //   }
+
+  //   if (!userData) {
+  //     alert("No user data found. Please login to continue.");
+  //     return;
+  //   }
+
+  //   // gets userId from userData object in AuthContext.jsx
+  //   const userId = userData;
+  //   const appointmentId = selectedTimeslot.appointmentId;
+
+  //   // debug: logs the appointment id
+  //   console.log("DoctorTimeslot: appointmentId: ", appointmentId, "userId:", userId);
+
+  //   try {
+  //     // backend request to book the appointment
+  //     // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
+  //     const response = await axios.put(
+  //       `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+  //       { userId }    // send userId in the request body
+  //     );
+
+  //     setBookingMessage(response.data.message);
+  //     setshowConfirmation(false);
+
+  //   } catch (error) {
+  //     console.error("Error booking appointment: ", error);
+  //     alert("Error booking the appointment. Please try again");
+  //   }
+  // };
+
   const handleBooking = async () => {
     if (!selectedTimeslot) {
       alert("Please select a timeslot before confirming");
@@ -88,19 +136,15 @@ export default function DoctorTimeslots() {
     const userId = userData;
     const appointmentId = selectedTimeslot.appointmentId;
 
-    // debug: logs the appointment id
-    console.log("DoctorTimeslot: appointmentId: ", appointmentId, "userId:", userId);
-
     try {
-      // backend request to book the appointment
-      // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
-      const response = await axios.put(
-        `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-        { userId }    // send userId in the request body
-      );
-
-      setBookingMessage(response.data.message);
-      setshowConfirmation(false);
+      setShowPaymentMessage(true);
+      navigate("/payment", {
+        state: {
+          timeslot: selectedTimeslot,
+          doctorId,
+          userData,
+        },
+      });
 
     } catch (error) {
       console.error("Error booking appointment: ", error);
@@ -108,10 +152,21 @@ export default function DoctorTimeslots() {
     }
   };
 
+  // const handlePaymentRedirect = () => {
+  //   navigate("/payment", {
+  //     state: {
+  //       timeslot: selectedTimeslot,
+  //       doctorId,
+  //     },
+  //   });
+  // };
+
+
+  
   return (
     <div className="timeslots-container">
-      {!bookingMessage && (
-      <>
+      {/* {!bookingMessage && (
+      <> */}
         <h2>Appointment Date:</h2>
         <DatePicker
           selected={selectedDate}
@@ -152,8 +207,8 @@ export default function DoctorTimeslots() {
           </button>
         </div>
 
-      </>
-      )}
+      {/* </>
+      )} */}
 
       {showConfirmation && selectedTimeslot && (
         <div className="confirmation-popup">
@@ -173,7 +228,7 @@ export default function DoctorTimeslots() {
         </div>
       )}
 
-      {bookingMessage && (
+      {/* {bookingMessage && (
         <div>
           <p className="booking-message">{bookingMessage}</p>
           <button 
@@ -181,7 +236,20 @@ export default function DoctorTimeslots() {
             className="btn-custom"
             >Continue</button>
         </div>
-      )}
+      )} */}
+
+      {/* Payment Section */}
+      {/* {showConfirmation && selectedTimeslot && (
+        <div className="payment-container">
+          <Elements stripe={stripePromise}>
+            <CheckoutForm
+              selectedTimeslot={selectedTimeslot}
+              userData={userData}
+              doctorId={doctorId}
+            />
+          </Elements>
+        </div>
+      )} */}
 
     </div>
   );
