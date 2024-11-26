@@ -152,16 +152,6 @@ export default function DoctorTimeslots() {
     }
   };
 
-  // const handlePaymentRedirect = () => {
-  //   navigate("/payment", {
-  //     state: {
-  //       timeslot: selectedTimeslot,
-  //       doctorId,
-  //     },
-  //   });
-  // };
-
-
   
   return (
     <div className="timeslots-container">

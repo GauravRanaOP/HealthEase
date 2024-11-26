@@ -100,6 +100,7 @@ export default function CheckoutForm({ onSuccess }) {
 
   const [loading, setLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handlePaymentSubmit = async (event) => {
     event.preventDefault();
@@ -114,9 +115,12 @@ export default function CheckoutForm({ onSuccess }) {
     });
 
     if (error) {
-      console.error(error);
-      alert("Payment failed");
-    } else {
+      setErrorMessage(error.message);
+      console.log("Client: Error: ", error);
+      return;
+    } 
+    
+    try {
       // gets the clientSecret key from the backend
       const response = await axios.post("http://localhost:3002/api/payment/intent", {
         amount: 40, // replace with the actual amount
@@ -130,23 +134,18 @@ export default function CheckoutForm({ onSuccess }) {
       });
 
       if (paymentResult.error) {
-        console.error(paymentResult.error);
-        alert("Payment failed");
+        setErrorMessage(paymentResult.error.message);
+        console.log("Payment result error: ", paymentResult.error);
+        
       } else if (paymentResult.paymentIntent.status === "succeeded") {
         // calls the success handler after successful payment
         onSuccess(paymentResult);
       }
+
+    } catch (error) {
+      setErrorMessage("An unexpected error occurred. Please try again.");
     }
   };
-
-  // return (
-  //   <form onSubmit={handlePaymentSubmit}>
-  //     <CardElement />
-  //     <button type="submit" disabled={!stripe}>
-  //       Pay
-  //     </button>
-  //   </form>
-  // );
 
   return (
     <div className="checkout-form">
@@ -161,7 +160,11 @@ export default function CheckoutForm({ onSuccess }) {
         </button>
       </form>
 
-      {paymentStatus && <p>{paymentStatus}</p>}
+      {/* {paymentStatus && <p>{paymentStatus}</p>} */}
+
+      {/* Display error message if exists */}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+
     </div>
   );
 }
