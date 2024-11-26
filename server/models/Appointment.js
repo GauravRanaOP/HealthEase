@@ -50,7 +50,12 @@ const AppointmentSchema = new Schema({
     isDirectTest: {
         type: Boolean,
         default: false
-    }
+    },
+    paymentStatus: { 
+        type: String, 
+        enum: ["Not Paid", "Pending", "Paid", "Failed"], 
+        default: "Not Paid" 
+    },
 });
 
 // exports Appointment module

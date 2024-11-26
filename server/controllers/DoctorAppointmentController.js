@@ -127,18 +127,15 @@ export const getDoctorAppointmentTimeslots = async (req, res) => {
 export const updateDoctorAppointmentTimeslot = async (req, res) => {
   // const { appointmentId } = req.body;
   const { appointmentId } = req.params;
-
-  //const userId = 'Test';    // commented for now, will be modified once the login module is implemented.
-  const { userId } = req.body;
+  const { userId, paymentStatus } = req.body;
 
   const updatedData = req.body;
   console.log(`appointmentId is : `, appointmentId);
   console.log(`userId is : `, userId);
   
-  if (!appointmentId || !userId) {
-  //if (!appointmentId || !userId) {
+  if (!appointmentId || !userId || !paymentStatus) {
     return res.status(404).json({
-      message: "appointmentId and userId are required",
+      message: "appointmentId, userId, and paymentStatus are required",
     });
   }
 
@@ -151,6 +148,10 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
       return res.status(404).json({
         message: "The selected timeslot is no longer available. Please choose another timeslot.",
       });
+    }
+
+    if (paymentStatus !== "Paid") {
+      return res.status(400).json({ message: "Payment is not completed. Booking cannot proceed." });
     }
 
     // retrieves doctor information
@@ -174,6 +175,7 @@ export const updateDoctorAppointmentTimeslot = async (req, res) => {
     appointment.isTimeSlotAvailable = false;
     appointment.status = "Confirmed";
     appointment.patientId = userId;   // sets userId from local storage
+    appointment.paymentStatus = paymentStatus;    // payment status updated as Paid
     appointment.comments = "Booking Confirmed";
 
     await appointment.save();
