@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import axios from "axios";
 
@@ -186,8 +187,34 @@ export default function PatientDirectory() {
   
   return (
     <div className="patient-directory">
-      {/* <h1 className="directory-title">Find a Doctor</h1> */}
-      {/*<h1 className="directory-title">Patient Directory</h1> */}
+      <Helmet>
+        <title>
+          {activeTab === "searchDoctors"
+            ? "HealthEase - Search Doctors"
+            : activeTab === "doctorAppointments"
+            ? "HealthEase - Doctor Appointments"
+            : activeTab === "searchTests"
+            ? "HealthEase - Search Tests"
+            : activeTab === "testAppointments"
+            ? "HealthEase - Test Appointments"
+            : "HealthEase - Patient Directory"}
+        </title>
+        <meta
+          name="description"
+          content={
+            activeTab === "searchDoctors"
+              ? "Find and connect with top doctors in your area using our comprehensive search feature."
+              : activeTab === "doctorAppointments"
+              ? "View, schedule, and manage your appointments with doctors seamlessly."
+              : activeTab === "searchTests"
+              ? "Explore available medical tests and find the best options for your needs."
+              : activeTab === "testAppointments"
+              ? "Manage your test appointments and access related information easily."
+              : "Explore our patient directory to manage appointments, access test information, and more."
+          }
+        />
+      </Helmet>
+      
       <div>
         <img className="hero-image"
           sizes="(max-width: 790px) 100vw, 790px"

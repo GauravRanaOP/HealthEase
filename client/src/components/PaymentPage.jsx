@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 
 import CheckoutForm from "./CheckoutForm.jsx";
@@ -126,6 +127,14 @@ export default function PaymentPage() {
 
   return (
     <div className="payment-page">
+      <Helmet>
+        <title>Confirm Your Payment</title>
+        <meta
+          name="description"
+          content="Securely complete your payment for your doctor or test appointment. Confirm details, view total cost, and proceed to finalize your booking with ease."
+        />
+      </Helmet>
+
       {bookingMessage ? (
         <div>
           <p className="booking-message">{bookingMessage}</p>
