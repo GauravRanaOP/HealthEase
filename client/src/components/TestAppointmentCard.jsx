@@ -40,9 +40,15 @@ export default function TestCard({ test }) {
         {test.diagnosticCenterName}
         <span className="visit-type">
           {test.status}
-          </span>
+        </span>
+        <br/>
+        
       </h3>
       <div className="test-card-items"> 
+        
+        <div className="test-card-name">
+          <p>{test.testName}</p>
+        </div>
 
         <div className="test-card-address">
           {streetAddress && (
@@ -52,10 +58,13 @@ export default function TestCard({ test }) {
             </p>
           )}
         </div>
+        
         <div className="test-card-date-time">
           <p><FontAwesomeIcon icon={faCalendarAlt} className="icon"/>{test.date}</p>  
           <p><FontAwesomeIcon icon={faClock} className="icon"/>{test.time}</p>
         </div>
+
+        
         
         <div className="test-card-details-btn">
           <button onClick={handleDetailsToggle}>
@@ -77,8 +86,8 @@ export default function TestCard({ test }) {
       {/* renders test results */}
       {showTestResults && (
         <div className="appointment-result">
-          <p><strong>Test Results:</strong></p>
-          <p>{testResult}</p>
+          <p>Test Results:</p>
+          <p className="result-data">{testResult}</p>
         </div>
       )}
       

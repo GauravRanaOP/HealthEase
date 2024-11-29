@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -14,6 +14,9 @@ export default function TestTimeslots() {
   const { diagnosticCenterId } = useParams();   // to get diagnosticCenterId from url 
   const navigate = useNavigate();
   const { userData } = useAuth();
+  const location = useLocation();
+  const testId = location.state?.testId;
+
 
   // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
@@ -109,6 +112,7 @@ export default function TestTimeslots() {
             diagnosticCenterId,
             userData,
             appointmentType: "test", 
+            testId,
           },
         });
       } else if (doctorId) {

@@ -21,14 +21,6 @@ import DoctorAppointmentRoute from "./routes/DoctorAppointmentRoute.js";
 import PatientRoute from "./routes/PatientRoute.js";
 
 
-//import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
-//import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
-//import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
-//import { getOneDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
-//import { getPatientAppointments } from "./controllers/PatientAppointmentController.js";
-//import { getPatientTests } from "./controllers/PatientTestController.js";
-
-
 // initializes the app
 const app = express();
 

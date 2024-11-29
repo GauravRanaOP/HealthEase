@@ -15,7 +15,7 @@ const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { timeslot, doctorId, diagnosticCenterId, userData, appointmentType } = location.state || {};
+  const { timeslot, doctorId, diagnosticCenterId, userData, appointmentType, testId } = location.state || {};
   const { state } = location;
 
   // defines states
@@ -55,6 +55,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (appointmentType) {
       if (appointmentType === "doctor") {
+        console.log("doctor state: ", location.state);
         setPaymentType("Doctor Appointment");
         setAppointmentDetails({
           id: doctorId,
@@ -62,6 +63,7 @@ export default function PaymentPage() {
           userData: userData,
         });
       } else if (appointmentType === "test") {
+        console.log("test state: ", location.state);
         setPaymentType("Test Appointment");
         setAppointmentDetails({
           id: diagnosticCenterId,
@@ -79,6 +81,7 @@ export default function PaymentPage() {
   const handlePaymentSuccess = async (paymentResult) => {
     const { appointmentId } = timeslot;
     const userId = userData;
+    //const testId = testId;
 
     try {
       
@@ -110,6 +113,7 @@ export default function PaymentPage() {
           {
             userId,
             paymentStatus: "Paid",
+            testId: testId,
           }
         );
       } else {

@@ -113,12 +113,13 @@ export const getTestAppointmentTimeslots = async (req, res) => {
 export const updateTestAppointmentTimeslot = async (req, res) => {
     // const { appointmentId } = req.body;
     const { appointmentId } = req.params;
-    const { userId, paymentStatus } = req.body;
+    const { userId, paymentStatus, testId } = req.body;
 
     const updatedData = req.body;
     console.log(`appointmentId is : `, appointmentId);
     console.log(`userId is : `, userId);
     console.log(`paymentStatus is : `, paymentStatus);
+    console.log(`testId is : `, testId);
     
     if (!appointmentId || !userId || !paymentStatus) {
       return res.status(404).json({
@@ -156,6 +157,7 @@ export const updateTestAppointmentTimeslot = async (req, res) => {
       appointment.patientId = userId;    // sets userId from local storage
       appointment.paymentStatus = paymentStatus;    // payment status updated as Paid
       appointment.comments = "Booking Confirmed";
+      appointment.testId = testId;
   
       await appointment.save();
   

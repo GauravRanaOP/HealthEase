@@ -56,6 +56,10 @@ const AppointmentSchema = new Schema({
         enum: ["Not Paid", "Pending", "Paid", "Failed"], 
         default: "Not Paid" 
     },
+    testId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tests'
+    }
 });
 
 // exports Appointment module
