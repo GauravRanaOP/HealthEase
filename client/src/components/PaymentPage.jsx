@@ -86,7 +86,7 @@ export default function PaymentPage() {
 
       // // calls the backend to update the timeslot status after successful payment
       // const response = await axios.put(
-      //   `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+      //   `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,
       //   {
       //     userId,
       //     paymentStatus: "Paid",
@@ -97,7 +97,7 @@ export default function PaymentPage() {
       if (paymentType === "Doctor Appointment") {
         // For doctor appointment, update the doctor timeslot
         response = await axios.put(
-          `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+          `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,
           {
             userId,
             paymentStatus: "Paid",

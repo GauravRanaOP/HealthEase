@@ -51,7 +51,7 @@ export default function DoctorTimeslots() {
       //console.log("DoctorTimeslotsPage:Fetching timeslots for date: ",formattedDate);
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/doctors/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
+          `http://localhost:3002/api/doctor/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
         );
         setTimeslots(response.data);
       } catch (error) {
@@ -119,9 +119,9 @@ export default function DoctorTimeslots() {
 
   //   try {
   //     // backend request to book the appointment
-  //     // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
+  //     // const response = await axios.put(`http://localhost:3002/api/doctor/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
   //     const response = await axios.put(
-  //       `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+  //       `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
   //       { userId }    // send userId in the request body
   //     );
 

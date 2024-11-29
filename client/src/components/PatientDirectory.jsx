@@ -79,7 +79,7 @@ export default function PatientDirectory() {
   setDoctorsLoading(true);
   try {
     const response = await axios.get(
-      `http://localhost:3002/api/doctors/postcode/${postcodePrefix}`
+      `http://localhost:3002/api/doctor/postcode/${postcodePrefix}`
     );
     setDoctors(response.data);
   } catch (error) {
