@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -25,10 +26,24 @@ export default function DoctorTimeslots() {
   const [showConfirmation, setshowConfirmation] = useState(false);
   // const [bookingMessage, setBookingMessage] = useState("");
   const [showPaymentMessage, setShowPaymentMessage] = useState(false);
+  const [doctorDetails, setDoctorDetails] = useState(null);
 
 
   // fetches doctor appointment timeslots based on doctorId and selected date
   useEffect(() => {
+    // fetches doctor details
+    const fetchDoctorDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3002/api/getDoctor/${doctorId}`
+        );
+        setDoctorDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching doctor details: ", error);
+      }
+    };
+
+    // fetches doctor timeslots
     const fetchTimeslots = async () => {
       // formats the date to yyyy-mm-dd
       const formattedDate = selectedDate.toISOString().split("T")[0];
@@ -36,7 +51,7 @@ export default function DoctorTimeslots() {
       //console.log("DoctorTimeslotsPage:Fetching timeslots for date: ",formattedDate);
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/doctors/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
+          `http://localhost:3002/api/doctor/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
         );
         setTimeslots(response.data);
       } catch (error) {
@@ -47,6 +62,7 @@ export default function DoctorTimeslots() {
       }
     };
 
+    fetchDoctorDetails();
     fetchTimeslots();
   }, [doctorId, selectedDate]);
 
@@ -103,9 +119,9 @@ export default function DoctorTimeslots() {
 
   //   try {
   //     // backend request to book the appointment
-  //     // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
+  //     // const response = await axios.put(`http://localhost:3002/api/doctor/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
   //     const response = await axios.put(
-  //       `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+  //       `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
   //       { userId }    // send userId in the request body
   //     );
 
@@ -176,6 +192,22 @@ export default function DoctorTimeslots() {
   
   return (
     <div className="timeslots-container">
+      <Helmet>
+        <title>
+          {doctorDetails 
+            ? `HealthEase - Book Appointment with Dr. ${doctorDetails.userid.firstName} ${doctorDetails.userid.lastName}`
+            : "HealthEase - Select a Timeslot"}
+        </title>
+        <meta
+          name="description"
+          content={
+            doctorDetails
+              ? `Explore available timeslots and book an appointment with Dr. ${doctorDetails.userid.firstName} ${doctorDetails.userid.lastName}, a ${doctorDetails.speciality}.`
+              : "Find and book a convenient appointment timeslot."
+          }
+        />
+      </Helmet>
+
       {/* {!bookingMessage && (
       <> */}
         <h2>Appointment Date:</h2>

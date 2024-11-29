@@ -62,7 +62,7 @@ import axios from "axios";
 //   const confirmBooking = async () => {
 //     try {
 //       const response = await axios.put(
-//         `http://localhost:3002/api/doctors/updateTimeslot/${selectedTimeslot.appointmentId}`,
+//         `http://localhost:3002/api/doctor/updateTimeslot/${selectedTimeslot.appointmentId}`,
 //         { userId: userData.userId }
 //       );
 //       console.log("Booking confirmed:", response.data.message);

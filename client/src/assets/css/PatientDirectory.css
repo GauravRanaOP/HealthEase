@@ -160,7 +160,8 @@
 .appointment-card-address,
 .test-card-address,
 .appointment-card-date-time,
-.test-card-date-time {
+.test-card-date-time,
+.test-card-name {
   margin-top: 1.2rem;
   color: var(--text-color);
   display: flex;
@@ -263,9 +264,15 @@
   margin: 0;
 }
 
-.appointment-result p strong {
-  font-weight: bold;
+.appointment-result .result-data, .test-card-name p {
+  font-weight: 700;
   color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.appointment-card-view-doctornote, .test-card-view-testresult {
+  margin-top: 10px;
+  text-align: center;
 }
 
 .appointment-card-view-doctornote button, .test-card-view-testresult button {
@@ -283,9 +290,7 @@
   background-color: #004494;
 }
 
-.appointment-card-view-doctornote, .test-card-view-testresult {
-  margin-top: 10px;
-}
+
 /* end doctor note */
 
 .doctor-card-footer, .test-center-card-footer {

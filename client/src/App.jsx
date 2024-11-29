@@ -28,6 +28,7 @@ import TestTimeslots from "./components/TestTimeslots";
 import TestCentersList from "./components/TestCentersList";
 import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
 import PaymentPage from "./components/PaymentPage";
+import { HelmetProvider } from "react-helmet-async";
 
 
 const route = createBrowserRouter([
@@ -68,80 +69,82 @@ const route = createBrowserRouter([
 const App = () => {
   const { isAuthenticated, userDataRole } = useAuth();
   return (
-    <Router>
-      <HeaderPatient />
-      <Routes>
-        <Route path="/Login" element={<AuthenticationPage />} />
-        <Route
-          path="/"
-          element={!isAuthenticated ? <AuthenticationPage /> : <Dashboard />}
-        />
-        {/* <Route path="/register" element={<RegistrationForm />} /> */}
-        <Route
-          path="/getDoctor"
-          element={!isAuthenticated ? <AuthenticationPage /> : <Doctor />}
-        />
-        <Route
-          path="/patientDirectory"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <PatientDirectory />
-          }
-        />
-        <Route
-          path="/adminTest"
-          element={!isAuthenticated ? <AuthenticationPage /> : <AdminTest />}
-        />
-        <Route
-          path="/adminClinic"
-          element={!isAuthenticated ? <AuthenticationPage /> : <AdminClinic />}
-        />
-        <Route
-          path="/getBookings"
-          element={!isAuthenticated ? <AuthenticationPage /> : <ViewBookings />}
-        />
-        <Route
-          path="/doctorTimeslots/:doctorId"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <DoctorTimeslots />
-          }
-        />
-        <Route
-          path="/diagnostic-center"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
-          }
-        />
-        <Route
-          path="/testTimeslots/:diagnosticCenterId"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <TestTimeslots />
-          }
-        />
-        <Route
-          path="/testCentersList/:testId"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <TestCentersList />
-          }
-        />
-        <Route
-          path="/diagnostic-admin"
-          element={
-            !isAuthenticated && userDataRole === "DiagnosticCenterAdmin" ? (
-              <AuthenticationPage />
-            ) : (
-              <DiagnosticCenterAdmin />
-            )
-          }
-        />
-        <Route
-          path="/payment"
-          element={
-            !isAuthenticated ? <AuthenticationPage /> : <PaymentPage />
-          }
-        />
-      </Routes>
-      <FooterPatient />
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <HeaderPatient />
+        <Routes>
+          <Route path="/Login" element={<AuthenticationPage />} />
+          <Route
+            path="/"
+            element={!isAuthenticated ? <AuthenticationPage /> : <Dashboard />}
+          />
+          {/* <Route path="/register" element={<RegistrationForm />} /> */}
+          <Route
+            path="/getDoctor"
+            element={!isAuthenticated ? <AuthenticationPage /> : <Doctor />}
+          />
+          <Route
+            path="/patientDirectory"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <PatientDirectory />
+            }
+          />
+          <Route
+            path="/adminTest"
+            element={!isAuthenticated ? <AuthenticationPage /> : <AdminTest />}
+          />
+          <Route
+            path="/adminClinic"
+            element={!isAuthenticated ? <AuthenticationPage /> : <AdminClinic />}
+          />
+          <Route
+            path="/getBookings"
+            element={!isAuthenticated ? <AuthenticationPage /> : <ViewBookings />}
+          />
+          <Route
+            path="/doctorTimeslots/:doctorId"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <DoctorTimeslots />
+            }
+          />
+          <Route
+            path="/diagnostic-center"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <DiagnosticCenterPage />
+            }
+          />
+          <Route
+            path="/testTimeslots/:diagnosticCenterId"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <TestTimeslots />
+            }
+          />
+          <Route
+            path="/testCentersList/:testId"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <TestCentersList />
+            }
+          />
+          <Route
+            path="/diagnostic-admin"
+            element={
+              !isAuthenticated && userDataRole === "DiagnosticCenterAdmin" ? (
+                <AuthenticationPage />
+              ) : (
+                <DiagnosticCenterAdmin />
+              )
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              !isAuthenticated ? <AuthenticationPage /> : <PaymentPage />
+            }
+          />
+        </Routes>
+        <FooterPatient />
+      </Router>
+    </HelmetProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 
 import CheckoutForm from "./CheckoutForm.jsx";
@@ -14,7 +15,7 @@ const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { timeslot, doctorId, diagnosticCenterId, userData, appointmentType } = location.state || {};
+  const { timeslot, doctorId, diagnosticCenterId, userData, appointmentType, testId } = location.state || {};
   const { state } = location;
 
   // defines states
@@ -54,6 +55,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (appointmentType) {
       if (appointmentType === "doctor") {
+        console.log("doctor state: ", location.state);
         setPaymentType("Doctor Appointment");
         setAppointmentDetails({
           id: doctorId,
@@ -61,6 +63,7 @@ export default function PaymentPage() {
           userData: userData,
         });
       } else if (appointmentType === "test") {
+        console.log("test state: ", location.state);
         setPaymentType("Test Appointment");
         setAppointmentDetails({
           id: diagnosticCenterId,
@@ -78,6 +81,7 @@ export default function PaymentPage() {
   const handlePaymentSuccess = async (paymentResult) => {
     const { appointmentId } = timeslot;
     const userId = userData;
+    //const testId = testId;
 
     try {
       
@@ -85,7 +89,7 @@ export default function PaymentPage() {
 
       // // calls the backend to update the timeslot status after successful payment
       // const response = await axios.put(
-      //   `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+      //   `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,
       //   {
       //     userId,
       //     paymentStatus: "Paid",
@@ -96,7 +100,7 @@ export default function PaymentPage() {
       if (paymentType === "Doctor Appointment") {
         // For doctor appointment, update the doctor timeslot
         response = await axios.put(
-          `http://localhost:3002/api/doctors/updateTimeslot/${appointmentId}`,
+          `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,
           {
             userId,
             paymentStatus: "Paid",
@@ -109,6 +113,7 @@ export default function PaymentPage() {
           {
             userId,
             paymentStatus: "Paid",
+            testId: testId,
           }
         );
       } else {
@@ -126,6 +131,14 @@ export default function PaymentPage() {
 
   return (
     <div className="payment-page">
+      <Helmet>
+        <title>Confirm Your Payment</title>
+        <meta
+          name="description"
+          content="Securely complete your payment for your doctor or test appointment. Confirm details, view total cost, and proceed to finalize your booking with ease."
+        />
+      </Helmet>
+
       {bookingMessage ? (
         <div>
           <p className="booking-message">{bookingMessage}</p>
