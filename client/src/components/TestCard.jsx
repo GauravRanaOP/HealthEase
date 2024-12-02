@@ -13,9 +13,6 @@ export default function TestCard({ test }) {
   //   return <div>Loading diagnostic center...</div>;
   // }
 
-  // // destructures diagnostic center address
-  // const { streetAddress, city, province, postCode } = test.diagnosticCenters?.[0]?.address || {};
-
   // navigates to TestCentersList page when book now button is clicked
   const handleTestCenterDetailsClick = () => {
     if (test._id) {
@@ -31,16 +28,6 @@ export default function TestCard({ test }) {
       <h3>{test.name}</h3>
       <div className="test-card-p-container">
         <p>{test.description}</p>
-          {/* {test.diagnosticCenters && test.diagnosticCenters.length > 0 ? (
-            test.diagnosticCenters.map((dc, index) => (
-              <p key={index}>
-                <FontAwesomeIcon icon={faLocationDot} className="icon" />
-                {dc.address?.streetAddress}, {dc.address?.city} ,{dc.address?.province}, {dc.address?.postCode}
-              </p>
-            ))
-          ) : (
-            <p>No diagnostic centers available</p>
-          )} */}
       </div>
 
       <div className="test-card-open-container">

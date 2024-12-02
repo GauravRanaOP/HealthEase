@@ -32,7 +32,7 @@ export default function TestCentersList({ test }) {
   const handleBookNowClick = (diagnosticCenterId) => {
     console.log("Diagnostic Center ID, handleBookNowClick : ", diagnosticCenterId);
     // navigate to the testTimeslots page with the dc id
-    navigate(`/testTimeslots/${diagnosticCenterId}`);
+    navigate(`/testTimeslots/${diagnosticCenterId}`, { state: { testId } });
   };
 
   // checks if test data is available

@@ -1,0 +1,97 @@
+:root {
+  --primary-color: #385399;
+  --secondary-color: #fafafa;
+  --text-color: #2c2c2c;
+  --border-color: #d3d3d3;
+  --selected-bg-color: #aaaaaa;
+  --font-main: "Lato", sans-serif;
+  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+.payment-page {
+  padding: 2rem;
+  width: 600px;
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+}
+
+.payment-page h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.payment-page p {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin: 10px 0;
+}
+
+.btn-custom {
+  width: 200px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.btn-custom:hover {
+  background-color: var(--button-hover-color);
+}
+
+.stripe-checkout {
+  margin-top: 20px;
+}
+
+.StripeElement {
+  width: 100% !important;
+  max-width: 500px;
+  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.checkout-form form div {
+  width: 100%; 
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.booking-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 548px) {
+  .payment-page {
+    padding: 1.5rem;
+  }
+
+  .btn-custom {
+    width: 100%;
+  }
+}
