@@ -42,7 +42,7 @@ app.use("/api", AdminClinicRoute)
 app.use("/api/auth", AuthRoute);
 
 // View Bookings routes for Diagnostic Center
-app.use("/api/bookings", ViewBookingsRoute);
+app.use("/api/appointments", ViewBookingsRoute);
 
 // Routes for Diagnostic Center
 app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
