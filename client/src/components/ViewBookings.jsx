@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import "../assets/css/ViewBookings.css";
 import Pagination from "./Pagination";
@@ -44,6 +45,19 @@ const ViewBookings = () => {
 
   return (
     <div className="app-layout">
+      <Helmet>
+        <title>Appointments | HealthEase</title>
+        <meta
+          name="description"
+          content="Manage and review all booked diagnostic appointments. View patient details, appointment status, and results in one place."
+        />
+        <meta
+          name="keywords"
+          content="booked appointments, diagnostic tests, patient details, HealthEase"
+        />
+        <meta name="author" content="HealthEase Team" />
+        <link rel="canonical" href="http://localhost:3002/getBookings" />
+      </Helmet>
       <SideBar />
       <div className="bookings-table-container">
         <div className="search-container">

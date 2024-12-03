@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import SideBar from "./SideBar";
 import "../assets/css/DiagnosticCenterAdmin.css";
@@ -270,6 +271,19 @@ const DiagnosticCenterAdmin = () => {
 
   return (
     <div className="app-layout">
+      <Helmet>
+        <title>Manage Diagnostic Center | HealthEase</title>
+        <meta
+          name="description"
+          content="Manage diagnostic center availability, assign tests, and update availability seamlessly."
+        />
+        <meta
+          name="keywords"
+          content="diagnostic center, health ease, manage tests, availability"
+        />
+        <meta name="author" content="HealthEase Team" />
+        <link rel="canonical" href="http://localhost:3002/diagnostic-admin" />
+      </Helmet>
       <SideBar />
       <div className="content">
         <h1 className="dashboard-title">Manage Diagnostic Center</h1>

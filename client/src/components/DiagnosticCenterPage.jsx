@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import "../assets/css/DiagnosticCenterPage.css";
 import Pagination from "./Pagination";
@@ -253,6 +254,19 @@ const DiagnosticCenterPage = () => {
 
   return (
     <div className="app-layout">
+      <Helmet>
+        <title>Diagnostic Centers | HealthEase</title>
+        <meta
+          name="description"
+          content="Explore and manage diagnostic centers. Create, update, and delete diagnostic centers for optimal healthcare services."
+        />
+        <meta
+          name="keywords"
+          content="diagnostic centers, healthcare, manage centers, HealthEase"
+        />
+        <meta name="author" content="HealthEase Team" />
+        <link rel="canonical" href="http://localhost:3002/diagnostic-center" />
+      </Helmet>
       <SideBar />
       <div className="dc-container">
         <div className="dc-container-header">
