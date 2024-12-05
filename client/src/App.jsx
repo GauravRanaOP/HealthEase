@@ -141,6 +141,7 @@ const App = () => {
               !isAuthenticated ? <AuthenticationPage /> : <PaymentPage />
             }
           />
+          
         </Routes>
         <FooterPatient />
       </Router>
