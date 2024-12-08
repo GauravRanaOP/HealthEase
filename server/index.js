@@ -19,6 +19,7 @@ import DiagnosticCenterAdminRoutes from "./routes/DiagnosticCenterAdminRoutes.js
 import PaymentRoute from "./routes/PaymentRoute.js";
 import DoctorAppointmentRoute from "./routes/DoctorAppointmentRoute.js";
 import PatientRoute from "./routes/PatientRoute.js";
+import DoctorAvailabilityRoute from "./routes/DoctorAvailabilityRoute.js";
 
 
 // initializes the app
@@ -36,7 +37,8 @@ app.use(cors({
 // Routes for doctors
 app.use("/api", DoctorRoute);
 app.use("/api", AdminTestRoute);
-app.use("/api", AdminClinicRoute)
+app.use("/api", AdminClinicRoute);
+app.use("/api", DoctorAvailabilityRoute);
 
 // Routes for Authentication
 app.use("/api/auth", AuthRoute);
