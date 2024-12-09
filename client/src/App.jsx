@@ -29,6 +29,7 @@ import TestCentersList from "./components/TestCentersList";
 import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
 import PaymentPage from "./components/PaymentPage";
 import { HelmetProvider } from "react-helmet-async";
+import About from "./components/About.jsx";
 
 
 const route = createBrowserRouter([
@@ -141,7 +142,10 @@ const App = () => {
               !isAuthenticated ? <AuthenticationPage /> : <PaymentPage />
             }
           />
-          
+          <Route 
+            path="/about" 
+            element={<About />}
+          />
         </Routes>
         <FooterPatient />
       </Router>
