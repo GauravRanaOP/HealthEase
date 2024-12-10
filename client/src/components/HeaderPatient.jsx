@@ -47,7 +47,7 @@ const HeaderPatient = () => {
               </div>
             ) : (
               <div className="login-btns">
-                <button className="login-btn">Login</button>
+                <button className="login-btn" onClick={() => navigate("/login")}>Login</button>
               </div>
             )}
           </>

@@ -30,6 +30,7 @@ import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
 import PaymentPage from "./components/PaymentPage";
 import { HelmetProvider } from "react-helmet-async";
 import About from "./components/About.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 
 const route = createBrowserRouter([
@@ -145,6 +146,10 @@ const App = () => {
           <Route 
             path="/about" 
             element={<About />}
+          />
+          <Route 
+            path="*" 
+            element={<NotFound />}
           />
         </Routes>
         <FooterPatient />
