@@ -23,8 +23,6 @@ body {
   background-color: #eeeeee;
 }
 
-
-
 .admin-test-search-container {
   display: flex;
   justify-content: space-between;
@@ -67,7 +65,6 @@ body {
   margin-top: 20px;
   font-size: 16px;
   margin-top: var(--spacing-medium);
-
 }
 
 .admin-test-thead {
@@ -146,7 +143,54 @@ body {
   z-index: 1000;
 }
 
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: var(--spacing-medium);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 16px;
+}
 
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-medium);
+}
+
+.modal-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.modal-button.submit {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.modal-button.submit:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.modal-button.cancel {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.modal-button.cancel:hover {
+  background-color: #b0b0b0;
+}
 /* Pagination */
 .admin-test-pagination {
   display: flex;
