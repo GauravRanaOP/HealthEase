@@ -16,7 +16,9 @@ export default function TestCard({ test }) {
   // navigates to TestCentersList page when book now button is clicked
   const handleTestCenterDetailsClick = () => {
     if (test._id) {
-      navigate (`/testCentersList/${test._id}`);
+      navigate (`/testCentersList/${test._id}`
+                , { state: { testName: test.name } }
+              );
     } else {
       console.log("TestId is undefined");
     }
@@ -33,7 +35,10 @@ export default function TestCard({ test }) {
       <div className="test-card-open-container">
         {/* <div>Available Now</div> */}
         <div>
-          <button onClick={handleTestCenterDetailsClick}>
+          <button 
+            onClick={handleTestCenterDetailsClick}
+            className="btn-test-center-details"
+            >
             Test Center Details
             <FontAwesomeIcon icon={faArrowRight} className="arrow-right-icon" />
           </button>

@@ -15,7 +15,8 @@ export default function TestTimeslots() {
   const navigate = useNavigate();
   const { userData } = useAuth();
   const location = useLocation();
-  const testId = location.state?.testId;
+  // const testId = location.state?.testId;
+  const { testId, testName } = location.state || {};
 
 
   // sets states
@@ -85,24 +86,9 @@ export default function TestTimeslots() {
     const appointmentId = selectedTimeslot.appointmentId;
 
     try {
-      // backend request to book the appointment
-      // const response = await axios.put(
-      //   `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-      //   { userId }    // send userId in the request body
-      // );
-
-      // setBookingMessage(response.data.message);
-      // setshowConfirmation(false);
+      
       setShowPaymentMessage(true);
       
-      // navigate("/payment", {
-      //   state: {
-      //     timeslot: selectedTimeslot,
-      //     diagnosticCenterId,
-      //     userData,
-      //   },
-      // });
-
       // checks if the appointment is for a test or a doctor
       if (diagnosticCenterId) {
         // API call for test appointment
@@ -113,6 +99,7 @@ export default function TestTimeslots() {
             userData,
             appointmentType: "test", 
             testId,
+            testName,
           },
         });
       } else if (doctorId) {
@@ -137,6 +124,7 @@ export default function TestTimeslots() {
     <div className="timeslots-container">
       {/* {!bookingMessage && (
       <> */}
+        <h2>{testName}</h2>
         <h2>Appointment Date:</h2>
         <DatePicker
           selected={selectedDate}
@@ -200,15 +188,6 @@ export default function TestTimeslots() {
         </div>
       )}
 
-      {/* {bookingMessage && (
-        <div>
-          <p className="booking-message">{bookingMessage}</p>
-          <button 
-            onClick={() => navigate("/patientDirectory")}
-            className="btn-custom"
-            >Continue</button>
-        </div>
-      )} */}
 
       
     </div>

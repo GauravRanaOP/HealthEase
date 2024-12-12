@@ -371,6 +371,16 @@
   text-align: center;
 }
 
+.btn-test-center-details {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
 
 @media (max-width: 768px) {
   .tabs {
