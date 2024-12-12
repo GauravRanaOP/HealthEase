@@ -18,7 +18,7 @@ const ViewBookings = () => {
     const fetchAppointments = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:3002/api/appointments/getBookedAppointments"
+          "https://healthease-n5ra.onrender.com/api/appointments/getBookedAppointments"
         );
         setAppointments(data);
       } catch (error) {
@@ -66,7 +66,7 @@ const ViewBookings = () => {
 
     try {
       await axios.put(
-        `http://localhost:3002/api/appointments/${selectedAppointment._id}`,
+        `https://healthease-n5ra.onrender.com/api/appointments/${selectedAppointment._id}`,
         {
           status: selectedAppointment.status,
           testResult: selectedAppointment.testResult,
@@ -102,7 +102,10 @@ const ViewBookings = () => {
           content="booked appointments, diagnostic tests, patient details, HealthEase"
         />
         <meta name="author" content="HealthEase Team" />
-        <link rel="canonical" href="http://localhost:3002/appointments/view" />
+        <link
+          rel="canonical"
+          href="https://healthease-n5ra.onrender.com/appointments/view"
+        />
       </Helmet>
 
       <SideBar />

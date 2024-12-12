@@ -25,7 +25,7 @@ const NotFound = () => {
           content="404, not found, HealthEase, error page, healthcare"
         />
         <meta name="author" content="HealthEase Team" />
-        <link rel="canonical" href="http://localhost:3002/404" />
+        <link rel="canonical" href="https://healthease-n5ra.onrender.com/404" />
       </Helmet>
 
       <div className="not-found-container">

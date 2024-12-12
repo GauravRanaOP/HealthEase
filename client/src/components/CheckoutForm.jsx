@@ -5,7 +5,6 @@ import axios from "axios";
 // new checkout form
 
 export default function CheckoutForm({ onSuccess }) {
-  
   const stripe = useStripe();
   const elements = useElements();
 
@@ -29,13 +28,16 @@ export default function CheckoutForm({ onSuccess }) {
       setErrorMessage(error.message);
       console.log("Client: Error: ", error);
       return;
-    } 
-    
+    }
+
     try {
       // gets the clientSecret key from the backend
-      const response = await axios.post("http://localhost:3002/api/payment/intent", {
-        amount: 40, // replace with the actual amount
-      });
+      const response = await axios.post(
+        "https://healthease-n5ra.onrender.com/api/payment/intent",
+        {
+          amount: 40, // replace with the actual amount
+        }
+      );
 
       const { clientSecret } = response.data;
 
@@ -47,12 +49,10 @@ export default function CheckoutForm({ onSuccess }) {
       if (paymentResult.error) {
         setErrorMessage(paymentResult.error.message);
         console.log("Payment result error: ", paymentResult.error);
-        
       } else if (paymentResult.paymentIntent.status === "succeeded") {
         // calls the success handler after successful payment
         onSuccess(paymentResult);
       }
-
     } catch (error) {
       setErrorMessage("An unexpected error occurred. Please try again.");
     }
@@ -75,7 +75,6 @@ export default function CheckoutForm({ onSuccess }) {
 
       {/* Display error message if exists */}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-
     </div>
   );
 }

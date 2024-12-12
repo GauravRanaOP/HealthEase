@@ -12,11 +12,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log(email, "  ,  " , password)
-      const response = await axios.post("http://localhost:3002/api/auth/login", {
-        email,
-        password,
-      });
+      console.log(email, "  ,  ", password);
+      const response = await axios.post(
+        "https://healthease-n5ra.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
