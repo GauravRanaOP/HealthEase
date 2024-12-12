@@ -50,7 +50,7 @@ const SearchDoctor = React.memo(({ onSearch }) => {
         value={postcodePrefix}
         onChange={(e) => setPostcodePrefix(e.target.value)}
       />
-      <button className="btn btn-primary search-button" onClick={handleSearch}>Search</button>
+      <button className="search-button" onClick={handleSearch}>Search</button>
     </div>
   );
 });

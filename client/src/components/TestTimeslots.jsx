@@ -186,15 +186,17 @@ export default function TestTimeslots() {
             Are you sure you want to book the appointment for{" "}
             {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}?{" "}
           </p>
-          <button onClick={handleBooking} className="btn-custom">
-            Yes
-          </button>
-          <button
-            onClick={() => setshowConfirmation(false)}
-            className="btn-custom"
-          >
-            No
-          </button>
+          <div class="confirm-btn-container">
+            <button onClick={handleBooking} className="btn-yes">
+              Yes
+            </button>
+            <button
+              onClick={() => setshowConfirmation(false)}
+              className="btn-no"
+            >
+              No
+            </button>
+          </div>
         </div>
       )}
 
