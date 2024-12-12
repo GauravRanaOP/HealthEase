@@ -30,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://deft-starburst-461e57.netlify.app",
+      "https://musical-marzipan-1ecaac.netlify.app/",
     ], // Allow only your frontend's origin
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
   })
