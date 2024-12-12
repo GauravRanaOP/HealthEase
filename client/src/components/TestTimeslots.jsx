@@ -90,6 +90,7 @@ export default function TestTimeslots() {
         // API call for test appointment
         navigate("/payment", {
           state: {
+            selectedDate: selectedDate.toISOString().split("T")[0],
             timeslot: selectedTimeslot,
             diagnosticCenterId,
             userData,
@@ -102,6 +103,7 @@ export default function TestTimeslots() {
         // API call for doctor appointment
         navigate("/payment", {
           state: {
+            selectedDate: selectedDate.toISOString().split("T")[0],
             timeslot: selectedTimeslot,
             doctorId,
             userData,
@@ -173,7 +175,7 @@ export default function TestTimeslots() {
             Are you sure you want to book the appointment for{" "}
             {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}?{" "}
           </p>
-          <div class="confirm-btn-container">
+          <div className="confirm-btn-container">
             <button onClick={handleBooking} className="btn-yes">
               Yes
             </button>
