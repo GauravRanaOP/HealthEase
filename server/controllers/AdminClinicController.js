@@ -1,6 +1,7 @@
 import Clinic from "../models/Clinic.js";
 import Address from "../models/Address.js";
 import bcrypt from "bcrypt"; // Ensure bcrypt is imported
+import { sendEmail } from "../utils/EmailService.js";
 
 export const create = async (req, res) => {
   try {
