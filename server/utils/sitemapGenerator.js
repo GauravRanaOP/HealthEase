@@ -16,7 +16,9 @@ const fetchDynamicRoutes = async (testname) => {
     const encodedTestName = encodeURIComponent(testname);
 
     // fetches all tests
-    const testResponse = await axios.get(`http://localhost:3002/api/test/name?name=${testname}`);
+    const testResponse = await axios.get(
+      `https://healthease-n5ra.onrender.com/api/test/name?name=${testname}`
+    );
     const tests = testResponse.data;
 
     const dynamicRoutes = [];
@@ -28,7 +30,7 @@ const fetchDynamicRoutes = async (testname) => {
         priority: 0.6,
       });
     });
-    
+
     return dynamicRoutes;
   } catch (error) {
     console.error("Error fetching dynamic routes:", error);
@@ -38,26 +40,26 @@ const fetchDynamicRoutes = async (testname) => {
 
 // combines static and dynamic routes and generate sitemap.xml
 const generateSitemap = async () => {
-
   // define your test name(s) to be used for dynamic routes
   const testnames = [
-    "Hemoglobin A1C Test", 
-    "Vitamin D Test", 
-    "COVID-19 Rapid Antigen Test"
-  ]; 
+    "Hemoglobin A1C Test",
+    "Vitamin D Test",
+    "COVID-19 Rapid Antigen Test",
+  ];
 
   // const dynamicRoutes = await fetchDynamicRoutes();
   // const dynamicRoutes = [{ loc: "/test", priority: 1.0 }];
 
   // Fetch dynamic routes for each testname
-  const dynamicRoutesPromises = testnames.map(testname => fetchDynamicRoutes(testname));
-  
+  const dynamicRoutesPromises = testnames.map((testname) =>
+    fetchDynamicRoutes(testname)
+  );
+
   // Wait for all dynamic routes to be fetched
   const dynamicRoutesArrays = await Promise.all(dynamicRoutesPromises);
 
   // Flatten the array of dynamic routes
   const dynamicRoutes = dynamicRoutesArrays.flat();
-
 
   // combines static and dynamic routes
   const allRoutes = [...staticRoutes, ...dynamicRoutes];

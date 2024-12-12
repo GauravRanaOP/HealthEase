@@ -25,7 +25,7 @@ const AuthenticationPage = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/auth/login",
+        "https://healthease-n5ra.onrender.com/api/auth/login",
         {
           loginEmail,
           loginPassword,
@@ -64,7 +64,7 @@ const AuthenticationPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/auth/register",
+        "https://healthease-n5ra.onrender.com/api/auth/register",
         {
           firstName,
           lastName,

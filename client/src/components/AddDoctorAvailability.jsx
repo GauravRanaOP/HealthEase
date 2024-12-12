@@ -11,7 +11,13 @@ const DoctorAvailability = () => {
   const [selectedAvailability, setSelectedAvailability] = useState(null); // For selected test details
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [currentTest, setCurrentTest] = useState({ startDate: "", endDate: "", startTime: "", endTime: "", doctorId: "" });
+  const [currentTest, setCurrentTest] = useState({
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    doctorId: "",
+  });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To track if edit mode is enabled
   const [currentPage, setCurrentPage] = useState(1);
   const [testsPerPage] = useState(4);
@@ -22,7 +28,7 @@ const DoctorAvailability = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:3002/api/getDoctorAvailability/${userData}`
+        `https://healthease-n5ra.onrender.com/api/getDoctorAvailability/${userData}`
       );
       setDoctorAvailability(response.data);
     };
@@ -33,11 +39,11 @@ const DoctorAvailability = () => {
   // Add Test
   const handleAddAvailablility = async (availabilityData) => {
     await axios.post(
-      "http://localhost:3002/api/addDoctorAvailability",
+      "https://healthease-n5ra.onrender.com/api/addDoctorAvailability",
       availabilityData
     );
     const response = await axios.get(
-      `http://localhost:3002/api/getDoctorAvailability/${userData}`
+      `https://healthease-n5ra.onrender.com/api/getDoctorAvailability/${userData}`
     );
     setDoctorAvailability(response.data); // Update the list
     setIsAddModalOpen(false);
@@ -48,7 +54,7 @@ const DoctorAvailability = () => {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/doctors/by-clinic/${userData}`
+          `https://healthease-n5ra.onrender.com/api/doctors/by-clinic/${userData}`
         );
         setDoctors(response.data); // Set the doctor list
       } catch (error) {
@@ -62,7 +68,7 @@ const DoctorAvailability = () => {
   // View Test
   const handleViewAvailability = async (id) => {
     const response = await axios.get(
-      `http://localhost:3002/api/getOneDoctorAvailability/${id}`
+      `https://healthease-n5ra.onrender.com/api/getOneDoctorAvailability/${id}`
     );
     setSelectedAvailability(response.data);
     setIsViewModalOpen(true);
@@ -71,11 +77,11 @@ const DoctorAvailability = () => {
   // Edit Test
   const handleEditAvailability = async (id, updatedData) => {
     await axios.put(
-      `http://localhost:3002/api/availability/${id}`,
+      `https://healthease-n5ra.onrender.com/api/availability/${id}`,
       updatedData
     );
     const response = await axios.get(
-      `http://localhost:3002/api/getDoctorAvailability/${userData}`
+      `https://healthease-n5ra.onrender.com/api/getDoctorAvailability/${userData}`
     );
     setDoctorAvailability(response.data); // Update the list
     setIsEditModalOpen(false);
@@ -83,9 +89,11 @@ const DoctorAvailability = () => {
 
   // Delete Test
   const handleDeleteAvailability = async (id) => {
-    await axios.delete(`http://localhost:3002/api/availability/${id}`);
+    await axios.delete(
+      `https://healthease-n5ra.onrender.com/api/availability/${id}`
+    );
     const response = await axios.get(
-      `http://localhost:3002/api/getDoctorAvailability/${userData}`
+      `https://healthease-n5ra.onrender.com/api/getDoctorAvailability/${userData}`
     );
     setDoctorAvailability(response.data); // Update the list
   };
@@ -95,7 +103,6 @@ const DoctorAvailability = () => {
     setIsEditModalOpen(true); // Enable the edit mode to show the modal
   };
 
-  
   const filteredTests = DoctorAvailability.filter((test) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     return Object.values(test).some((value) =>
