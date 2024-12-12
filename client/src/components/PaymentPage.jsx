@@ -15,7 +15,9 @@ const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { timeslot, 
+  const { 
+          selectedDate,
+          timeslot, 
           doctorId, 
           diagnosticCenterId, 
           userData, 
@@ -36,7 +38,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (appointmentType) {
       if (appointmentType === "doctor") {
-        // console.log("doctor state: ", location.state);
+        console.log("doctor state: ", location.state);
         setPaymentType("Doctor Appointment");
         setAppointmentDetails({
           id: doctorId,
@@ -44,7 +46,7 @@ export default function PaymentPage() {
           userData: userData,
         });
       } else if (appointmentType === "test") {
-        // console.log("test state: ", location.state);
+        console.log("test state: ", location.state);
         setPaymentType("Test Appointment");
         setAppointmentDetails({
           id: diagnosticCenterId,
@@ -129,12 +131,11 @@ export default function PaymentPage() {
             {appointmentType === "doctor" ? (
               <>Appointment with Dr. {doctorFirstName} {doctorLastName}</>
             ) : (
-              <>Appointment for test {testName}</>
+              <>Appointment for the test {testName}</>
             )}
-            
-
           </p>
-          <p>Date: {timeslot.date}</p>
+          {/* <p>Date: {timeslot.date}</p> */}
+          <p>Date: {selectedDate} </p>
           <p>Time: {timeslot.time}</p>
           <p>Total Amount: $40</p>
 

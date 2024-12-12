@@ -61,12 +61,12 @@ export default function CheckoutForm({ onSuccess }) {
   return (
     <div className="checkout-container">
       <h2>Complete Payment</h2>
-      <form onSubmit={handlePaymentSubmit} class="payment-form">
+      <form onSubmit={handlePaymentSubmit} className="payment-form">
         <div>
           <label>Card Information</label>
           <CardElement />
         </div>
-        <button type="submit" class="btn-pay" disabled={loading || !stripe}>
+        <button type="submit" className="btn-pay" disabled={loading || !stripe}>
           {loading ? "Processing..." : "Pay Now"}
         </button>
       </form>
