@@ -7,16 +7,15 @@ import DatePicker from "react-datepicker";
 import { useAuth } from "./authentication/AuthContext.jsx";
 
 import "react-datepicker/dist/react-datepicker.css";
-import "../assets/css/DoctorTimeslots.css";    
-
+import "../assets/css/DoctorTimeslots.css";
 
 export default function TestTimeslots() {
-  const { diagnosticCenterId } = useParams();   // to get diagnosticCenterId from url 
+  const { diagnosticCenterId } = useParams(); // to get diagnosticCenterId from url
   const navigate = useNavigate();
   const { userData } = useAuth();
   const location = useLocation();
-  const testId = location.state?.testId;
-
+  // const testId = location.state?.testId;
+  const { testId, testName } = location.state || {};
 
   // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
@@ -25,7 +24,6 @@ export default function TestTimeslots() {
   const [showConfirmation, setshowConfirmation] = useState(false);
   // const [bookingMessage, setBookingMessage] = useState("");
   const [showPaymentMessage, setShowPaymentMessage] = useState(false);
-
 
   // fetches test appointment timeslots based on diagnosticCenterId and selected date
   useEffect(() => {
@@ -36,7 +34,7 @@ export default function TestTimeslots() {
       //console.log("TestTimeslotsPage:Fetching timeslots for date: ", formattedDate);
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/test/availableTimeslots?diagnosticCenterId=${diagnosticCenterId}&date=${formattedDate}`
+          `https://healthease-n5ra.onrender.com/api/test/availableTimeslots?diagnosticCenterId=${diagnosticCenterId}&date=${formattedDate}`
         );
         setTimeslots(response.data);
       } catch (error) {
@@ -85,23 +83,7 @@ export default function TestTimeslots() {
     const appointmentId = selectedTimeslot.appointmentId;
 
     try {
-      // backend request to book the appointment
-      // const response = await axios.put(
-      //   `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-      //   { userId }    // send userId in the request body
-      // );
-
-      // setBookingMessage(response.data.message);
-      // setshowConfirmation(false);
       setShowPaymentMessage(true);
-      
-      // navigate("/payment", {
-      //   state: {
-      //     timeslot: selectedTimeslot,
-      //     diagnosticCenterId,
-      //     userData,
-      //   },
-      // });
 
       // checks if the appointment is for a test or a doctor
       if (diagnosticCenterId) {
@@ -111,8 +93,9 @@ export default function TestTimeslots() {
             timeslot: selectedTimeslot,
             diagnosticCenterId,
             userData,
-            appointmentType: "test", 
+            appointmentType: "test",
             testId,
+            testName,
           },
         });
       } else if (doctorId) {
@@ -126,7 +109,6 @@ export default function TestTimeslots() {
           },
         });
       }
-
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");
@@ -137,45 +119,50 @@ export default function TestTimeslots() {
     <div className="timeslots-container">
       {/* {!bookingMessage && (
       <> */}
-        <h2>Appointment Date:</h2>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          dateFormat="MM/dd/yyyy"
-          placeholderText="Select a date"
-        />
+      <h2>{testName}</h2>
+      <h2>Appointment Date:</h2>
+      <DatePicker
+        selected={selectedDate}
+        onChange={handleDateChange}
+        dateFormat="MM/dd/yyyy"
+        placeholderText="Select a date"
+      />
 
-        <h2>Appointment Time:</h2>
-        <div className="timeslots">
-          {timeslot.length > 0 ? (
-            timeslot.map((timeslot, index) => (
-              <button
-                key={index}
-                className={`timeslot-button ${selectedTimeslot?.time === timeslot.time ? "selected" : ""}`}
-                onClick={() => handleTimeslotSelect(timeslot)}
-              >
-                {timeslot.time}
-              </button>
-            ))
-          ) : (
-            <p>No available timeslots for this date.</p>
-          )}
-        </div>
+      <h2>Appointment Time:</h2>
+      <div className="timeslots">
+        {timeslot.length > 0 ? (
+          timeslot.map((timeslot, index) => (
+            <button
+              key={index}
+              className={`timeslot-button ${
+                selectedTimeslot?.time === timeslot.time ? "selected" : ""
+              }`}
+              onClick={() => handleTimeslotSelect(timeslot)}
+            >
+              {timeslot.time}
+            </button>
+          ))
+        ) : (
+          <p>No available timeslots for this date.</p>
+        )}
+      </div>
 
-        <div className="timeslots-actions">
-          <button
-            className="btn-cancel"
-            onClick={() => setselectedTimeslot(null)}
-          >Cancel
-          </button>
-          <button
-            className="btn-confirm"
-            onClick={() => {
-              handleConfirmClick();
-            }}
-          >Confirm
-          </button>
-        </div>
+      <div className="timeslots-actions">
+        <button
+          className="btn-cancel"
+          onClick={() => setselectedTimeslot(null)}
+        >
+          Cancel
+        </button>
+        <button
+          className="btn-confirm"
+          onClick={() => {
+            handleConfirmClick();
+          }}
+        >
+          Confirm
+        </button>
+      </div>
 
       {/* </>
       )} */}
@@ -186,29 +173,19 @@ export default function TestTimeslots() {
             Are you sure you want to book the appointment for{" "}
             {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}?{" "}
           </p>
-          <button onClick={handleBooking} className="btn-custom">
-            Yes
-          </button>
-          <button
-            onClick={() => setshowConfirmation(false)}
-            className="btn-custom"
-          >
-            No
-          </button>
+          <div class="confirm-btn-container">
+            <button onClick={handleBooking} className="btn-yes">
+              Yes
+            </button>
+            <button
+              onClick={() => setshowConfirmation(false)}
+              className="btn-no"
+            >
+              No
+            </button>
+          </div>
         </div>
       )}
-
-      {/* {bookingMessage && (
-        <div>
-          <p className="booking-message">{bookingMessage}</p>
-          <button 
-            onClick={() => navigate("/patientDirectory")}
-            className="btn-custom"
-            >Continue</button>
-        </div>
-      )} */}
-
-      
     </div>
   );
 }

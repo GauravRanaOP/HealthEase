@@ -35,7 +35,7 @@ export default function SearchTest({ onSearch }) {
         onChange={(e) => settestName(e.target.value)}
       />
       <button 
-        className="btn btn-primary search-button" 
+        className="search-button" 
         onClick={handleSearch}
         disabled={loading}
         >

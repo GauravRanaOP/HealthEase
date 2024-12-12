@@ -4,7 +4,6 @@ import "../assets/css/admintest.css";
 import SideBar from "./SideBar";
 import Pagination from "./Pagination";
 
-
 const AdminClinic = () => {
   const [AdminClinic, setAdminClinic] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(null); // For selected test details
@@ -13,7 +12,6 @@ const AdminClinic = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [clinicsPerPage] = useState(8);
   const [searchQuery, setSearchQuery] = useState("");
-
 
   const [currentClinic, setCurrentClinic] = useState({
     name: "",
@@ -42,7 +40,9 @@ const AdminClinic = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3002/api/getClinic");
+      const response = await axios.get(
+        "https://healthease-n5ra.onrender.com/api/getClinic"
+      );
       setAdminClinic(response.data);
     };
 
@@ -51,8 +51,13 @@ const AdminClinic = () => {
 
   // Add Test
   const handleAddTest = async (testData) => {
-    await axios.post("http://localhost:3002/api/addClinic", testData);
-    const response = await axios.get("http://localhost:3002/api/getClinic");
+    await axios.post(
+      "https://healthease-n5ra.onrender.com/api/addClinic",
+      testData
+    );
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getClinic"
+    );
     setAdminClinic(response.data); // Update the list
     setIsAddModalOpen(false);
   };
@@ -60,7 +65,7 @@ const AdminClinic = () => {
   // View Test
   const handleViewTest = async (id) => {
     const response = await axios.get(
-      `http://localhost:3002/api/getClinic/${id}`
+      `https://healthease-n5ra.onrender.com/api/getClinic/${id}`
     );
     setSelectedClinic(response.data);
     setIsViewModalOpen(true);
@@ -69,18 +74,24 @@ const AdminClinic = () => {
   // Edit Test
   const handleEditTest = async (id, updatedData) => {
     await axios.put(
-      `http://localhost:3002/api/updateClinic/${id}`,
+      `https://healthease-n5ra.onrender.com/api/updateClinic/${id}`,
       updatedData
     );
-    const response = await axios.get("http://localhost:3002/api/getClinic");
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getClinic"
+    );
     setAdminClinic(response.data); // Update the list
     setIsEditModalOpen(false);
   };
 
   // Delete Test
   const handleDeleteTest = async (id) => {
-    await axios.delete(`http://localhost:3002/api/deleteClinic/${id}`);
-    const response = await axios.get("http://localhost:3002/api/getClinic");
+    await axios.delete(
+      `https://healthease-n5ra.onrender.com/api/deleteClinic/${id}`
+    );
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getClinic"
+    );
     setAdminClinic(response.data); // Update the list
   };
 
@@ -104,7 +115,7 @@ const AdminClinic = () => {
   const handleUpdateTest = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3002/api/updateClinic/${currentClinic._id}`,
+        `https://healthease-n5ra.onrender.com/api/updateClinic/${currentClinic._id}`,
         editCurrentClinic
       );
       setIsEditMode(false); // Close the modal
@@ -129,7 +140,6 @@ const AdminClinic = () => {
 
   // handle page change
   const handlePageChange = (page) => setCurrentPage(page);
-
 
   return (
     <div className="app-layout">

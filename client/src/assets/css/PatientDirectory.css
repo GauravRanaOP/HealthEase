@@ -43,8 +43,10 @@
 .tabs {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
   gap: 1rem;
+  font-size: 16px;
 }
 
 .tab {
@@ -59,6 +61,7 @@
   color: var(--secondary-color);
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease;
+  width: 170px;
 }
 
 .tab.active {
@@ -96,6 +99,7 @@
   border: none;
   border-radius: 5px;
   margin: 10px;
+  width: 100px;
 }
 
 .search-button:hover {
@@ -366,5 +370,50 @@
 .test-center-card-footer {
   text-align: center;
 }
+
+.btn-test-center-details {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+
+@media (max-width: 768px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+  }
+  .tab {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+  .search-bar {
+    flex-direction: column;
+  }
+  .search-input {
+    width: 85%;
+    justify-items: center;
+    margin-right: 0;
+  }
+  .search-button {
+    margin: 20px 10px;
+  }
+
+}
+
+
 
 
