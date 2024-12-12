@@ -1,0 +1,89 @@
+:root {
+    --primary-color: #385399;
+    --secondary-color: #f3f4f6;
+    --text-color: #2c2c2c;
+    --error-bg: #edf2f7;
+    --spacing-small: 10px;
+    --spacing-medium: 20px;
+    --spacing-large: 40px;
+    --font-main: "Lato", sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    margin: 0;
+    padding: 0;
+    background-color: var(--error-bg);
+}
+
+.not-found-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--error-bg);
+    padding: var(--spacing-large);
+}
+
+.not-found-container {
+    text-align: center;
+    max-width: 600px;
+}
+
+.error-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.error-image {
+    width: 500px;
+    animation: smoothFloat 4s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes smoothFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-30px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.not-found-title {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-medium);
+}
+
+.not-found-message {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-medium);
+}
+
+.back-home-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background-color: var(--text-color);
+}

@@ -16,8 +16,8 @@ export default function TestCentersList({ test }) {
     const fetchTestDetails = async () => {
       try {
         const response = await axios.get(
-          //`http://localhost:3002/api/name/${name}`
-          `http://localhost:3002/api/test/${testId}`
+          //`https://healthease-n5ra.onrender.com/api/name/${name}`
+          `https://healthease-n5ra.onrender.com/api/test/${testId}`
         );
         //console.log("Testcenterslist: ", response.data);
         if (response.data) {
@@ -32,16 +32,20 @@ export default function TestCentersList({ test }) {
   }, [testId]);
 
   const handleBookNowClick = (diagnosticCenterId) => {
-    console.log("Diagnostic Center ID, handleBookNowClick : ", diagnosticCenterId);
+    console.log(
+      "Diagnostic Center ID, handleBookNowClick : ",
+      diagnosticCenterId
+    );
     // navigate to the testTimeslots page with the dc id
-    navigate(`/testTimeslots/${diagnosticCenterId}`, { state: { testId, testName } });
+    navigate(`/testTimeslots/${diagnosticCenterId}`, {
+      state: { testId, testName },
+    });
   };
 
   // checks if test data is available
   if (!testDetails) {
     return <div>Loading diagnostic center...</div>;
   }
-
 
   return (
     <div className="test-center-header">
@@ -50,21 +54,23 @@ export default function TestCentersList({ test }) {
       <div className="test-centers-container">
         {testDetails.diagnosticCenters?.length > 0 ? (
           testDetails.diagnosticCenters.map((dc, index) => (
-            
             <div key={index} className="test-center-card">
               <div className="test-center-card-body">
                 <h3>{dc.diagnosticCenterName}</h3>
-              
+
                 <p>
                   <FontAwesomeIcon
                     icon={faLocationDot}
-                    className="location-icon"/>
+                    className="location-icon"
+                  />
                   {dc.address?.streetAddress}, {dc.address?.city},{" "}
                   {dc.address?.province}, {dc.address?.postCode}
                 </p>
               </div>
               <div className="test-center-card-footer">
-                <button onClick={() => handleBookNowClick(dc.diagnosticCenterId)}>
+                <button
+                  onClick={() => handleBookNowClick(dc.diagnosticCenterId)}
+                >
                   Book Now
                   <FontAwesomeIcon
                     icon={faArrowRight}

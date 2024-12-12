@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import "../assets/css/DiagnosticCenterPage.css";
 import Pagination from "./Pagination";
@@ -38,7 +39,7 @@ const DiagnosticCenterPage = () => {
   // Fetch diagnostic centers
   useEffect(() => {
     axios
-      .get("http://localhost:3002/api/diagnostic-centers")
+      .get("https://healthease-n5ra.onrender.com/api/diagnostic-centers")
       .then((response) => setCenters(response.data))
       .catch(console.error);
   }, []);
@@ -61,7 +62,10 @@ const DiagnosticCenterPage = () => {
   const handleCreate = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3002/api/diagnostic-centers", newCenter)
+      .post(
+        "https://healthease-n5ra.onrender.com/api/diagnostic-centers",
+        newCenter
+      )
       .then((response) => {
         setCenters([...centers, response.data]);
         setModalState({ ...modalState, showCreate: false });
@@ -93,7 +97,7 @@ const DiagnosticCenterPage = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3002/api/diagnostic-centers/${selectedCenter._id}`,
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${selectedCenter._id}`,
         newCenter
       )
       .then((response) => {
@@ -117,7 +121,7 @@ const DiagnosticCenterPage = () => {
   const handleDelete = () => {
     axios
       .delete(
-        `http://localhost:3002/api/diagnostic-centers/${centerToDelete._id}`
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerToDelete._id}`
       )
       .then(() => {
         // Update the UI
@@ -253,6 +257,22 @@ const DiagnosticCenterPage = () => {
 
   return (
     <div className="app-layout">
+      <Helmet>
+        <title>Diagnostic Centers | HealthEase</title>
+        <meta
+          name="description"
+          content="Explore and manage diagnostic centers. Create, update, and delete diagnostic centers for optimal healthcare services."
+        />
+        <meta
+          name="keywords"
+          content="diagnostic centers, healthcare, manage centers, HealthEase"
+        />
+        <meta name="author" content="HealthEase Team" />
+        <link
+          rel="canonical"
+          href="https://healthease-n5ra.onrender.com/diagnostic-center"
+        />
+      </Helmet>
       <SideBar />
       <div className="dc-container">
         <div className="dc-container-header">

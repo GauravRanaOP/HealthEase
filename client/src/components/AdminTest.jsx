@@ -4,7 +4,6 @@ import "../assets/css/admintest.css";
 import SideBar from "./SideBar";
 import Pagination from "./Pagination";
 
-
 const AdminTest = () => {
   const [AdminTest, setAdminTest] = useState([]);
   const [selectedTest, setSelectedTest] = useState(null); // For selected test details
@@ -16,10 +15,11 @@ const AdminTest = () => {
   const [testsPerPage] = useState(4);
   const [searchQuery, setSearchQuery] = useState("");
 
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3002/api/getTest");
+      const response = await axios.get(
+        "https://healthease-n5ra.onrender.com/api/getTest"
+      );
       setAdminTest(response.data);
     };
 
@@ -28,31 +28,47 @@ const AdminTest = () => {
 
   // Add Test
   const handleAddTest = async (testData) => {
-    await axios.post("http://localhost:3002/api/addTest", testData);
-    const response = await axios.get("http://localhost:3002/api/getTest");
+    await axios.post(
+      "https://healthease-n5ra.onrender.com/api/addTest",
+      testData
+    );
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getTest"
+    );
     setAdminTest(response.data); // Update the list
     setIsAddModalOpen(false);
   };
 
   // View Test
   const handleViewTest = async (id) => {
-    const response = await axios.get(`http://localhost:3002/api/getTest/${id}`);
+    const response = await axios.get(
+      `https://healthease-n5ra.onrender.com/api/getTest/${id}`
+    );
     setSelectedTest(response.data);
     setIsViewModalOpen(true);
   };
 
   // Edit Test
   const handleEditTest = async (id, updatedData) => {
-    await axios.put(`http://localhost:3002/api/updateTest/${id}`, updatedData);
-    const response = await axios.get("http://localhost:3002/api/getTest");
+    await axios.put(
+      `https://healthease-n5ra.onrender.com/api/updateTest/${id}`,
+      updatedData
+    );
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getTest"
+    );
     setAdminTest(response.data); // Update the list
     setIsEditModalOpen(false);
   };
 
   // Delete Test
   const handleDeleteTest = async (id) => {
-    await axios.delete(`http://localhost:3002/api/deleteTest/${id}`);
-    const response = await axios.get("http://localhost:3002/api/getTest");
+    await axios.delete(
+      `https://healthease-n5ra.onrender.com/api/deleteTest/${id}`
+    );
+    const response = await axios.get(
+      "https://healthease-n5ra.onrender.com/api/getTest"
+    );
     setAdminTest(response.data); // Update the list
   };
 
@@ -64,7 +80,7 @@ const AdminTest = () => {
   const handleUpdateTest = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3002/api/updateTest/${currentTest._id}`,
+        `https://healthease-n5ra.onrender.com/api/updateTest/${currentTest._id}`,
         currentTest
       );
       setIsEditMode(false); // Close the modal

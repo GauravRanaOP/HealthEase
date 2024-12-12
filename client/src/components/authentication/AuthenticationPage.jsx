@@ -1,51 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import "../../assets/css/authentication/AuthenticationStyle.css";
 import { useAuth } from "./AuthContext";
-import { useNavigate } from "react-router-dom"; // Import Link for navigation
+import { useNavigate } from "react-router-dom";
 
 const AuthenticationPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [contactNo, setContactNo] = useState("");
-  const [userRole, setUserRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   const { login } = useAuth();
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/auth/login",
-        {
-          loginEmail,
-          loginPassword,
-        }
+        "https://healthease-n5ra.onrender.com/api/auth/login",
+        { loginEmail, loginPassword }
       );
 
       if (response.status === 200) {
         const { token, user } = response.data;
         login(token, { userId: user._id, userRole: user.userRole });
 
-        if (user.userRole === "Patient") {
-          navigate("/patientDirectory");
-        } else if (user.userRole === "Admin") {
-          navigate("/adminTest");
-        } else if (user.userRole === "ClinicAdmin") {
-          navigate("/getDoctor");
-        } else if (user.userRole === "DiagnosticCenterAdmin") {
-          navigate("/getBookings");
-        } else {
-          navigate("/");
+        switch (user.userRole) {
+          case "Patient":
+            navigate("/patientDirectory");
+            break;
+          case "Admin":
+            navigate("/adminTest");
+            break;
+          case "ClinicAdmin":
+            navigate("/getDoctor");
+            break;
+          case "DiagnosticCenterAdmin":
+            navigate("/getBookings");
+            break;
+          default:
+            navigate("/");
         }
       }
     } catch (error) {
@@ -55,8 +64,6 @@ const AuthenticationPage = () => {
   };
 
   const handleRegister = async () => {
-    // e.preventDefault();
-
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
@@ -64,7 +71,7 @@ const AuthenticationPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/auth/register",
+        "https://healthease-n5ra.onrender.com/api/auth/register",
         {
           firstName,
           lastName,
@@ -75,28 +82,21 @@ const AuthenticationPage = () => {
         }
       );
 
-      console.log(response.data);
-
       if (response.status === 201) {
         login(response.data.token, response.data.userId);
         navigate("/patientDirectory");
       }
-
-      console.log("Registration Response: ", response.data);
-      // Optionally, you can redirect the user to another page or reset the form
     } catch (error) {
       console.error("Registration Error: ", error);
     }
   };
 
-  const toggleForm = (isSignUpForm) => {
-    setIsSignUp(isSignUpForm);
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
   };
 
   const handleContactNoChange = (e) => {
     const value = e.target.value;
-
-    // Allow only numbers
     if (/^\d*$/.test(value)) {
       setContactNo(value);
     }
@@ -104,17 +104,10 @@ const AuthenticationPage = () => {
 
   return (
     <div className={`container ${isSignUp ? "active" : ""}`} id="container">
-      {/* Sign Up Form */}
       {isSignUp && (
         <div className="form-container sign-up">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleRegister();
-            }}
-          >
+          <form onSubmit={(e) => { e.preventDefault(); handleRegister(); }}>
             <h1>Create Account</h1>
-
             <input
               type="text"
               placeholder="First Name"
@@ -128,7 +121,7 @@ const AuthenticationPage = () => {
               onChange={(e) => setLastName(e.target.value)}
             />
             <input
-              type="text" // Changed type to text to allow regex-based validation
+              type="text"
               placeholder="Contact Number"
               value={contactNo}
               onChange={handleContactNoChange}
@@ -152,19 +145,18 @@ const AuthenticationPage = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <button type="submit">Sign Up</button>
+            {isMobile && (
+              <button type="button" onClick={toggleForm} className="mobile-toggle-button">
+                Switch to Sign In
+              </button>
+            )}
           </form>
         </div>
       )}
 
-      {/* Sign In Form */}
       {!isSignUp && (
         <div className="form-container sign-in">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogin();
-            }}
-          >
+          <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
             <h1>Sign In</h1>
             <input
               type="email"
@@ -179,35 +171,43 @@ const AuthenticationPage = () => {
               onChange={(e) => setLoginPassword(e.target.value)}
             />
             <a href="#">Forget Your Password?</a>
-            <button>Sign In</button>
+            <button type="submit">Sign In</button>
+            {isMobile && (
+              <button type="button" onClick={toggleForm} className="mobile-toggle-button">
+                Switch to Sign Up
+              </button>
+            )}
           </form>
         </div>
       )}
 
-      {/* Toggle between Sign Up and Sign In */}
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all of HealthEase features</p>
-            <button onClick={() => toggleForm(false)} className="hidden">
-              Sign In
-            </button>
-          </div>
-          <div className="toggle-panel toggle-right">
-            <h1>Hello, Friend!</h1>
-            <p>
-              Register with your personal details to use all of HealthEase
-              features
-            </p>
-            <button onClick={() => toggleForm(true)} className="hidden">
-              Sign Up
-            </button>
+
+      {!isMobile && (
+        <div className="toggle-container">
+          <div className="toggle">
+            <div className="toggle-panel toggle-left">
+              <h1>Welcome Back!</h1>
+              <p>Enter your personal details to use all of HealthEase features</p>
+              <button onClick={() => toggleForm()} className="hidden">
+                Sign In
+              </button>
+            </div>
+            <div className="toggle-panel toggle-right">
+              <h1>Hello, Friend!</h1>
+              <p>
+                Register with your personal details to use all of HealthEase
+                features
+              </p>
+              <button onClick={() => toggleForm()} className="hidden">
+                Sign Up
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
 export default AuthenticationPage;
+

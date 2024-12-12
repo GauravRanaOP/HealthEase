@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import SideBar from "./SideBar";
 import "../assets/css/DiagnosticCenterAdmin.css";
@@ -40,7 +41,7 @@ const DiagnosticCenterAdmin = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/diagnostic-centers/find-by-address/${storedData.userId}`
+          `https://healthease-n5ra.onrender.com/api/diagnostic-centers/find-by-address/${storedData.userId}`
         );
         setCenterId(response.data._id);
       } catch (error) {
@@ -61,7 +62,7 @@ const DiagnosticCenterAdmin = () => {
       if (centerId) {
         try {
           const response = await axios.get(
-            `http://localhost:3002/api/diagnostic-centers/${centerId}/availabilities`
+            `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/availabilities`
           );
           setAvailabilities(response.data);
         } catch (error) {
@@ -82,7 +83,7 @@ const DiagnosticCenterAdmin = () => {
     const fetchTests = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/diagnostic-centers/tests/all`
+          `https://healthease-n5ra.onrender.com/api/diagnostic-centers/tests/all`
         );
         setTests(response.data);
       } catch (error) {
@@ -103,7 +104,7 @@ const DiagnosticCenterAdmin = () => {
       if (centerId) {
         try {
           const response = await axios.get(
-            `http://localhost:3002/api/diagnostic-centers/${centerId}`
+            `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}`
           );
           console.log("Assigned Tests Response:", response.data.testsOffered);
           setAssignedTests(response.data.testsOffered || []);
@@ -145,7 +146,7 @@ const DiagnosticCenterAdmin = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3002/api/diagnostic-centers/${centerId}/tests`,
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/tests`,
         { tests: selectedTests }
       );
       setMessage("Tests updated successfully!");
@@ -172,7 +173,7 @@ const DiagnosticCenterAdmin = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:3002/api/diagnostic-centers/${centerId}/tests/${testId}`
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/tests/${testId}`
       );
       setMessage("Test removed successfully!", 3000);
 
@@ -201,14 +202,14 @@ const DiagnosticCenterAdmin = () => {
       if (editMode) {
         // Update availability
         await axios.put(
-          `http://localhost:3002/api/diagnostic-centers/${centerId}/availabilities/${currentAvailabilityId}`,
+          `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/availabilities/${currentAvailabilityId}`,
           availability
         );
         setMessage("Availability updated successfully!");
       } else {
         // Add availability
         await axios.post(
-          `http://localhost:3002/api/diagnostic-centers/${centerId}/availability`,
+          `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/availability`,
           availability
         );
         setMessage("Availability added successfully!");
@@ -224,7 +225,7 @@ const DiagnosticCenterAdmin = () => {
       setCurrentAvailabilityId(null);
 
       const response = await axios.get(
-        `http://localhost:3002/api/diagnostic-centers/${centerId}/availabilities`
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/availabilities`
       );
       setAvailabilities(response.data);
     } catch (error) {
@@ -252,7 +253,7 @@ const DiagnosticCenterAdmin = () => {
   const handleDelete = async (availabilityId) => {
     try {
       await axios.delete(
-        `http://localhost:3002/api/diagnostic-centers/${centerId}/availabilities/${availabilityId}`
+        `https://healthease-n5ra.onrender.com/api/diagnostic-centers/${centerId}/availabilities/${availabilityId}`
       );
       setMessage("Availability deleted successfully!");
 
@@ -270,6 +271,22 @@ const DiagnosticCenterAdmin = () => {
 
   return (
     <div className="app-layout">
+      <Helmet>
+        <title>Manage Diagnostic Center | HealthEase</title>
+        <meta
+          name="description"
+          content="Manage diagnostic center availability, assign tests, and update availability seamlessly."
+        />
+        <meta
+          name="keywords"
+          content="diagnostic center, health ease, manage tests, availability"
+        />
+        <meta name="author" content="HealthEase Team" />
+        <link
+          rel="canonical"
+          href="https://healthease-n5ra.onrender.com/diagnostic-admin"
+        />
+      </Helmet>
       <SideBar />
       <div className="content">
         <h1 className="dashboard-title">Manage Diagnostic Center</h1>

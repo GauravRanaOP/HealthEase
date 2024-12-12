@@ -26,10 +26,12 @@ import AuthenticationPage from "./components/authentication/AuthenticationPage";
 import { useAuth } from "./components/authentication/AuthContext.jsx";
 import TestTimeslots from "./components/TestTimeslots";
 import TestCentersList from "./components/TestCentersList";
+import AddDoctorAvailability from "./components/AddDoctorAvailability.jsx";
 import DiagnosticCenterAdmin from "./components/DiagnosticCenterAdmin";
 import PaymentPage from "./components/PaymentPage";
 import { HelmetProvider } from "react-helmet-async";
 import About from "./components/About.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 
 const route = createBrowserRouter([
@@ -83,6 +85,10 @@ const App = () => {
           <Route
             path="/getDoctor"
             element={!isAuthenticated ? <AuthenticationPage /> : <Doctor />}
+          />
+          <Route
+            path="/add-availability"
+            element={!isAuthenticated ? <AuthenticationPage /> : <AddDoctorAvailability />}
           />
           <Route
             path="/patientDirectory"
@@ -145,6 +151,10 @@ const App = () => {
           <Route 
             path="/about" 
             element={<About />}
+          />
+          <Route 
+            path="*" 
+            element={<NotFound />}
           />
         </Routes>
         <FooterPatient />

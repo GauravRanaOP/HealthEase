@@ -17,17 +17,15 @@ import "../assets/css/PatientDirectory.css";
 import heroImg200 from "../assets/images/hero-img/hero_img_c_scale_w_200.png";
 import heroImg790 from "../assets/images/hero-img/hero_img_c_scale_w_790.png";
 
-
 export default function PatientDirectory() {
-
   const navigate = useNavigate();
   const { userData } = useAuth();
 
   // defines states
   const [doctors, setDoctors] = useState([]);
-  const [postcodePrefix, setpostcodePrefix] = useState("");   // search for doctors is performed by postcode
+  const [postcodePrefix, setpostcodePrefix] = useState(""); // search for doctors is performed by postcode
   const [tests, setTests] = useState([]);
-  const [testname, setTestname] = useState("");               // search for test is performed by the test name
+  const [testname, setTestname] = useState(""); // search for test is performed by the test name
   const [doctorAppointments, setDoctorAppointments] = useState([]);
   const [testAppointments, setTestAppointments] = useState([]);
   //const [loading, setLoading] = useState(true);     // old loading state, replaced with 4 different loading states for each tab
@@ -38,12 +36,13 @@ export default function PatientDirectory() {
   // defines loading states for each tab
   const [doctorsLoading, setDoctorsLoading] = useState(false);
   const [testsLoading, setTestsLoading] = useState(false);
-  const [doctorAppointmentsLoading, setDoctorAppointmentsLoading] = useState(false);
+  const [doctorAppointmentsLoading, setDoctorAppointmentsLoading] =
+    useState(false);
   const [testAppointmentsLoading, setTestAppointmentsLoading] = useState(false);
 
-  
   // ensures userData has a fallback to localStorage if it is not available
-  const userId = userData || JSON.parse(localStorage.getItem("user_data"))?.userId;
+  const userId =
+    userData || JSON.parse(localStorage.getItem("user_data"))?.userId;
   //console.log("userId outside useEffect:", userId);
 
   // fetches data only when userData is available and loading is complete
@@ -60,12 +59,11 @@ export default function PatientDirectory() {
     }
   }, [userId]);
 
-
   // fetches user details (if logged in )
   const fetchUserData = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/user?userId=${userId}`
+        `https://healthease-n5ra.onrender.com/api/user?userId=${userId}`
       );
       setUserDetails(response.data.user);
     } catch (error) {
@@ -73,41 +71,38 @@ export default function PatientDirectory() {
     }
   };
 
-
   // fetches doctors based on postcode
   const fetchDoctors = async (postcodePrefix) => {
-  setDoctorsLoading(true);
-  try {
-    const response = await axios.get(
-      `http://localhost:3002/api/doctor/postcode/${postcodePrefix}`
-    );
-    setDoctors(response.data);
-  } catch (error) {
-    console.error("Error fetching doctors:", error);
-  } finally {
-    setDoctorsLoading(false);
-  }
+    setDoctorsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://healthease-n5ra.onrender.com/api/doctor/postcode/${postcodePrefix}`
+      );
+      setDoctors(response.data);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setDoctorsLoading(false);
+    }
   };
-
 
   // fetches tests based on test name
   const fetchTests = async (testname) => {
     setTestsLoading(true);
     try {
       const response = await axios.get(
-        // `http://localhost:3002/api/test/name/${testname}`
-        `http://localhost:3002/api/test/name?name=${testname}`
+        // `https://healthease-n5ra.onrender.com/api/test/name/${testname}`
+        `https://healthease-n5ra.onrender.com/api/test/name?name=${testname}`
       );
       // debugging
       //console.log("Test response:", response.data);
-      setTests(response.data);    // stores the test with their diagnostic centers
+      setTests(response.data); // stores the test with their diagnostic centers
     } catch (error) {
       console.error("Error fetching doctors:", error);
     } finally {
       setTestsLoading(false);
     }
   };
- 
 
   // useEffect to fetch doctors when postcodePrefix changes
   useEffect(() => {
@@ -123,18 +118,15 @@ export default function PatientDirectory() {
     }
   }, [testname]);
 
-
   // function to handle search doctor
   const handleSearchDoctor = (postcode) => {
     setpostcodePrefix(postcode);
   };
 
-   
   // function to handle search test
   const handleSearchTest = (name) => {
     setTestname(name);
   };
-
 
   // fetches doctor appointments for the logged-in user
   const fetchDoctorAppointments = async (userId) => {
@@ -142,7 +134,7 @@ export default function PatientDirectory() {
     setError(null);
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/patient/appointments?patientId=${userId}`
+        `https://healthease-n5ra.onrender.com/api/patient/appointments?patientId=${userId}`
       );
       //console.log("API Response data: ", response.data.appointments);
       if (response.data.appointments && response.status === 200) {
@@ -160,14 +152,13 @@ export default function PatientDirectory() {
     }
   };
 
-
   // fetches test appointments for the logged-in user
   const fetchTestAppointments = async (userId) => {
     setTestAppointmentsLoading(true);
     setError(null);
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/patient/tests?patientId=${userId}`
+        `https://healthease-n5ra.onrender.com/api/patient/tests?patientId=${userId}`
       );
       //console.log("Response data: ", response.data.appointments);
       if (response.data.tests && response.status === 200) {
@@ -184,7 +175,6 @@ export default function PatientDirectory() {
     }
   };
 
-  
   return (
     <div className="patient-directory">
       <Helmet>
@@ -214,37 +204,48 @@ export default function PatientDirectory() {
           }
         />
       </Helmet>
-      
+
       <div>
-        <img className="hero-image"
+        <img
+          className="hero-image"
           sizes="(max-width: 790px) 100vw, 790px"
           srcSet={`${heroImg200} 200w, ${heroImg790} 790w`}
           src={heroImg790}
-          alt="Graphic illustration of a hospital scene" 
-          />
+          alt="Graphic illustration of a hospital scene"
+        />
       </div>
-      {userDetails ? <h3 className="welcome-msg">Welcome, {userDetails.firstName}</h3> : <p>Welcome back </p>}
+      {userDetails ? (
+        <h3 className="welcome-msg">Welcome, {userDetails.firstName}</h3>
+      ) : (
+        <p>Welcome back </p>
+      )}
 
       <div className="tabs">
-        <button 
-          className={`tab ${activeTab === "searchDoctors" ? "active" : "" }` }
-          onClick={ () => setActiveTab("searchDoctors")}>
-        Search Doctors
+        <button
+          className={`tab ${activeTab === "searchDoctors" ? "active" : ""}`}
+          onClick={() => setActiveTab("searchDoctors")}
+        >
+          Search Doctors
         </button>
-        <button 
-          className={`tab ${activeTab === "doctorAppointments" ? "active" : "" }` }
-          onClick={ () => setActiveTab("doctorAppointments")}>
-        Doctor Appointments
+        <button
+          className={`tab ${
+            activeTab === "doctorAppointments" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("doctorAppointments")}
+        >
+          Doctor Appointments
         </button>
-        <button 
-          className={`tab ${activeTab === "searchTests" ? "active" : "" }` }
-          onClick={ () => setActiveTab("searchTests")}>
-        Search Tests
+        <button
+          className={`tab ${activeTab === "searchTests" ? "active" : ""}`}
+          onClick={() => setActiveTab("searchTests")}
+        >
+          Search Tests
         </button>
-        <button 
-          className={`tab ${activeTab === "testAppointments" ? "active" : "" }` }
-          onClick={ () => setActiveTab("testAppointments")}>
-        Test Appointments
+        <button
+          className={`tab ${activeTab === "testAppointments" ? "active" : ""}`}
+          onClick={() => setActiveTab("testAppointments")}
+        >
+          Test Appointments
         </button>
       </div>
 
@@ -252,27 +253,33 @@ export default function PatientDirectory() {
       {/* {loading && <p>Loading data...</p>} */}
 
       {/* Conditional loading for individual sections */}
-      {doctorsLoading && activeTab === "searchDoctors" && <p>Loading doctors...</p>}
+      {doctorsLoading && activeTab === "searchDoctors" && (
+        <p>Loading doctors...</p>
+      )}
       {testsLoading && activeTab === "searchTests" && <p>Loading tests...</p>}
-      {doctorAppointmentsLoading && activeTab === "doctorAppointments" && <p>Loading appointments...</p>}
-      {testAppointmentsLoading && activeTab === "testAppointments" && <p>Loading test appointments...</p>}
+      {doctorAppointmentsLoading && activeTab === "doctorAppointments" && (
+        <p>Loading appointments...</p>
+      )}
+      {testAppointmentsLoading && activeTab === "testAppointments" && (
+        <p>Loading test appointments...</p>
+      )}
 
-      
       {/* renders error state  */}
       {error && <p className="error-message">{error}</p>}
 
       {/* renders Search Doctor */}
       {activeTab === "searchDoctors" && (
         <div className="doctor-section">
-          <SearchDoctor onSearch={handleSearchDoctor} />  
+          <SearchDoctor onSearch={handleSearchDoctor} />
           <div className="doctor-list">
-            {doctors.length > 0 ? (
-              doctors.map( (doctor) => (
-                <DoctorCard key={doctor._id || doctor.doctorId} doctor={doctor} />
-              ))
-            ) : (
-              !doctorsLoading && <p>No doctors found for this postcode.</p>
-            )}
+            {doctors.length > 0
+              ? doctors.map((doctor) => (
+                  <DoctorCard
+                    key={doctor._id || doctor.doctorId}
+                    doctor={doctor}
+                  />
+                ))
+              : !doctorsLoading && <p>No doctors found for this postcode.</p>}
           </div>
         </div>
       )}
@@ -281,14 +288,17 @@ export default function PatientDirectory() {
       {activeTab === "doctorAppointments" && (
         <div className="appointment-section">
           {/* <h2>Appointments</h2> */}
-          <div className="appointment-list"> 
-            {doctorAppointments.length > 0 ? (
-              doctorAppointments.map((appointment) => (
-                <DoctorAppointmentCard key={appointment.id} appointment={appointment} />
-              ))
-             ) : (
-              !doctorAppointmentsLoading && <p>No upcoming appointments found for the user.</p>
-            )} 
+          <div className="appointment-list">
+            {doctorAppointments.length > 0
+              ? doctorAppointments.map((appointment) => (
+                  <DoctorAppointmentCard
+                    key={appointment.id}
+                    appointment={appointment}
+                  />
+                ))
+              : !doctorAppointmentsLoading && (
+                  <p>No upcoming appointments found for the user.</p>
+                )}
           </div>
         </div>
       )}
@@ -309,21 +319,19 @@ export default function PatientDirectory() {
 
       {/* renders Test Appointments */}
       {activeTab === "testAppointments" && (
-      <div className="tests-section">
-        {/* <h2>Tests</h2> */}
-        <div className="test-list"> 
-          {testAppointments.length > 0 ? (
-            testAppointments.map((test) => (
-              <TestAppointmentCard key={test.id} test={test} />
-            ))
-          ) : (
-            !testAppointmentsLoading && <p>No upcoming appointments found for the user.</p>
-          )}
+        <div className="tests-section">
+          {/* <h2>Tests</h2> */}
+          <div className="test-list">
+            {testAppointments.length > 0
+              ? testAppointments.map((test) => (
+                  <TestAppointmentCard key={test.id} test={test} />
+                ))
+              : !testAppointmentsLoading && (
+                  <p>No upcoming appointments found for the user.</p>
+                )}
+          </div>
         </div>
-      </div>
       )}
-      
     </div>
   );
-  
 } // end PatientDirectory

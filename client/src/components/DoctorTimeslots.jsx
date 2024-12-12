@@ -12,9 +12,7 @@ import "../assets/css/DoctorTimeslots.css";
 
 // const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ17SaRliXyVOcLoTjqU2NGUt5kpDoCLESapPqkz4jz5BGdtWsH6d00INEwhjtB");    // key from stripe dashboard
 
-
 export default function DoctorTimeslots() {
-  
   const { doctorId } = useParams();
   const navigate = useNavigate();
   const { userData } = useAuth();
@@ -28,14 +26,13 @@ export default function DoctorTimeslots() {
   const [showPaymentMessage, setShowPaymentMessage] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState(null);
 
-
   // fetches doctor appointment timeslots based on doctorId and selected date
   useEffect(() => {
     // fetches doctor details
     const fetchDoctorDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/getDoctor/${doctorId}`
+          `https://healthease-n5ra.onrender.com/api/getDoctor/${doctorId}`
         );
         setDoctorDetails(response.data);
       } catch (error) {
@@ -51,7 +48,7 @@ export default function DoctorTimeslots() {
       //console.log("DoctorTimeslotsPage:Fetching timeslots for date: ",formattedDate);
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/doctor/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
+          `https://healthease-n5ra.onrender.com/api/doctor/availableTimeslots?doctorId=${doctorId}&date=${formattedDate}`
         );
         setTimeslots(response.data);
       } catch (error) {
@@ -126,23 +123,21 @@ export default function DoctorTimeslots() {
             diagnosticCenterId,
             userData,
             appointmentType: "test",
-            testName: addTestName
+            testName: addTestName,
           },
         });
       }
-
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");
     }
   };
 
-  
   return (
     <div className="timeslots-container">
       <Helmet>
         <title>
-          {doctorDetails 
+          {doctorDetails
             ? `HealthEase - Book Appointment with Dr. ${doctorDetails.userid.firstName} ${doctorDetails.userid.lastName}`
             : "HealthEase - Select a Timeslot"}
         </title>
@@ -158,46 +153,52 @@ export default function DoctorTimeslots() {
 
       {/* {!bookingMessage && (
       <> */}
-        <h2>Dr. {doctorDetails?.userid.firstName} {doctorDetails?.userid.lastName}</h2>
-        <h2>Appointment Date:</h2>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          dateFormat="MM/dd/yyyy"
-          placeholderText="Select a date"
-        />
+      <h2>
+        Dr. {doctorDetails?.userid.firstName} {doctorDetails?.userid.lastName}
+      </h2>
+      <h2>Appointment Date:</h2>
+      <DatePicker
+        selected={selectedDate}
+        onChange={handleDateChange}
+        dateFormat="MM/dd/yyyy"
+        placeholderText="Select a date"
+      />
 
-        <h2>Appointment Time:</h2>
-        <div className="timeslots">
-          {timeslot.length > 0 ? (
-            timeslot.map((timeslot, index) => (
-              <button
-                key={index}
-                className={`timeslot-button ${selectedTimeslot?.time === timeslot.time ? "selected" : ""}`}
-                onClick={() => handleTimeslotSelect(timeslot)}
-              >
-                {timeslot.time}
-              </button>
-            ))
-          ) : (
-            <p>No available timeslots for this date.</p>
-          )}
-        </div>
+      <h2>Appointment Time:</h2>
+      <div className="timeslots">
+        {timeslot.length > 0 ? (
+          timeslot.map((timeslot, index) => (
+            <button
+              key={index}
+              className={`timeslot-button ${
+                selectedTimeslot?.time === timeslot.time ? "selected" : ""
+              }`}
+              onClick={() => handleTimeslotSelect(timeslot)}
+            >
+              {timeslot.time}
+            </button>
+          ))
+        ) : (
+          <p>No available timeslots for this date.</p>
+        )}
+      </div>
 
-        <div className="timeslots-actions">
-          <button
-            className="btn-cancel"
-            onClick={() => setselectedTimeslot(null)}
-          >Cancel
-          </button>
-          <button
-            className="btn-confirm"
-            onClick={() => {
-              handleConfirmClick();
-            }}
-          >Confirm
-          </button>
-        </div>
+      <div className="timeslots-actions">
+        <button
+          className="btn-cancel"
+          onClick={() => setselectedTimeslot(null)}
+        >
+          Cancel
+        </button>
+        <button
+          className="btn-confirm"
+          onClick={() => {
+            handleConfirmClick();
+          }}
+        >
+          Confirm
+        </button>
+      </div>
 
       {/* </>
       )} */}
@@ -221,7 +222,6 @@ export default function DoctorTimeslots() {
           </div>
         </div>
       )}
-      
     </div>
   );
 }

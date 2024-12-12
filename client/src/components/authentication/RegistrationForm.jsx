@@ -16,14 +16,17 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3002/api/auth/register", {
-        firstName,
-        lastName,
-        contactNo,
-        userRole,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://healthease-n5ra.onrender.com/api/auth/register",
+        {
+          firstName,
+          lastName,
+          contactNo,
+          userRole,
+          email,
+          password,
+        }
+      );
       setMessage("User registered successfully!");
       setMessageType("success");
     } catch (error) {
@@ -33,7 +36,6 @@ const RegistrationForm = () => {
     }
   };
 
-  
   return (
     <div id="registration-container">
       <h2 id="registration-title">Register</h2>
@@ -87,9 +89,7 @@ const RegistrationForm = () => {
           Register
         </button>
       </form>
-      {message && (
-        <p className={`message ${messageType}`}>{message}</p>
-      )}
+      {message && <p className={`message ${messageType}`}>{message}</p>}
     </div>
   );
 };

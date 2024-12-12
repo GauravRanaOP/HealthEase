@@ -56,7 +56,9 @@ const Doctor = () => {
     const fetchData = async () => {
       try {
         if (userData) {
-          const response = await axios.get("http://localhost:3002/api/getDoctor");
+          const response = await axios.get(
+            "https://healthease-n5ra.onrender.com/api/getDoctor"
+          );
           const filteredDoctors = response.data.filter(
             (doctor) => doctor.clinicId._id === userData
           );
@@ -66,10 +68,9 @@ const Doctor = () => {
         console.error("Error fetching doctors:", error);
       }
     };
-  
+
     fetchData();
   }, [userData]); // Add userData as a dependency
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +103,7 @@ const Doctor = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/addDoctor",
+        "https://healthease-n5ra.onrender.com/api/addDoctor",
         formData
       );
       console.log(response.data);
@@ -117,7 +118,7 @@ const Doctor = () => {
   const handleViewDoctor = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/getDoctor/${id}`
+        `https://healthease-n5ra.onrender.com/api/getDoctor/${id}`
       );
       setViewDoctorData(response.data);
       setShowCard(true); // Show doctor details in a card view
@@ -129,7 +130,9 @@ const Doctor = () => {
   // Delete Doctor
   const handleDeleteDoctor = async (id) => {
     try {
-      await axios.delete(`http://localhost:3002/api/deleteDoctor/${id}`);
+      await axios.delete(
+        `https://healthease-n5ra.onrender.com/api/deleteDoctor/${id}`
+      );
       setDoctors(Doctors.filter((doctor) => doctor._id !== id)); // Remove from the local state
     } catch (error) {
       console.error("Error deleting doctor:", error);
@@ -140,7 +143,7 @@ const Doctor = () => {
   const handleEditDoctor = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/getDoctor/${id}`
+        `https://healthease-n5ra.onrender.com/api/getDoctor/${id}`
       );
       console.log(response);
       setSaveId(id);
@@ -164,7 +167,7 @@ const Doctor = () => {
     try {
       const id = formData._id; // Assuming formData includes the doctor's ID
       const response = await axios.put(
-        `http://localhost:3002/api/updateDoctor/${saveId}`,
+        `https://healthease-n5ra.onrender.com/api/updateDoctor/${saveId}`,
         editFormData
       );
       console.log(response.data);

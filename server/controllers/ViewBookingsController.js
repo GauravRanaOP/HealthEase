@@ -1,64 +1,53 @@
-import Booking from "../models/Booking.js";
+import Appointment from "../models/Appointment.js";
+import User from "../models/User.js";
 
-// get all bookings
-export const getAllBookings = async (req, res) => {
+//get all booked appointments
+export const getBookedAppointments = async (req, res) => {
   try {
-    const bookings = await Booking.find(); // find all bookings
+    const appointments = await Appointment.find({
+      visitType: "DiagnosticTest",
+      isTimeSlotAvailable: false,
+    })
+      .populate({
+        path: "patientId",
+        model: User,
+        select: "email",
+      }) //populate patientId to get email from User model
+      .lean();
 
-    // check if there are any bookings
-    if (!bookings.length) {
-      return res.status(404).json({ msg: "No bookings found." });
+    //add visitMode to each appointment's diagnostic center value
+    appointments.forEach((appointment) => {
+      appointment.location = appointment.visitMode;
+    });
+
+    if (!appointments.length) {
+      return res.status(404).json({ msg: "No booked appointments found." });
     }
-    res.status(200).json(bookings);
+    res.status(200).json(appointments);
   } catch (error) {
+    console.error("Error fetching booked appointments:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
 
-// get a single booking by ID
-export const getBookingById = async (req, res) => {
+//update an existing appointment
+export const updateAppointment = async (req, res) => {
   try {
-    const bookingId = req.params.id;
-    const booking = await Booking.findById(bookingId); // find the booking by Id
+    const { id } = req.params;
+    const { status, testResult } = req.body;
 
-    // check if the booking exists
-    if (!booking) {
-      return res.status(404).json({ msg: "Booking not found." });
+    const updatedAppointment = await Appointment.findByIdAndUpdate(
+      id,
+      { status, testResult },
+      { new: true }
+    ); //set true to get the updated data
+
+    if (!updatedAppointment) {
+      return res.status(404).json({ message: "Appointment not found." });
     }
-    res.status(200).json(booking);
+
+    res.status(200).json(updatedAppointment);
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// update a booking
-export const updateBooking = async (req, res) => {
-  try {
-    const bookingId = req.params.id;
-    const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body, { new: true }); // update the booking with the new data
-
-    // check if the booking exists
-    if (!updatedBooking) {
-      return res.status(404).json({ msg: "Booking not found." });
-    }
-    res.status(200).json(updatedBooking);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// delete a booking
-export const deleteBooking = async (req, res) => {
-  try {
-    const bookingId = req.params.id;
-    const deletedBooking = await Booking.findByIdAndDelete(bookingId); // delete the booking by Id
-
-    // check if the booking exists
-    if (!deletedBooking) {
-      return res.status(404).json({ msg: "Booking not found." });
-    }
-    res.status(200).json({ msg: "Booking deleted successfully." });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
