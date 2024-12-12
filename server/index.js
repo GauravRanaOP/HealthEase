@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors"; // Importing CORS
 import { updateAppointmentStatuses } from "./utils/scheduler.js";
 
-
 // imports the db.js file to establish the MongoDB connection
 import "./config/db.js";
 
@@ -21,18 +20,21 @@ import DoctorAppointmentRoute from "./routes/DoctorAppointmentRoute.js";
 import PatientRoute from "./routes/PatientRoute.js";
 import DoctorAvailabilityRoute from "./routes/DoctorAvailabilityRoute.js";
 
-
 // initializes the app
 const app = express();
 
 // middleware to parse JSON data
 app.use(express.json());
 
-app.use(cors({
-  origin: "http://localhost:5173", // Allow only your frontend's origin
-  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-}));
-
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://deft-starburst-461e57.netlify.app",
+    ], // Allow only your frontend's origin
+    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+  })
+);
 
 // Routes for doctors
 app.use("/api", DoctorRoute);
@@ -67,12 +69,10 @@ app.use("/api/doctor", DoctorAppointmentRoute);
 // routes for patient
 app.use("/api/patient", PatientRoute);
 
-
 // basic route to check if the server is running
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
-
 
 // Error handling for unhandled routes
 app.use((req, res, next) => {
