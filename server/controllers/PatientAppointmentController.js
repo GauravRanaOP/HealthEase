@@ -33,7 +33,7 @@ export const getPatientAppointments = async (req, res) => {
         isTimeSlotAvailable: false,
         isDirectTest: false,
       }).sort({ date: 1, time: 1 });
-      console.log("Appointments fetched: ", appointments);
+      //console.log("Appointments fetched: ", appointments);
   
       if (appointments.length > 0) {
         // populates clinic address

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url>
+        <loc>http:/localhost:5173/</loc>
+        <priority>1</priority>
+      </url>
+      <url>
+        <loc>http:/localhost:5173/patientDirectory</loc>
+        <priority>0.8</priority>
+      </url>
+      <url>
+        <loc>http:/localhost:5173/diagnostic-center</loc>
+        <priority>0.8</priority>
+      </url>
+      <url>
+        <loc>http:/localhost:5173/testCentersList/66f206fd3466cadba8b66c1c</loc>
+        <priority>0.6</priority>
+      </url>
+      <url>
+        <loc>http:/localhost:5173/testCentersList/66f206fd3466cadba8b66c1d</loc>
+        <priority>0.6</priority>
+      </url>
+      <url>
+        <loc>http:/localhost:5173/testCentersList/66f206fd3466cadba8b66c1b</loc>
+        <priority>0.6</priority>
+      </url></urlset>

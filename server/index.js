@@ -16,13 +16,10 @@ import DiagnosticCenterRoutes from "./routes/DiagnosticCenterRoutes.js";
 import UserRoute from "./routes/UserRoute.js";
 import TestAppointmentRoute from "./routes/TestAppointmentRoute.js";
 import DiagnosticCenterAdminRoutes from "./routes/DiagnosticCenterAdminRoutes.js";
-
-import { getDoctorsByPostcodePrefix } from "./controllers/doctorByPostCodePrefixController.js";
-import { getDoctorAppointmentTimeslots } from "./controllers/DoctorAppointmentController.js";
-import { updateDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
-import { getOneDoctorAppointmentTimeslot } from "./controllers/DoctorAppointmentController.js";
-import { getPatientAppointments } from "./controllers/PatientAppointmentController.js";
-import { getPatientTests } from "./controllers/PatientTestController.js";
+import PaymentRoute from "./routes/PaymentRoute.js";
+import DoctorAppointmentRoute from "./routes/DoctorAppointmentRoute.js";
+import PatientRoute from "./routes/PatientRoute.js";
+import DoctorAvailabilityRoute from "./routes/DoctorAvailabilityRoute.js";
 
 
 // initializes the app
@@ -40,13 +37,14 @@ app.use(cors({
 // Routes for doctors
 app.use("/api", DoctorRoute);
 app.use("/api", AdminTestRoute);
-app.use("/api", AdminClinicRoute)
+app.use("/api", AdminClinicRoute);
+app.use("/api", DoctorAvailabilityRoute);
 
 // Routes for Authentication
 app.use("/api/auth", AuthRoute);
 
 // View Bookings routes for Diagnostic Center
-app.use("/api/bookings", ViewBookingsRoute);
+app.use("/api/appointments", ViewBookingsRoute);
 
 // Routes for Diagnostic Center
 app.use("/api/diagnostic-centers", DiagnosticCenterRoutes);
@@ -58,29 +56,16 @@ app.use("/api/diagnostic-centers", DiagnosticCenterAdminRoutes);
 app.use("/api/user", UserRoute);
 
 // routes for test appointment
-app.use("/api/test", TestAppointmentRoute)
+app.use("/api/test", TestAppointmentRoute);
 
+// routes for payment
+app.use("/api/payment", PaymentRoute);
 
-// route to get doctors by postcode prefix
-app.get('/api/doctors/postcode/:postcodePrefix', getDoctorsByPostcodePrefix);
+// routes for doctor appointment
+app.use("/api/doctor", DoctorAppointmentRoute);
 
-// route to get a doctors appointment timeslot
-app.get('/api/doctors/availableTimeslots/:doctorId', getDoctorAppointmentTimeslots);
-
-// route to get appointment timeslot using query parameter
-app.get('/api/doctors/availableTimeslots', getDoctorAppointmentTimeslots);
-
-// route to update an appointment timeslot
-app.put('/api/doctors/updateTimeslot/:appointmentId', updateDoctorAppointmentTimeslot);
-
-// route to get appointment timeslot (one)
-app.get("/api/doctors/availableTimeslot/:appointmentId", getOneDoctorAppointmentTimeslot);
-
-// route to get appointments booked by patients
-app.get('/api/patient/appointments', getPatientAppointments);
-
-// route to get tests booked by patients
-app.get('/api/patient/tests', getPatientTests);
+// routes for patient
+app.use("/api/patient", PatientRoute);
 
 
 // basic route to check if the server is running

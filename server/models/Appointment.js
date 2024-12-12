@@ -50,6 +50,15 @@ const AppointmentSchema = new Schema({
     isDirectTest: {
         type: Boolean,
         default: false
+    },
+    paymentStatus: { 
+        type: String, 
+        enum: ["Not Paid", "Pending", "Paid", "Failed"], 
+        default: "Not Paid" 
+    },
+    testId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tests'
     }
 });
 

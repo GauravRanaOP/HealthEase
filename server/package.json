@@ -10,6 +10,7 @@
   "author": "Venetia",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
@@ -18,7 +19,8 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "stripe": "^17.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

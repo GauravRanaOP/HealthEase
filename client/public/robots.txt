@@ -1,0 +1,22 @@
+# Allow all user agents
+User-agent: *
+
+# Block sensitive routes
+Disallow: /Login
+Disallow: /adminClinic
+Disallow: /adminTest
+Disallow: /getBookings
+Disallow: /doctorTimeslots/
+Disallow: /testTimeslots/
+Disallow: /diagnostic-admin
+Disallow: /payment
+Disallow: /testTimeslots
+Disallow: /doctorTimeslots
+
+# Allow public-facing pages
+Allow: /patientDirectory
+Allow: /testCentersList/:testId
+Allow: /diagnostic-center
+
+# Sitemap
+Sitemap: https://www.healthease.com/sitemap.xml

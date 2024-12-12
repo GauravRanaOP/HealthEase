@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -7,20 +7,25 @@ import DatePicker from "react-datepicker";
 import { useAuth } from "./authentication/AuthContext.jsx";
 
 import "react-datepicker/dist/react-datepicker.css";
-import "../assets/css/DoctorTimeslots.css";     // change name
+import "../assets/css/DoctorTimeslots.css";    
 
 
 export default function TestTimeslots() {
   const { diagnosticCenterId } = useParams();   // to get diagnosticCenterId from url 
   const navigate = useNavigate();
   const { userData } = useAuth();
+  const location = useLocation();
+  const testId = location.state?.testId;
+
 
   // sets states
   const [selectedDate, setselectedDate] = useState(new Date());
   const [timeslot, setTimeslots] = useState([]);
   const [selectedTimeslot, setselectedTimeslot] = useState(null);
   const [showConfirmation, setshowConfirmation] = useState(false);
-  const [bookingMessage, setBookingMessage] = useState("");
+  // const [bookingMessage, setBookingMessage] = useState("");
+  const [showPaymentMessage, setShowPaymentMessage] = useState(false);
+
 
   // fetches test appointment timeslots based on diagnosticCenterId and selected date
   useEffect(() => {
@@ -45,11 +50,9 @@ export default function TestTimeslots() {
     fetchTimeslots();
   }, [diagnosticCenterId, selectedDate]);
 
-
   const handleDateChange = (date) => {
     setselectedDate(date);
   };
-
 
   const handleTimeslotSelect = (timeslot) => {
     setselectedTimeslot({
@@ -81,19 +84,49 @@ export default function TestTimeslots() {
     const userId = userData;
     const appointmentId = selectedTimeslot.appointmentId;
 
-    // debug: logs the appointment id
-    console.log("TestTimeslot: appointmentId: ", appointmentId, "userId:", userId);
-
     try {
       // backend request to book the appointment
-      // const response = await axios.put(`http://localhost:3002/api/doctors/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
-      const response = await axios.put(
-        `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-        { userId }    // send userId in the request body
-      );
+      // const response = await axios.put(
+      //   `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
+      //   { userId }    // send userId in the request body
+      // );
 
-      setBookingMessage(response.data.message);
-      setshowConfirmation(false);
+      // setBookingMessage(response.data.message);
+      // setshowConfirmation(false);
+      setShowPaymentMessage(true);
+      
+      // navigate("/payment", {
+      //   state: {
+      //     timeslot: selectedTimeslot,
+      //     diagnosticCenterId,
+      //     userData,
+      //   },
+      // });
+
+      // checks if the appointment is for a test or a doctor
+      if (diagnosticCenterId) {
+        // API call for test appointment
+        navigate("/payment", {
+          state: {
+            timeslot: selectedTimeslot,
+            diagnosticCenterId,
+            userData,
+            appointmentType: "test", 
+            testId,
+          },
+        });
+      } else if (doctorId) {
+        // API call for doctor appointment
+        navigate("/payment", {
+          state: {
+            timeslot: selectedTimeslot,
+            doctorId,
+            userData,
+            appointmentType: "doctor",
+          },
+        });
+      }
+
     } catch (error) {
       console.error("Error booking appointment: ", error);
       alert("Error booking the appointment. Please try again");
@@ -102,8 +135,8 @@ export default function TestTimeslots() {
 
   return (
     <div className="timeslots-container">
-      {!bookingMessage && (
-      <>
+      {/* {!bookingMessage && (
+      <> */}
         <h2>Appointment Date:</h2>
         <DatePicker
           selected={selectedDate}
@@ -144,8 +177,8 @@ export default function TestTimeslots() {
           </button>
         </div>
 
-      </>
-      )}
+      {/* </>
+      )} */}
 
       {showConfirmation && selectedTimeslot && (
         <div className="confirmation-popup">
@@ -165,7 +198,7 @@ export default function TestTimeslots() {
         </div>
       )}
 
-      {bookingMessage && (
+      {/* {bookingMessage && (
         <div>
           <p className="booking-message">{bookingMessage}</p>
           <button 
@@ -173,8 +206,9 @@ export default function TestTimeslots() {
             className="btn-custom"
             >Continue</button>
         </div>
-      )}
+      )} */}
 
+      
     </div>
   );
 }

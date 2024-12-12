@@ -1,6 +1,7 @@
 import Appointment from "../models/Appointment.js";
 import Address from "../models/Address.js";
 import DiagnosticCenter from "../models/DiagnosticCenter.js";
+import Test from "../models/Test.js";
 import mongoose from "mongoose";
 
 
@@ -38,6 +39,10 @@ export const getPatientTests = async (req, res) => {
         // populates diagnostic center address
         const testsWithDiagnosticCenter = await Promise.all(
             tests.map(async (test) => {
+            
+            // Find the test details by testId
+            const testDetails = await Test.findById(test.testId);
+
             const diagnosticCenter = await DiagnosticCenter.findById(test.diagnosticCenterId);
             
             let fullAddress = null;
@@ -62,6 +67,7 @@ export const getPatientTests = async (req, res) => {
               ...test.toObject(),
               diagnosticCenterAddress: fullAddress,
               diagnosticCenterName: dcName,
+              testName: testDetails ? testDetails.name : "Test name not found",
             };
           })
         );

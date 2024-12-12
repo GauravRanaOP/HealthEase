@@ -1,6 +1,7 @@
 import Clinic from "../models/Clinic.js";
 import Address from "../models/Address.js";
 import bcrypt from "bcrypt"; // Ensure bcrypt is imported
+import { sendEmail } from "../utils/EmailService.js";
 
 export const create = async (req, res) => {
   try {
@@ -31,6 +32,28 @@ export const create = async (req, res) => {
 
     clinic.addressId = addressId;
     const saveClinic = await clinic.save();
+
+
+    // Send email to the newly created clinic
+    try {
+      await sendEmail(
+        clinic.email,
+        'Welcome to HealthEase - Your Clinic Account',
+        `
+        <h1>Welcome to HealthEase</h1>
+        <p>Dear ${clinic.name},</p>
+        <p>Your clinic account has been successfully created. Here are your login details:</p>
+        <p>Email: ${clinic.email}</p>
+        <p>Password: qwe</p>
+        <p>Please change your password after your first login for security reasons.</p>
+        <p>If you have any questions, please don't hesitate to contact us.</p>
+        <p>Best regards,</p>
+        <p>The HealthEase Team</p>
+        `
+      );
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError);
+    }
 
     res.status(200).json(saveClinic);
   } catch (error) {
