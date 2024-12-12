@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,8 @@ export default function TestCentersList({ test }) {
   const { testId, name } = useParams(); // gets testId from url
   const navigate = useNavigate();
   const [testDetails, setTestDetails] = useState(null);
+  const location = useLocation();
+  const { testName } = location.state || {};
 
   useEffect(() => {
     // fetches test details based on testId
@@ -32,7 +34,7 @@ export default function TestCentersList({ test }) {
   const handleBookNowClick = (diagnosticCenterId) => {
     console.log("Diagnostic Center ID, handleBookNowClick : ", diagnosticCenterId);
     // navigate to the testTimeslots page with the dc id
-    navigate(`/testTimeslots/${diagnosticCenterId}`, { state: { testId } });
+    navigate(`/testTimeslots/${diagnosticCenterId}`, { state: { testId, testName } });
   };
 
   // checks if test data is available

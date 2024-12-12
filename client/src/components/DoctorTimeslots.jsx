@@ -85,55 +85,6 @@ export default function DoctorTimeslots() {
     }
   };
 
-//   const handleConfirmClick = () => {
-//     if (selectedTimeslot) {
-//         navigate("/payment", 
-//         { 
-//           state: { 
-//             timeslot: selectedTimeslot, 
-//             doctorId 
-//           }, 
-//         });
-//     } else {
-//         alert("Please select a timeslot before confirming");
-//     }
-// };
-
-  // const handleBooking = async () => {
-  //   if (!selectedTimeslot) {
-  //     alert("Please select a timeslot before confirming");
-  //     return;
-  //   }
-
-  //   if (!userData) {
-  //     alert("No user data found. Please login to continue.");
-  //     return;
-  //   }
-
-  //   // gets userId from userData object in AuthContext.jsx
-  //   const userId = userData;
-  //   const appointmentId = selectedTimeslot.appointmentId;
-
-  //   // debug: logs the appointment id
-  //   console.log("DoctorTimeslot: appointmentId: ", appointmentId, "userId:", userId);
-
-  //   try {
-  //     // backend request to book the appointment
-  //     // const response = await axios.put(`http://localhost:3002/api/doctor/updateTimeslot?appointmentId=${appointmentId}`, {       // appointmentId as query parameter
-  //     const response = await axios.put(
-  //       `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,        // appointmentId as path parameter  
-  //       { userId }    // send userId in the request body
-  //     );
-
-  //     setBookingMessage(response.data.message);
-  //     setshowConfirmation(false);
-
-  //   } catch (error) {
-  //     console.error("Error booking appointment: ", error);
-  //     alert("Error booking the appointment. Please try again");
-  //   }
-  // };
-
   const handleBooking = async () => {
     if (!selectedTimeslot) {
       alert("Please select a timeslot before confirming");
@@ -152,14 +103,6 @@ export default function DoctorTimeslots() {
     try {
       setShowPaymentMessage(true);
 
-      // navigate("/payment", {
-      //   state: {
-      //     timeslot: selectedTimeslot,
-      //     doctorId,
-      //     userData,
-      //   },
-      // });
-
       // checks if the appointment is for a test or a doctor
       if (doctorId) {
         // API call for doctor appointment
@@ -169,6 +112,8 @@ export default function DoctorTimeslots() {
             doctorId,
             userData,
             appointmentType: "doctor",
+            doctorFirstName: doctorDetails?.userid.firstName,
+            doctorLastName: doctorDetails?.userid.lastName,
           },
         });
       } else if (diagnosticCenterId) {
@@ -179,6 +124,7 @@ export default function DoctorTimeslots() {
             diagnosticCenterId,
             userData,
             appointmentType: "test",
+            testName: addTestName
           },
         });
       }
@@ -210,6 +156,7 @@ export default function DoctorTimeslots() {
 
       {/* {!bookingMessage && (
       <> */}
+        <h2>Dr. {doctorDetails?.userid.firstName} {doctorDetails?.userid.lastName}</h2>
         <h2>Appointment Date:</h2>
         <DatePicker
           selected={selectedDate}
@@ -259,7 +206,7 @@ export default function DoctorTimeslots() {
             Are you sure you want to book the appointment for{" "}
             {selectedDate.toLocaleDateString()} at {selectedTimeslot.time}?{" "}
           </p>
-          <div class="confirm-btn-container">
+          <div className="confirm-btn-container">
             <button onClick={handleBooking} className="btn-yes">
               Yes
             </button>
@@ -272,30 +219,7 @@ export default function DoctorTimeslots() {
           </div>
         </div>
       )}
-
-      {/* {bookingMessage && (
-        <div>
-          <p className="booking-message">{bookingMessage}</p>
-          <button 
-            onClick={() => navigate("/patientDirectory")}
-            className="btn-custom"
-            >Continue</button>
-        </div>
-      )} */}
-
-      {/* Payment Section */}
-      {/* {showConfirmation && selectedTimeslot && (
-        <div className="payment-container">
-          <Elements stripe={stripePromise}>
-            <CheckoutForm
-              selectedTimeslot={selectedTimeslot}
-              userData={userData}
-              doctorId={doctorId}
-            />
-          </Elements>
-        </div>
-      )} */}
-
+      
     </div>
   );
 }
