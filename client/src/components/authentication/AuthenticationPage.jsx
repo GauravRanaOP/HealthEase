@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import "../../assets/css/authentication/AuthenticationStyle.css"
 
 const AuthenticationPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);

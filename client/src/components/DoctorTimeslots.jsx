@@ -105,6 +105,7 @@ export default function DoctorTimeslots() {
         // API call for doctor appointment
         navigate("/payment", {
           state: {
+            selectedDate: selectedDate.toISOString().split("T")[0],
             timeslot: selectedTimeslot,
             doctorId,
             userData,
@@ -117,6 +118,7 @@ export default function DoctorTimeslots() {
         // API call for test appointment
         navigate("/payment", {
           state: {
+            selectedDate: selectedDate.toISOString().split("T")[0],
             timeslot: selectedTimeslot,
             diagnosticCenterId,
             userData,

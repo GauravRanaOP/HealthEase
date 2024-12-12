@@ -9,24 +9,23 @@ import CheckoutForm from "./CheckoutForm.jsx";
 import "../assets/css/PaymentPage.css";
 
 // loads stripe public key
-const stripePromise = loadStripe(
-  "pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ17SaRliXyVOcLoTjqU2NGUt5kpDoCLESapPqkz4jz5BGdtWsH6d00INEwhjtB"
-); // key from stripe dashboard
+const stripePromise = loadStripe("pk_test_51QKq0oG1yrsNhHzCilkqDVF2dLeu8QXyDP3fZ17SaRliXyVOcLoTjqU2NGUt5kpDoCLESapPqkz4jz5BGdtWsH6d00INEwhjtB");    // key from stripe dashboard
+
 
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const {
-    timeslot,
-    doctorId,
-    diagnosticCenterId,
-    userData,
-    appointmentType,
-    testId,
-    doctorFirstName,
-    doctorLastName,
-    testName,
-  } = location.state || {};
+  const { 
+          selectedDate,
+          timeslot, 
+          doctorId, 
+          diagnosticCenterId, 
+          userData, 
+          appointmentType, 
+          testId, 
+          doctorFirstName, 
+          doctorLastName, 
+          testName } = location.state || {};
   const { state } = location;
 
   // defines states
@@ -34,11 +33,12 @@ export default function PaymentPage() {
   const [appointmentDetails, setAppointmentDetails] = useState({});
   const [paymentType, setPaymentType] = useState("");
 
+
   // set appointment details and type based on the passed data
   useEffect(() => {
     if (appointmentType) {
       if (appointmentType === "doctor") {
-        // console.log("doctor state: ", location.state);
+        console.log("doctor state: ", location.state);
         setPaymentType("Doctor Appointment");
         setAppointmentDetails({
           id: doctorId,
@@ -46,7 +46,7 @@ export default function PaymentPage() {
           userData: userData,
         });
       } else if (appointmentType === "test") {
-        // console.log("test state: ", location.state);
+        console.log("test state: ", location.state);
         setPaymentType("Test Appointment");
         setAppointmentDetails({
           id: diagnosticCenterId,
@@ -59,6 +59,7 @@ export default function PaymentPage() {
     }
   }, [appointmentType, doctorId, diagnosticCenterId, timeslot, userData]);
 
+
   // function to handle payment
   const handlePaymentSuccess = async (paymentResult) => {
     const { appointmentId } = timeslot;
@@ -66,13 +67,14 @@ export default function PaymentPage() {
     //const testId = testId;
 
     try {
+      
       let response;
 
       // calls backend api based on appointment type
       if (paymentType === "Doctor Appointment") {
         // For doctor appointment, update the doctor timeslot
         response = await axios.put(
-          `https://healthease-n5ra.onrender.com/api/doctor/updateTimeslot/${appointmentId}`,
+          `http://localhost:3002/api/doctor/updateTimeslot/${appointmentId}`,
           {
             userId,
             paymentStatus: "Paid",
@@ -81,7 +83,7 @@ export default function PaymentPage() {
       } else if (paymentType === "Test Appointment") {
         // For test appointment, update the test center timeslot
         response = await axios.put(
-          `https://healthease-n5ra.onrender.com/api/test/updateTimeslot/${appointmentId}`,
+          `http://localhost:3002/api/test/updateTimeslot/${appointmentId}`,
           {
             userId,
             paymentStatus: "Paid",
@@ -93,11 +95,13 @@ export default function PaymentPage() {
       }
 
       setBookingMessage(response.data.message);
+
     } catch (error) {
       console.error("Error booking appointment after payment:", error);
       alert("Error booking appointment. Please try again.");
     }
   };
+
 
   return (
     <div className="payment-page">
@@ -125,14 +129,13 @@ export default function PaymentPage() {
           {/* <p>Appointment with Dr. [Doctor Name]</p> */}
           <p>
             {appointmentType === "doctor" ? (
-              <>
-                Appointment with Dr. {doctorFirstName} {doctorLastName}
-              </>
+              <>Appointment with Dr. {doctorFirstName} {doctorLastName}</>
             ) : (
-              <>Appointment for test {testName}</>
+              <>Appointment for the test {testName}</>
             )}
           </p>
-          <p>Date: {timeslot.date}</p>
+          {/* <p>Date: {timeslot.date}</p> */}
+          <p>Date: {selectedDate} </p>
           <p>Time: {timeslot.time}</p>
           <p>Total Amount: $40</p>
 
