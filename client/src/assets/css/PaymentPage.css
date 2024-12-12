@@ -69,8 +69,32 @@
   margin: 10px 0;
 }
 
-.checkout-form form div {
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-form div {
   width: 100%; 
+}
+
+.btn-pay {
+  margin-top: 1.5rem;
+  width: 120px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: var(--primary-color);
+  color: white;
+  align-self: center;
+}
+
+.btn-pay:hover {
+  background-color: #2d4373;
 }
 
 .error-message {
@@ -84,6 +108,12 @@
   color: green;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 630px) {
+  .payment-page {
+    width: 90%;
+  }
 }
 
 @media screen and (max-width: 548px) {
