@@ -61,7 +61,7 @@
   color: var(--secondary-color);
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease;
-  width: 170px;
+  width: 178px;
 }
 
 .tab.active {
