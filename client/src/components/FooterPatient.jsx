@@ -34,7 +34,7 @@ const FooterPatient = () => {
               <h3>Patient Care</h3>
               <ul>
                 <li>
-                  <a href="/find-doctor">Find a doctor</a>
+                  <a href="/patientDirectory">Find a doctor</a>
                 </li>
                 <li>
                   <a href="/medical-services">Medical Services</a>
@@ -49,10 +49,10 @@ const FooterPatient = () => {
               <h3>Services</h3>
               <ul>
                 <li>
-                  <a href="/consult-online">Consult Doctor Online</a>
+                  <a href="/patientDirectory">Consult Doctor Online</a>
                 </li>
                 <li>
-                  <a href="/book-appointment">Book Physical Appointment</a>
+                  <a href="/patientDirectory">Book Physical Appointment</a>
                 </li>
               </ul>
             </div>
